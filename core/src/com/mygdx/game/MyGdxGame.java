@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.game.views.ScreenManager;
+import com.mygdx.view.ScreenManager;
 
 public class MyGdxGame extends Game {
 

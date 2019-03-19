@@ -1,37 +1,29 @@
-package com.mygdx.game.views;
+package com.mygdx.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-/*
-* Screen que cargamos al hacer click en preferencias.
-* */
-public class PreferencesScreen implements Screen {
+public class StartGame implements Screen {
 
-    private ScreenManager screenManager;
+    ScreenManager screenManager;
     private Stage stage;
 
-    public PreferencesScreen(ScreenManager screenManagerR) {
+    public StartGame(ScreenManager screenManagerR) {
         this.screenManager=screenManagerR;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
-     public void show() {
-        // TODO Auto-generated method stub
+    public void show() {
         Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
-        Label label = new Label("Configuración",skin);
-        label.setBounds(20,stage.getHeight()-100,stage.getWidth(),100);
-        stage.addActor(label);
+        TextField textField = new TextField("Empezar juego.",skin);
+        stage.addActor(textField);
     }
 
     @Override
@@ -44,26 +36,26 @@ public class PreferencesScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+
     }
 }
