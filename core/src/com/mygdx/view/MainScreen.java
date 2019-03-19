@@ -10,27 +10,31 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.model.Carta;
+import com.mygdx.model.Criatura;
+
+import java.util.ArrayList;
 
 
 /*
-* Screen inicial para cuando abrimos el juego.
-* */
+ * Screen inicial para cuando abrimos el juego.
+ * */
 public class MainScreen implements Screen {
 
     private ScreenManager screenManager;
     private Stage stage;
     private Texture texture;
-    private Texture icon,icon2;
+    private Texture icon, icon2;
     private SpriteBatch batch;
     private Image image;
-    private int x,y,i;
-    private boolean xState,yState;
+    private int x, y, i;
+    private boolean xState, yState;
     private Table table = new Table();
     private float maxWidth;
     private float maxHeight;
 
     public MainScreen(ScreenManager screenManagerR) {
-        this.screenManager=screenManagerR;
+        this.screenManager = screenManagerR;
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         maxHeight = stage.getHeight();
@@ -38,7 +42,14 @@ public class MainScreen implements Screen {
     }
 
     @Override
-     public void show() {
+    public void show() {
+        ArrayList<Carta> cartas = new ArrayList<Carta>();
+        Criatura golem = new Criatura();
+        cartas.add(golem);
+        if (cartas.get(0).getTipo() == Carta.Tipo.CRIATURA) {
+            xdxdd
+        }
+
 
         System.out.println(stage.getHeight());
         System.out.println(stage.getWidth());
@@ -50,11 +61,11 @@ public class MainScreen implements Screen {
         TextButton exit = new TextButton("Salir", skin);
 
         //Variable usadas para controlar el flujo de movimiento.
-        x=0;
-        y=0;
-        i=0;
-        xState= true;
-        yState= true;
+        x = 0;
+        y = 0;
+        i = 0;
+        xState = true;
+        yState = true;
 
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
@@ -88,7 +99,7 @@ public class MainScreen implements Screen {
 
         //Añadimos el contenido a la tabla.
         table.add(newGame).fillX().uniformX();
-        table.row().pad(50,0,50,0);
+        table.row().pad(50, 0, 50, 0);
         table.add(preferences).fillX().uniformX();
         table.row();
         table.add(exit).fillX().uniformX();
@@ -102,22 +113,22 @@ public class MainScreen implements Screen {
     @Override
     public void render(float delta) {
         /*
-        * Dibujamos las texturas (imagenes) y el contenido de la stage.
-        * */
+         * Dibujamos las texturas (imagenes) y el contenido de la stage.
+         * */
         update(delta);
         Gdx.gl.glClearColor(0f, 00, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.begin();
-        batch.draw(texture,0,0);
-        if(i<10) {
-            batch.draw(icon,x,y);
+        batch.draw(texture, 0, 0);
+        if (i < 10) {
+            batch.draw(icon, x, y);
             i++;
-        }else {
-            batch.draw(icon2,x,y);
+        } else {
+            batch.draw(icon2, x, y);
             i++;
-            if(i==20) {
-                i=0;
+            if (i == 20) {
+                i = 0;
             }
         }
 
@@ -126,26 +137,26 @@ public class MainScreen implements Screen {
         stage.draw();
     }
 
-    void update(float delta){
+    void update(float delta) {
         if (xState) {
-            x+=2;
-            if(x> maxWidth-15) {
+            x += 2;
+            if (x > maxWidth - 15) {
                 xState = false;
             }
-        }else {
-            x-=2;
-            if(x==0) {
+        } else {
+            x -= 2;
+            if (x == 0) {
                 xState = true;
             }
         }
         if (yState) {
-            y+=2;
-            if(y> maxHeight-30) {
+            y += 2;
+            if (y > maxHeight - 30) {
                 yState = false;
             }
-        }else {
-            y-=2;
-            if(y==0) {
+        } else {
+            y -= 2;
+            if (y == 0) {
                 yState = true;
             }
         }
@@ -155,11 +166,11 @@ public class MainScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         /*
-        * Seteamos el tamaño de la ventana, y seteamos los elementos en función de su tamaño.
-        * */
+         * Seteamos el tamaño de la ventana, y seteamos los elementos en función de su tamaño.
+         * */
         stage.getViewport().update(width, height, true);
-        table.setPosition((float) (width/2) -85 , (float) (height/2) -50);
-        image.setPosition(0,stage.getHeight()-30);
+        table.setPosition((float) (width / 2) - 85, (float) (height / 2) - 50);
+        image.setPosition(0, stage.getHeight() - 30);
 
     }
 
@@ -180,7 +191,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
-      texture.dispose();
-      stage.dispose();
+        texture.dispose();
+        stage.dispose();
     }
 }
