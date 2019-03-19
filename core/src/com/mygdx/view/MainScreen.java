@@ -47,7 +47,7 @@ public class MainScreen implements Screen {
         Criatura golem = new Criatura();
         cartas.add(golem);
         if (cartas.get(0).getTipo() == Carta.Tipo.CRIATURA) {
-            xdxdd
+            System.out.print("Fus Ro Dah");
         }
 
 
