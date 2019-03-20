@@ -12,4 +12,12 @@ public class Casilla {
     public void setTrampa(Trampa trampa) {
         this.trampa=trampa;
     }
+
+    public Criatura getCriatura(){
+        return this.criatura;
+    }
+
+    public Trampa getTrampa() {
+        return this.trampa;
+    }
 }

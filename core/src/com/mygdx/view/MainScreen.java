@@ -12,8 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.model.Carta;
 import com.mygdx.model.Criatura;
+import com.mygdx.model.Tablero;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 
 /*
@@ -30,6 +34,7 @@ public class MainScreen implements Screen {
     private int x, y, i;
     private boolean xState, yState;
     private Table table = new Table();
+    private Table table2 = new Table();
     private float maxWidth;
     private float maxHeight;
 
@@ -45,14 +50,22 @@ public class MainScreen implements Screen {
     public void show() {
         ArrayList<Carta> cartas = new ArrayList<Carta>();
         Criatura golem = new Criatura();
+        golem.setNombre("golem");
+        golem.setAtaque(5);
         cartas.add(golem);
-        if (cartas.get(0).getTipo() == Carta.Tipo.CRIATURA) {
-            System.out.print("Fus Ro Dah");
-        }
+
+        System.out.println(golem.getTipo());
+        Tablero tablero = new Tablero();
+        tablero.setCasilla(0,0, golem,0);
+        System.out.println(tablero.getCasilla(0,0).getCriatura().getAtaque());
+        tablero.moverCriatura(tablero.getCasilla(0,0).getCriatura(),0,0,2,2);
+        System.out.println(tablero.getCasilla(2,2).getCriatura().getAtaque());
+
+        System.out.println(tablero.getCasillas()[0].length);
 
 
-        System.out.println(stage.getHeight());
-        System.out.println(stage.getWidth());
+
+
 
         /*GUI de la vista*/
         Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
@@ -104,8 +117,15 @@ public class MainScreen implements Screen {
         table.row();
         table.add(exit).fillX().uniformX();
 
+        Button button = new Button(skin);
+        button.add("xd");
+        button.setColor(255,0,0,255);
+        table2.add(button);
+        table2.setPosition(100,100);
+
         //Asignamos la imagen al stage.
         stage.addActor(table);
+        stage.addActor(table2);
         stage.addActor(image);
     }
 
