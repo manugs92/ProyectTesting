@@ -15,9 +15,7 @@ import com.mygdx.model.Criatura;
 import com.mygdx.model.Tablero;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
+
 
 
 /*
@@ -107,6 +105,13 @@ public class MainScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 screenManager.changeScreen(screenManager.START_GAME);
+            }
+        });
+
+        exit.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                screenManager.changeScreen(screenManager.DUEL_SCREEN);
             }
         });
 

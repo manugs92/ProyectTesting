@@ -3,8 +3,7 @@ package com.mygdx.model;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Tablero {
 
@@ -82,5 +81,7 @@ public class Tablero {
     }
 
     public void AtacarCriatura(Criatura criaturaAtacante,int xOrigen, int yOrigen, Criatura criaturaAtacada, int xDestino, int yDestino) {
+        //Comprobar ataques y defensas (para saber cual eliminar)
+        //Borrar criatura de casilla.
     }
 }
