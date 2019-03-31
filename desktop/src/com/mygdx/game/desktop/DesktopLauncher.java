@@ -22,8 +22,9 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width=1280;
-		config.height=720;
-		//config.fullscreen=true;
+		config.height=700;
+		config.x=-1;
+		config.y=-5;
 		config.resizable=false;
 		config.title = "xD";
 		config.addIcon("icons\\xd.png", Files.FileType.Internal);

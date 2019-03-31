@@ -194,6 +194,8 @@ public class MainScreen implements Screen {
          * Seteamos el tamaño de la ventana, y seteamos los elementos en función de su tamaño.
          * */
         stage.getViewport().update(width, height, true);
+        System.out.println("width viewport: "+stage.getViewport().getWorldWidth());
+        System.out.println("width: "+stage.getWidth());
         table.setPosition((float) (width / 2) - 85, (float) (height / 2) - 50);
         image.setPosition(0, stage.getHeight() - 30);
 
