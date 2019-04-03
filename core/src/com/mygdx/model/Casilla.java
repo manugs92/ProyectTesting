@@ -5,6 +5,7 @@ public class Casilla {
     private Criatura criatura;
     private Trampa trampa;
 
+
     public void setCriatura(Criatura criatura) {
         this.criatura=criatura;
     }

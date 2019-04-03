@@ -19,10 +19,14 @@ public class DesktopLauncher {
 	 * (Para setear título de la aplicación e icono)
 	 * Y la llamada a la clase principal del juego, con la configuración establecida.
 	 * */
+
+	private final static int SCREEN_WIDTH = 1280;
+	private final static int SCREEN_HEIGHT = 700;
+
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width=1280;
-		config.height=700;
+		config.width= SCREEN_WIDTH;
+		config.height= SCREEN_HEIGHT;
 		config.x=-1;
 		config.y=-5;
 		config.resizable=false;

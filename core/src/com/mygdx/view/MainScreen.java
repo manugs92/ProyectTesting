@@ -52,14 +52,7 @@ public class MainScreen implements Screen {
         golem.setAtaque(5);
         cartas.add(golem);
 
-        System.out.println(golem.getTipo());
-        Tablero tablero = new Tablero();
-        tablero.setCasilla(0,0, golem,0);
-        System.out.println(tablero.getCasilla(0,0).getCriatura().getAtaque());
-        tablero.moverCriatura(tablero.getCasilla(0,0).getCriatura(),0,0,2,2);
-        System.out.println(tablero.getCasilla(2,2).getCriatura().getAtaque());
 
-        System.out.println(tablero.getCasillas()[0].length);
 
 
 
@@ -194,8 +187,6 @@ public class MainScreen implements Screen {
          * Seteamos el tamaño de la ventana, y seteamos los elementos en función de su tamaño.
          * */
         stage.getViewport().update(width, height, true);
-        System.out.println("width viewport: "+stage.getViewport().getWorldWidth());
-        System.out.println("width: "+stage.getWidth());
         table.setPosition((float) (width / 2) - 85, (float) (height / 2) - 50);
         image.setPosition(0, stage.getHeight() - 30);
 
