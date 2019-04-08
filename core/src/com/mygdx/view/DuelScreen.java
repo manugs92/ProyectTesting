@@ -266,6 +266,7 @@ public class DuelScreen implements Screen {
                         if(selectedCard!=null && casillasTableroGUI[finalX][finalY].getColor().equals(Color.valueOf("ff00ffff"))) {
                             selectedCard.setPosition(posXTablero+(MEDIDA_CASILLA*finalX),posYTablero + (MEDIDA_CASILLA*finalY));
                             criaturasInvocadas.add(new Image(selectedCard.getSpriteCriatura()));
+                            System.out.println(selectedCard.getPosition().x+" ,"+selectedCard.getPosition().y);
                             criaturasInvocadas.get(criaturasInvocadas.size()-1).setPosition(MEDIDA_CASILLA*finalX,MEDIDA_CASILLA*finalY);
                             tablatableroGUI.addActor(criaturasInvocadas.get(criaturasInvocadas.size()-1));
                             criaturasInvocadas.get(criaturasInvocadas.size()-1).addListener(new ClickListener() {
