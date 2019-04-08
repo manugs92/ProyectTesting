@@ -1,13 +1,15 @@
 package com.mygdx.model;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+
 public class Carta {
     private String nombre;
     private int costeInvocacion;
     private Tipo tipo;
-    private String pathImage;
-
-//129
+    private Texture image;
+    private Vector2 position = new Vector2();
 
 
     public String getNombre() {
@@ -34,13 +36,28 @@ public class Carta {
         this.tipo = tipo;
     }
 
-    public String getPathImage() {
-        return pathImage;
+    public Texture getImage() {
+        return image;
     }
 
-    public void setPathImage(String pathImage) {
-        this.pathImage = pathImage;
+    public void setImage(Texture image) {
+        this.image = image;
     }
+
+    public void setPosition(float x, float y) {
+        this.position.x=x;
+        this.position.y=y;
+    }
+
+    public Vector2 getPosition() {
+        return this.position;
+    }
+
+    public Texture getSpriteCriatura() {
+        return null;
+    }
+
+    public void setSpriteCriatura(Texture spriteCriatura) { }
 
     public enum Tipo {
     CRIATURA,

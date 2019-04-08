@@ -1,12 +1,12 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.ArrayList;
 
 public class Criatura extends Carta {
 
-    int hola = 0;
 
 
     int ataque, defensa, movimiento, alcance;
@@ -14,7 +14,7 @@ public class Criatura extends Carta {
     //  Habilidad especial(Habilidad Especial);
     TipoEspecie criatura;
     TipoElemental elemental;
-    Sprite spriteCriatura;
+    Texture spriteCriatura;
     ArrayList<Equipamiento> equipamientos = new ArrayList<Equipamiento>();
 
 
@@ -74,11 +74,13 @@ public class Criatura extends Carta {
         this.elemental = elemental;
     }
 
-    public Sprite getSpriteCriatura() {
+    @Override
+    public Texture getSpriteCriatura() {
         return spriteCriatura;
     }
 
-    public void setSpriteCriatura(Sprite spriteCriatura) {
+    @Override
+    public void setSpriteCriatura(Texture spriteCriatura) {
         this.spriteCriatura = spriteCriatura;
     }
 

@@ -67,6 +67,7 @@ public class Tablero {
 
 
 
+
     public void addCardToGraveyard(int player,Carta carta) {
         if(player==0) {
             cementerioJ1.add(carta);
