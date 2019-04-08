@@ -130,7 +130,7 @@ public class DuelScreen extends MyGdxGameScreen {
         dibujarMazoJ1();
         dibujarMazoJ2();
     }
-
+//xd
 
 
     @Override
