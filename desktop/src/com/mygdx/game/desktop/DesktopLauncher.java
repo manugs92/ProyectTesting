@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.MyGdxGameScreen;
 
 
 /*
@@ -20,17 +21,13 @@ public class DesktopLauncher {
 	 * Y la llamada a la clase principal del juego, con la configuración establecida.
 	 * */
 
-	private final static int SCREEN_WIDTH = 1280;
-	private final static int SCREEN_HEIGHT = 700;
 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		//config.width= SCREEN_WIDTH;
-		//config.height= SCREEN_HEIGHT;
-		config.x=-1;
-		config.y=-5;
-		//config.resizable=false;
+		config.width= MyGdxGame.SCREEN_WIDTH;
+		config.height= MyGdxGame.SCREEN_HEIGHT;
 		config.title = "xD";
+		config.y = -2;
 		config.addIcon("icons\\xd.png", Files.FileType.Internal);
 		new LwjglApplication(new MyGdxGame(), config);
 	}

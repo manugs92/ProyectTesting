@@ -12,10 +12,6 @@ public class ScreenManager {
     private StartGame startGame;
     private DuelScreen duelScreen;
 
-
-    public final static int SCREEN_WIDTH = 1280;
-    public final static int SCREEN_HEIGHT = 700;
-
     public final static int MAIN_SCREEN = 0;
     public final static int LOADING_SCREEN  = 1;
     public final static int START_GAME = 2;

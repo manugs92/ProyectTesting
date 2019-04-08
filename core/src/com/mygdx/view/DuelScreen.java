@@ -46,8 +46,8 @@ public class DuelScreen extends MyGdxGameScreen {
     private int yTablero=tablero.getCasillas()[0].length;
     private ArrayList<Carta> mano = new ArrayList<Carta>();
 
-    private float  widthScreen=ScreenManager.SCREEN_WIDTH;
-    private float  heightScreen=ScreenManager.SCREEN_HEIGHT;
+    private float  widthScreen=MyGdxGame.SCREEN_WIDTH;
+    private float  heightScreen=MyGdxGame.SCREEN_HEIGHT;
 
 
     //Variables usadas por la GUI
@@ -76,6 +76,18 @@ public class DuelScreen extends MyGdxGameScreen {
     private float posXMazo = (posXTablero + (MEDIDA_CASILLA*7) + MEDIDA_CASILLA);
     private float posYMazoJ1 = 50;
     private float posYMazoJ2 = heightScreen-100;
+
+    /*
+    *     private float posXTablero = 400;
+    private float posYTablero = (heightScreen/5)-5;
+    private float posyMagicasJ1 = (heightScreen/5)-53;
+    private float posyMagicasJ2 = (heightScreen/5)+(MEDIDA_CASILLA*9)-5;
+    private float posyManoJ1 = 10;
+    private float posyManoJ2 = heightScreen-60;
+    private float posXMazo = (posXTablero + (MEDIDA_CASILLA*7) + MEDIDA_CASILLA);
+    private float posYMazoJ1 = 50;
+    private float posYMazoJ2 = heightScreen-100;
+    * */
 
 
     public DuelScreen(ScreenManager screenManagerR) {
@@ -130,7 +142,6 @@ public class DuelScreen extends MyGdxGameScreen {
         dibujarMazoJ1();
         dibujarMazoJ2();
     }
-//xd
 
 
     @Override
@@ -171,7 +182,7 @@ public class DuelScreen extends MyGdxGameScreen {
         Table scrollTable = new Table();
         scrollTable.setPosition(0,0);
         Drawable background =  new Drawable() {
-            @Override public void draw(Batch batch, float x, float y, float width, float height) { batch.draw(textureBgScroll,0,0,0,0,(int) widthScreen,(int) heightScreen+ 200); }
+            @Override public void draw(Batch batch, float x, float y, float width, float height) { batch.draw(textureBgScroll,0,0,0,0,(int) MyGdxGame.SCREEN_WIDTH,(int) MyGdxGame.SCREEN_HEIGHT); }
 
             @Override public float getLeftWidth() {
                 return 0;
