@@ -3,17 +3,15 @@ package com.mygdx.view;
 
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.MyGdxGameScreen;
 
 /*
 * Screen usada para pantallas de carga.
 * */
-public class LoadingScreen implements Screen {
-
-
-    private ScreenManager screenManager;
+public class LoadingScreen extends MyGdxGameScreen {
 
     public LoadingScreen(ScreenManager screenManagerR) {
-        this.screenManager=screenManagerR;
+        super(screenManagerR);
     }
 
     @Override
@@ -24,31 +22,6 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void dispose() {
         // TODO Auto-generated method stub
     }
 }

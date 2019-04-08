@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.Carta;
 import com.mygdx.model.Casilla;
 import com.mygdx.model.Criatura;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 /*
  * Screen Mostrada en duelo singlePlayer.
  * */
-public class DuelScreen implements Screen {
+public class DuelScreen extends MyGdxGameScreen {
 
 
     //Variables back end.
@@ -44,15 +46,12 @@ public class DuelScreen implements Screen {
     private int yTablero=tablero.getCasillas()[0].length;
     private ArrayList<Carta> mano = new ArrayList<Carta>();
 
-    private ScreenManager screenManager;
-    private Stage stage;
-
     private float  widthScreen=ScreenManager.SCREEN_WIDTH;
     private float  heightScreen=ScreenManager.SCREEN_HEIGHT;
 
 
     //Variables usadas por la GUI
-    private Texture textureBgScreen,textureCasilla,textureBgScroll,textureCard,textureSpriteCard;
+    private Texture textureCasilla, textureBgScroll,textureCard,textureSpriteCard;
     private SpriteBatch batch;
     private Image mazoj1GUI,mazoj2GUI;
     private Image[][] casillasTableroGUI = new Image[7][9];
@@ -60,7 +59,7 @@ public class DuelScreen implements Screen {
     private Image[] casillasmagicasJ2GUI = new Image[3];
     private Image[] cartasManoJ1GUI = new Image[7];
     private Image[] cartasmanoJ2GUI = new Image[7];
-    private ArrayList<Image> criaturasInvocadas = new ArrayList<>();
+    private ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
     private Table tablatableroGUI = new Table();
     private ScrollPane scrollPane;
 
@@ -68,7 +67,7 @@ public class DuelScreen implements Screen {
     //Atributos de la GUI
     private final int MEDIDA_CASILLA = 48;
 
-    private float posXTablero = (widthScreen/ 3) + 56;
+    private float posXTablero = 400;
     private float posYTablero = (heightScreen/5)-5;
     private float posyMagicasJ1 = (heightScreen/5)-53;
     private float posyMagicasJ2 = (heightScreen/5)+(MEDIDA_CASILLA*9)-5;
@@ -78,12 +77,22 @@ public class DuelScreen implements Screen {
     private float posYMazoJ1 = 50;
     private float posYMazoJ2 = heightScreen-100;
 
+    /*
+    *  private float posXTablero = (widthScreen/ ) + 56;
+    private float posYTablero = (heightScreen/5)-5;
+    private float posyMagicasJ1 = (heightScreen/5)-53;
+    private float posyMagicasJ2 = (heightScreen/5)+(MEDIDA_CASILLA*9)-5;
+    private float posyManoJ1 = 10;
+    private float posyManoJ2 = heightScreen-60;
+    private float posXMazo = (posXTablero + (MEDIDA_CASILLA*7) + MEDIDA_CASILLA);
+    private float posYMazoJ1 = 50;
+    private float posYMazoJ2 = heightScreen-100;*/
+
 
 
     public DuelScreen(ScreenManager screenManagerR) {
-        this.screenManager = screenManagerR;
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+        super(screenManagerR);
+
     }
 
     @Override
@@ -94,8 +103,6 @@ public class DuelScreen implements Screen {
 
         textureCard = new Texture("icons\\handled_card.png");
         textureSpriteCard= new Texture("icons\\Spritecard.png");
-
-
 
         Criatura golem = new Criatura();
         golem.setNombre("golem");
@@ -124,7 +131,6 @@ public class DuelScreen implements Screen {
 
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
-        textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.jpg"));
         textureCasilla = new Texture(Gdx.files.internal("icons\\casilla48.png"));
 
 
@@ -138,6 +144,7 @@ public class DuelScreen implements Screen {
     }
 
 
+
     @Override
     public void render(float delta) {
         /*
@@ -146,40 +153,28 @@ public class DuelScreen implements Screen {
         update(delta);
         Gdx.gl.glClearColor(0f, 00, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.setProjectionMatrix(cam.combined);
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.begin();
         batch.draw(textureBgScreen,0,0);
         batch.end();
         stage.draw();
+        batch.begin();
+        criaturasInvocadas.forEach(criatura -> batch.draw(criatura.getSpriteCriatura(),criatura.getPosition().x,criatura.getPosition().y));
+        //criaturasInvocadas.get(criaturasInvocadas.size()-1).setPosition(MEDIDA_CASILLA*finalX,MEDIDA_CASILLA*finalY);
+        batch.end();
     }
 
     void update(float delta) {
     }
 
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
 
     @Override
     public void dispose() {
+        super.dispose();
         textureBgScreen.dispose();
-        stage.dispose();
     }
 
     private void dibujarScroll(Skin skin) {
@@ -231,7 +226,7 @@ public class DuelScreen implements Screen {
         scrollPane = new ScrollPane(scrollTable,skin);
         scrollPane.setColor(Color.BLUE);
         scrollPane.setPosition(0,0);
-        scrollPane.setWidth(420);
+        scrollPane.setWidth(640);
         scrollPane.setHeight(stage.getHeight());
         scrollPane.setScrollbarsVisible(true);
         scrollPane.setForceScroll(false,true);
@@ -262,35 +257,28 @@ public class DuelScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
 
+                        tablero.onClick(x, y);
+
                         //Listener cuando tenemos una carta escogida.
                         if(selectedCard!=null && casillasTableroGUI[finalX][finalY].getColor().equals(Color.valueOf("ff00ffff"))) {
                             selectedCard.setPosition(posXTablero+(MEDIDA_CASILLA*finalX),posYTablero + (MEDIDA_CASILLA*finalY));
-                            criaturasInvocadas.add(new Image(selectedCard.getSpriteCriatura()));
-                            System.out.println(selectedCard.getPosition().x+" ,"+selectedCard.getPosition().y);
-                            criaturasInvocadas.get(criaturasInvocadas.size()-1).setPosition(MEDIDA_CASILLA*finalX,MEDIDA_CASILLA*finalY);
-                            tablatableroGUI.addActor(criaturasInvocadas.get(criaturasInvocadas.size()-1));
-                            criaturasInvocadas.get(criaturasInvocadas.size()-1).addListener(new ClickListener() {
-                                @Override
-                                public void clicked(InputEvent event2,float x,float y) {
-                                    //Listener cuando no tenemos nada escogido.
-                                        System.out.println("xd");
-                                        Casilla[][] casillas = tablero.getCasillas();
-                                        for(int i=0;i<=casillas.length-1;i++) {
-                                            if(tablero.getCasilla(i,0).getCriatura()==null) {
-                                                casillasTableroGUI[i][0].setColor(255,0,255,255);
-                                            }
-                                    }
-                                }
-                            });
-                            selectedCard=null;
+                            tablero.getCasilla(finalX,finalY).setCriatura((Criatura) selectedCard);
+                            criaturasInvocadas.add((Criatura) selectedCard);
                             Color defaultColor = casillasTableroGUI[1][1].getColor();
                             Casilla[][] casillas = tablero.getCasillas();
                             for(int i=0;i<=casillas.length-1;i++) {
                                 casillasTableroGUI[i][0].setColor(defaultColor);
                             }
+                        }else if(tablero.getCasilla(finalX,finalY).getCriatura() != null){
+                            Casilla[][] casillas = tablero.getCasillas();
+                            for(int i=0;i<=casillas.length-1;i++) {
+                                if(tablero.getCasilla(i,0).getCriatura()==null) {
+                                    casillasTableroGUI[i][0].setColor(255,0,255,255);
+                                }
+                                selectedCard=tablero.getCasilla(finalX,finalY).getCriatura();
                         }
                     }
-                });
+                }});
                 tablatableroGUI.addActor(casillasTableroGUI[x2][y2]);
             }
         }

@@ -7,17 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.MyGdxGameScreen;
 
 /*
 * Screen que cargamos al hacer click en preferencias.
 * */
-public class PreferencesScreen implements Screen {
+public class PreferencesScreen extends MyGdxGameScreen {
 
-    private ScreenManager screenManager;
     private Stage stage;
 
     public PreferencesScreen(ScreenManager screenManagerR) {
-        this.screenManager=screenManagerR;
+        super(screenManagerR);
+
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }

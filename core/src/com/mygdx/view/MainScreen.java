@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.Carta;
 import com.mygdx.model.Criatura;
 import com.mygdx.model.Tablero;
@@ -21,10 +22,7 @@ import java.util.ArrayList;
 /*
  * Screen inicial para cuando abrimos el juego.
  * */
-public class MainScreen implements Screen {
-
-    private ScreenManager screenManager;
-    private Stage stage;
+public class MainScreen extends MyGdxGameScreen {
     private Texture texture;
     private Texture icon, icon2;
     private SpriteBatch batch;
@@ -37,9 +35,8 @@ public class MainScreen implements Screen {
     private float maxHeight;
 
     public MainScreen(ScreenManager screenManagerR) {
-        this.screenManager = screenManagerR;
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+        super(screenManagerR);
+
         maxHeight = stage.getHeight();
         maxWidth = stage.getWidth();
     }

@@ -1,9 +1,6 @@
 package com.mygdx.model;
 
-
-
 import java.util.ArrayList;
-
 
 public class Tablero {
 
@@ -13,18 +10,16 @@ public class Tablero {
     private ArrayList<Carta> cementerioJ1 = new ArrayList<Carta>();
     private ArrayList<Carta> cementerioJ2 = new ArrayList<Carta>();
 
-
-
     public Tablero() {
         for(int x=0;x<=6;x++) {
             for(int y=0;y<=8;y++) {
                 casillas[x][y] = new Casilla();
-                }
             }
         }
+    }
+
     public Tablero getTablero() {
         return this;
-
     }
 
     public void setCasilla(int x, int y, Carta carta, int player) {

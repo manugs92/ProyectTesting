@@ -4,7 +4,7 @@ import com.mygdx.game.MyGdxGame;
 
 public class ScreenManager {
 
-    MyGdxGame parent;
+    public MyGdxGame parent;
 
     private MainScreen mainScreen;
     private LoadingScreen loadingScreen;
