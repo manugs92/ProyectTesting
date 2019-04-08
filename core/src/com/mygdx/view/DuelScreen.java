@@ -77,18 +77,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private float posYMazoJ1 = 50;
     private float posYMazoJ2 = heightScreen-100;
 
-    /*
-    *  private float posXTablero = (widthScreen/ ) + 56;
-    private float posYTablero = (heightScreen/5)-5;
-    private float posyMagicasJ1 = (heightScreen/5)-53;
-    private float posyMagicasJ2 = (heightScreen/5)+(MEDIDA_CASILLA*9)-5;
-    private float posyManoJ1 = 10;
-    private float posyManoJ2 = heightScreen-60;
-    private float posXMazo = (posXTablero + (MEDIDA_CASILLA*7) + MEDIDA_CASILLA);
-    private float posYMazoJ1 = 50;
-    private float posYMazoJ2 = heightScreen-100;*/
-
-
 
     public DuelScreen(ScreenManager screenManagerR) {
         super(screenManagerR);
@@ -256,8 +244,6 @@ public class DuelScreen extends MyGdxGameScreen {
                 casillasTableroGUI[x2][y2].addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-
-                        tablero.onClick(x, y);
 
                         //Listener cuando tenemos una carta escogida.
                         if(selectedCard!=null && casillasTableroGUI[finalX][finalY].getColor().equals(Color.valueOf("ff00ffff"))) {
