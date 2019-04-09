@@ -1,11 +1,16 @@
 package com.mygdx.model;
 
-public class Casilla {
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+public class Casilla extends Actor {
 
 
     private static int WIDTH=48;
     private static int HEIGHT=48;
 
+    private Image texture;
     private Criatura criatura;
     private Trampa trampa;
     private int posX;
@@ -15,6 +20,8 @@ public class Casilla {
     public Casilla(int posY, int posX){
         this.posX=posX;
         this.posY=posY;
+        positionChanged();
+
     }
 
 
@@ -74,5 +81,9 @@ public class Casilla {
 
     public static void setHEIGHT(int HEIGHT) {
         Casilla.HEIGHT = HEIGHT;
+    }
+
+    public void setTexture(Image image) {
+        this.texture=image;
     }
 }

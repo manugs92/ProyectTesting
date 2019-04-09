@@ -32,14 +32,14 @@ public class DuelScreen extends MyGdxGameScreen {
     //Variables back end.
     private static Carta selectedCard = new Carta();
 
+    private float  widthScreen=MyGdxGame.SCREEN_WIDTH;
+    private float  heightScreen=MyGdxGame.SCREEN_HEIGHT;
 
-    private Tablero tablero = new Tablero();
+    private Tablero tablero = new Tablero(400, (int) ((heightScreen/5)-5));
     private int xTablero=tablero.getCasillas().length;
     private int yTablero=tablero.getCasillas()[0].length;
     private ArrayList<Carta> mano = new ArrayList<Carta>();
 
-    private float  widthScreen=MyGdxGame.SCREEN_WIDTH;
-    private float  heightScreen=MyGdxGame.SCREEN_HEIGHT;
 
 
     //Variables usadas por la GUI
@@ -125,7 +125,8 @@ public class DuelScreen extends MyGdxGameScreen {
         textureCasilla = new Texture(Gdx.files.internal("icons\\casilla48.png"));
 
 
-        dibujarTablero();
+        //dibujarTablero();
+        tablero.dibujarTablero(stage);
         dibujarMagicasJ1();
         dibujarMagicasJ2();
         dibujarManoJ1();
