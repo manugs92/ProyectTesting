@@ -18,7 +18,7 @@ public class Tablero {
             }
         }
     }
-
+//.
     public Tablero getTablero() {
         return this;
     }
