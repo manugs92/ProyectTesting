@@ -140,7 +140,6 @@ public class DuelScreen extends MyGdxGameScreen {
         /*
          * Dibujamos las texturas (imagenes) y el contenido de la stage.
          * */
-        update(delta);
         Gdx.gl.glClearColor(0f, 00, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -157,8 +156,6 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.end();
     }
 
-    void update(float delta) {
-    }
 
 
     @Override

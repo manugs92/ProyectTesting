@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.MyGdxGameScreen;
-import com.mygdx.model.Carta;
-import com.mygdx.model.Criatura;
 
-import java.util.ArrayList;
 
 
 
@@ -20,20 +17,11 @@ import java.util.ArrayList;
  * */
 public class MainScreen extends MyGdxGameScreen {
     private Texture texture;
-    private Texture icon, icon2;
     private SpriteBatch batch;
-
-    private int x, y, i;
     private Table table = new Table();
-    private Table table2 = new Table();
-    private float maxWidth;
-    private float maxHeight;
 
     public MainScreen(ScreenManager screenManagerR) {
         super(screenManagerR);
-
-        maxHeight = stage.getHeight();
-        maxWidth = stage.getWidth();
     }
 
     @Override
@@ -87,6 +75,7 @@ public class MainScreen extends MyGdxGameScreen {
         table.row();
         table.add(exit).fillX().uniformX();
 
+        table.setPosition((float) stage.getWidth() /2, (float) stage.getHeight() /2);
 
         //Asignamos la imagen al stage.
         stage.addActor(table);
@@ -99,13 +88,11 @@ public class MainScreen extends MyGdxGameScreen {
          * Dibujamos las texturas (imagenes) y el contenido de la stage.
          * */
 
-
         Gdx.gl.glClearColor(0f, 00, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.begin();
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        batch.draw(texture, 0, 0, 1920,1080 );
+        batch.draw(texture, 0, 0);
         batch.end();
         stage.draw();
     }
@@ -116,23 +103,6 @@ public class MainScreen extends MyGdxGameScreen {
          * Seteamos el tamaño de la ventana, y seteamos los elementos en función de su tamaño.
          * */
         stage.getViewport().update(width, height, true);
-        table.setPosition((float) (width / 2) - 85, (float) (height / 2) - 50);
-
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
     }
 
     @Override
