@@ -2,8 +2,22 @@ package com.mygdx.model;
 
 public class Casilla {
 
+
+    private static int WIDTH=48;
+    private static int HEIGHT=48;
+
     private Criatura criatura;
     private Trampa trampa;
+    private int posX;
+    private int posY;
+    private boolean isInvocation;
+
+    public Casilla(int posY, int posX){
+        this.posX=posX;
+        this.posY=posY;
+    }
+
+
 
 
     public void setCriatura(Criatura criatura) {
@@ -20,5 +34,45 @@ public class Casilla {
 
     public Trampa getTrampa() {
         return this.trampa;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public boolean isInvocation() {
+        return isInvocation;
+    }
+
+    public void setInvocation(boolean invocation) {
+        isInvocation = invocation;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static void setWIDTH(int WIDTH) {
+        Casilla.WIDTH = WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public static void setHEIGHT(int HEIGHT) {
+        Casilla.HEIGHT = HEIGHT;
     }
 }

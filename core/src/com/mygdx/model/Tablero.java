@@ -14,7 +14,7 @@ public class Tablero {
     public Tablero() {
         for(int x=0;x<=6;x++) {
             for(int y=0;y<=8;y++) {
-                casillas[x][y] = new Casilla();
+                casillas[x][y] = new Casilla(Casilla.getWIDTH()*y,Casilla.getHEIGHT()*x);
             }
         }
     }
@@ -22,6 +22,8 @@ public class Tablero {
     public Tablero getTablero() {
         return this;
     }
+
+
 
     public void setCasilla(int x, int y, Carta carta, int player) {
         if(carta.getTipo() == Carta.Tipo.TRAMPA) {
