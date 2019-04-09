@@ -1,23 +1,15 @@
 package com.mygdx.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.Carta;
@@ -121,8 +113,7 @@ public class DuelScreen extends MyGdxGameScreen {
         mano.add(golem);
 
 
-        Criatura xd = new Criatura();
-        tablero.setCasilla(1,0,xd,0);
+        tablero.setCasilla(1,0,new Criatura(),0);
 
 
         /*GUI de la vista*/
@@ -252,35 +243,45 @@ public class DuelScreen extends MyGdxGameScreen {
                 casillasTableroGUI[x2][y2] = new Image(textureCasilla);
                 casillasTableroGUI[x2][y2].setPosition((MEDIDA_CASILLA*x2),MEDIDA_CASILLA*y2);
                 int finalX = x2;
-                casillasTableroGUI[x2][y2].addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        //Listener cuando tenemos una carta escogida.
-                        if(selectedCard!=null && casillasTableroGUI[finalX][finalY].getColor().equals(Color.valueOf("ff00ffff"))) {
-                            selectedCard.setPosition(posXTablero+(MEDIDA_CASILLA*finalX),posYTablero + (MEDIDA_CASILLA*finalY));
-                            tablero.getCasilla(finalX,finalY).setCriatura((Criatura) selectedCard);
-                            criaturasInvocadas.add((Criatura) selectedCard);
-                            Color defaultColor = casillasTableroGUI[1][1].getColor();
-                            Casilla[][] casillas = tablero.getCasillas();
-                            for(int i=0;i<=casillas.length-1;i++) {
-                                casillasTableroGUI[i][0].setColor(defaultColor);
-                            }
-                        }else if(tablero.getCasilla(finalX,finalY).getCriatura() != null){
-                            Casilla[][] casillas = tablero.getCasillas();
-                            for(int i=0;i<=casillas.length-1;i++) {
-                                if(tablero.getCasilla(i,0).getCriatura()==null) {
-                                    casillasTableroGUI[i][0].setColor(255,0,255,255);
-                                }
-                                selectedCard=tablero.getCasilla(finalX,finalY).getCriatura();
-                        }
-                    }
-                }});
+                addListenerToBoard(x2, y2, finalY, finalX);
                 tablatableroGUI.addActor(casillasTableroGUI[x2][y2]);
             }
         }
         stage.addActor(tablatableroGUI);
     }
+
+    private void addListenerToBoard(int x2, int y2, int finalY, int finalX) {
+        casillasTableroGUI[x2][y2].addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Casilla[][] casillas = tablero.getCasillas();
+                //Listener cuando tenemos una carta escogida.
+                if(selectedCard!=null && tablero.getCasilla(finalX,finalY).getCriatura()== null) {
+                    selectedCard.setPosition(posXTablero+(MEDIDA_CASILLA*finalX),posYTablero + (MEDIDA_CASILLA*finalY));
+                    tablero.getCasilla(finalX,finalY).setCriatura((Criatura) selectedCard);
+                    criaturasInvocadas.add((Criatura) selectedCard);
+                    selectedCard=null;
+                    Color defaultColor = casillasTableroGUI[1][1].getColor();
+
+                    for(int i=0;i<=casillas.length-1;i++) {
+                        casillasTableroGUI[i][0].setColor(defaultColor);
+                    }
+
+                }else {
+                    //sin carta selecionada
+                    if(tablero.getCasilla(finalX,finalY).getCriatura() != null){
+                        for(int i=0;i<=casillas.length-1;i++) {
+                            if(tablero.getCasilla(i,0).getCriatura()==null) {
+                                casillasTableroGUI[i][0].setColor(255,0,255,255);
+                            }
+                            selectedCard=tablero.getCasilla(finalX,finalY).getCriatura();
+                        }
+                    }
+                }
+            }});
+    }
+
+
 
     private void dibujarManoJ1() {
         //Dibujar manoJ1

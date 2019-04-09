@@ -2,6 +2,7 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,16 @@ public class Criatura extends Carta {
     TipoElemental elemental;
     Texture spriteCriatura;
     ArrayList<Equipamiento> equipamientos = new ArrayList<Equipamiento>();
+    private Vector2 lastPosition = new Vector2();
 
+
+    public Vector2 getLastPosition() {
+        return lastPosition;
+    }
+
+    public void setLastPosition(Vector2 lastPosition) {
+        this.lastPosition = lastPosition;
+    }
 
     public int getAtaque() {
         return ataque;

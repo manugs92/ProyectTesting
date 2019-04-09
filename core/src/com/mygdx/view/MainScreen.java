@@ -22,9 +22,8 @@ public class MainScreen extends MyGdxGameScreen {
     private Texture texture;
     private Texture icon, icon2;
     private SpriteBatch batch;
-    private Image image;
+
     private int x, y, i;
-    private boolean xState, yState;
     private Table table = new Table();
     private Table table2 = new Table();
     private float maxWidth;
@@ -105,7 +104,8 @@ public class MainScreen extends MyGdxGameScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.begin();
-        batch.draw(texture, 0, 0);
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        batch.draw(texture, 0, 0, 1920,1080 );
         batch.end();
         stage.draw();
     }
@@ -117,7 +117,6 @@ public class MainScreen extends MyGdxGameScreen {
          * */
         stage.getViewport().update(width, height, true);
         table.setPosition((float) (width / 2) - 85, (float) (height / 2) - 50);
-        image.setPosition(0, stage.getHeight() - 30);
 
     }
 

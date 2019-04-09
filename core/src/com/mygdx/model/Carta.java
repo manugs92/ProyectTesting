@@ -12,6 +12,7 @@ public class Carta {
     private Vector2 position = new Vector2();
 
 
+
     public String getNombre() {
         return nombre;
     }

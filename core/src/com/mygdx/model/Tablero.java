@@ -9,6 +9,7 @@ public class Tablero {
     private CasillaMagica[] casillaMagicaJ2  = new CasillaMagica[3];
     private ArrayList<Carta> cementerioJ1 = new ArrayList<Carta>();
     private ArrayList<Carta> cementerioJ2 = new ArrayList<Carta>();
+    private boolean casillaLibre= true;
 
     public Tablero() {
         for(int x=0;x<=6;x++) {
@@ -44,9 +45,14 @@ public class Tablero {
         }
     }
 
+
+
+
+
     public Casilla getCasilla(int x,int y) {
         return casillas[x][y];
     }
+
 
     public CasillaMagica getCasillaMagica(int player, int pos) {
         if(player==0) {

@@ -8,8 +8,8 @@ import com.mygdx.view.ScreenManager;
 
 public class MyGdxGame extends Game {
 
-	public final static int SCREEN_WIDTH = 1280;
-	public final static int SCREEN_HEIGHT = 700;
+	public final static int SCREEN_WIDTH = 1920;
+	public final static int SCREEN_HEIGHT = 1080;
 
 	FitViewport fitViewport;
 	OrthographicCamera camera;
