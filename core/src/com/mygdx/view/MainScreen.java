@@ -18,7 +18,6 @@ import com.mygdx.game.MyGdxGameScreen;
 public class MainScreen extends MyGdxGameScreen {
     private Texture texture;
     private SpriteBatch batch;
-    private Table table = new Table();
 
     public MainScreen(ScreenManager screenManagerR) {
         super(screenManagerR);
@@ -34,17 +33,15 @@ public class MainScreen extends MyGdxGameScreen {
         TextButton exit = new TextButton("Salir", skin);
 
 
+        newGame.getLabel().setFontScale(2,2);
+        preferences.getLabel().setFontScale(2,2);
+        exit.getLabel().setFontScale(2,2);
+
+
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("backgrounds\\bg.jpg"));
 
-        //Seteamos el tamaño de los botones.
-        newGame.setTransform(true);
-        preferences.setTransform(true);
-        exit.setTransform(true);
-        newGame.setScale(2f);
-        preferences.setScale(2f);
-        exit.setScale(2f);
 
         //Listeners de los botones.
         preferences.addListener(new ChangeListener() {
@@ -68,14 +65,17 @@ public class MainScreen extends MyGdxGameScreen {
             }
         });
 
-        //Añadimos el contenido a la tabla.
-        table.add(newGame).fillX().uniformX();
-        table.row().pad(50, 0, 50, 0);
-        table.add(preferences).fillX().uniformX();
-        table.row();
-        table.add(exit).fillX().uniformX();
+        Table table = new Table();
+        table.setFillParent(true);
+        table.setDebug(false);
 
-        table.setPosition((float) stage.getWidth() /2, (float) stage.getHeight() /2);
+
+        //Añadimos el contenido a la tabla.
+        table.add(newGame).fillX().uniformX().size(500,100);
+        table.row().pad(20, 0, 20, 0);
+        table.add(preferences).fillX().uniformX().size(500,100);
+        table.row().pad(20, 0, 20, 0);
+        table.add(exit).fillX().uniformX().size(500,100);
 
         //Asignamos la imagen al stage.
         stage.addActor(table);

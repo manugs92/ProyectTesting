@@ -259,7 +259,7 @@ public class DuelScreen extends MyGdxGameScreen {
                     criaturasInvocadas.add((Criatura) selectedCard);
                     selectedCard=null;
                     Color defaultColor = casillasTableroGUI[1][1].getColor();
-//.
+
                     for(int i=0;i<=casillas.length-1;i++) {
                         casillasTableroGUI[i][0].setColor(defaultColor);
                     }
@@ -277,8 +277,6 @@ public class DuelScreen extends MyGdxGameScreen {
                 }
             }});
     }
-
-
 
     private void dibujarManoJ1() {
         //Dibujar manoJ1
