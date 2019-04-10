@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mygdx.game.MyGdxGameAssetManager;
 
 
 import java.util.ArrayList;
 
 public class Tablero {
+
+    private MyGdxGameAssetManager assetManager= new MyGdxGameAssetManager();
 
     private final Table tablaTablero = new Table();
     private Casilla[][] casillas = new Casilla[9][7];
@@ -24,6 +27,9 @@ public class Tablero {
     //TODO que se pinte el tablero
 
     public Tablero(int posXTablero, int posYTablero) {
+        assetManager.loadImagesDuelScreen();
+        assetManager.manager.finishLoading();
+        Texture texture = assetManager.manager.get(assetManager.imageSquare, Texture.class);
 
         tablaTablero.setPosition(posXTablero, posYTablero);
         boolean casillaInvocacion = true;
@@ -31,12 +37,12 @@ public class Tablero {
         for (int x = 0; x <= 6; x++) {
 
             for (int y = 0; y <= 8; y++) {
-                casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
-                casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
+//                casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
+//                casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
 
-                casillas[y][x] = new Casilla(Casilla.getWIDTH() * y, Casilla.getHEIGHT() * x,imagenCasilla, assetManager.manager.get(assetManager.imageSquare, Texture.class) );
+                casillas[y][x] = new Casilla(Casilla.getWIDTH() * y, Casilla.getHEIGHT() * x, texture );
                 casillas[y][x].setInvocation(casillaInvocacion);
-                tablaTablero.addActor(casillas[y][x].getImagenCasilla());
+                tablaTablero.addActor(new Image(casillas[y][x].getImagenCasilla()));
 
             }
             casillaInvocacion = false;
