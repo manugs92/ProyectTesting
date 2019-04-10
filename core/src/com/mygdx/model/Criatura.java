@@ -20,12 +20,16 @@ public class Criatura extends Carta {
     private Vector2 lastPosition = new Vector2();
 
 
+    @Override
     public Vector2 getLastPosition() {
         return lastPosition;
     }
 
-    public void setLastPosition(Vector2 lastPosition) {
-        this.lastPosition = lastPosition;
+    @Override
+    public void setLastPosition(float x, float y) {
+
+        this.lastPosition.x = x;
+        this.lastPosition.y=y;
     }
 
     public int getAtaque() {

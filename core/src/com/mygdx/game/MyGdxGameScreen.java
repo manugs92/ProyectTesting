@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.view.ScreenManager;
+import com.mygdx.screens.ScreenManager;
 
 public class MyGdxGameScreen implements Screen {
     public ScreenManager screenManager;
@@ -23,7 +23,7 @@ public class MyGdxGameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.jpg"));
-
+        textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
     @Override

@@ -10,9 +10,11 @@ public class Carta {
     private Tipo tipo;
     private Texture image;
     private Vector2 position = new Vector2();
-    //private Vector2 position
 
 
+    public Vector2 getLastPosition() { return null; }
+
+    public void setLastPosition(float x, float y) { }
 
     public String getNombre() {
         return nombre;

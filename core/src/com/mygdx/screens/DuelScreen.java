@@ -1,4 +1,4 @@
-package com.mygdx.view;
+package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,22 +6,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameScreen;
-import com.mygdx.model.Carta;
-import com.mygdx.model.Casilla;
-import com.mygdx.model.Criatura;
-import com.mygdx.model.Tablero;
+import com.mygdx.model.*;
 
 import java.util.ArrayList;
-
-//TODO: Todas las cartas tendrán un Vector2, representando la posicion x/y y un propietario.
-//TODO: ArrayList de cartasInvocadas. (Para poderlas animar una vez colocadas en el campo)
-//TODO: Mapa de X/Y para saber las marcadas. Y así despues desmarcarlas más rapido.
 
 /*
  * Screen Mostrada en duelo singlePlayer.
@@ -29,14 +23,19 @@ import java.util.ArrayList;
 public class DuelScreen extends MyGdxGameScreen {
 
 
+    //TODO: Seguir optimizando esta clase, y mover cada cosa a su sitio.
+    /*
+    * Llevar el DuelScreenLog a otra clase y crearlo desde allí.
+    *
+    * */
+
     //Variables back end.
-    private static Carta selectedCard = new Carta();
-
-
-    private Tablero tablero = new Tablero();
+    private Partida partida = new Partida();
+    private ArrayList<Carta> manoJ1 = partida.getManoJ1();
+    private Tablero tablero = new Tablero(partida);
     private int xTablero=tablero.getCasillas().length;
     private int yTablero=tablero.getCasillas()[0].length;
-    private ArrayList<Carta> mano = new ArrayList<Carta>();
+
 
     private float  widthScreen=MyGdxGame.SCREEN_WIDTH;
     private float  heightScreen=MyGdxGame.SCREEN_HEIGHT;
@@ -46,12 +45,10 @@ public class DuelScreen extends MyGdxGameScreen {
     private Texture textureCasilla, textureBgScroll,textureCard,textureSpriteCard;
     private SpriteBatch batch;
     private Image mazoj1GUI,mazoj2GUI;
-    private Image[][] casillasTableroGUI = new Image[7][9];
     private Image[] casillasMagicasJ1GUI = new Image[3];
     private Image[] casillasmagicasJ2GUI = new Image[3];
     private Image[] cartasManoJ1GUI = new Image[7];
     private Image[] cartasmanoJ2GUI = new Image[7];
-    private ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
     private Table tablatableroGUI = new Table();
     private ScrollPane scrollPane;
 
@@ -59,13 +56,12 @@ public class DuelScreen extends MyGdxGameScreen {
     //Atributos de la GUI
     private final int MEDIDA_CASILLA = 48;
 
-    private float posXTablero = 400;
-    private float posYTablero = (heightScreen/5)-5;
+
     private float posyMagicasJ1 = (heightScreen/5)-53;
     private float posyMagicasJ2 = (heightScreen/5)+(MEDIDA_CASILLA*9)-5;
     private float posyManoJ1 = 10;
     private float posyManoJ2 = heightScreen-60;
-    private float posXMazo = (posXTablero + (MEDIDA_CASILLA*7) + MEDIDA_CASILLA);
+    private float posXMazo = (tablero.posXTablero + (MEDIDA_CASILLA*7) + MEDIDA_CASILLA);
     private float posYMazoJ1 = 50;
     private float posYMazoJ2 = heightScreen-100;
 
@@ -90,6 +86,8 @@ public class DuelScreen extends MyGdxGameScreen {
     @Override
     public void show() {
 
+        textureCasilla = tablero.getCasilla(0,0).getTextureCasilla();
+
         //Debugeamos el stage, para ver como están posicionados los elementos.
         stage.setDebugAll(true);
 
@@ -104,13 +102,23 @@ public class DuelScreen extends MyGdxGameScreen {
         golem.setAlcance(1);
         golem.setImage(textureCard);
         golem.setSpriteCriatura(textureSpriteCard);
-        mano.add(golem);
-        mano.add(golem);
-        mano.add(golem);
-        mano.add(golem);
-        mano.add(golem);
-        mano.add(golem);
-        mano.add(golem);
+        golem.setLastPosition(-1,-1);
+        manoJ1.add(golem);
+        Criatura golem2 = new Criatura();
+        golem2.setNombre("golema");
+        golem2.setAtaque(5);
+        golem2.setMovimiento(1);
+        golem2.setDefensa(5);
+        golem2.setAlcance(1);
+        golem2.setImage(textureCard);
+        golem2.setSpriteCriatura(textureSpriteCard);
+        golem2.setLastPosition(-1,-1);
+        manoJ1.add(golem2);
+        manoJ1.add(golem);
+        manoJ1.add(golem);
+        manoJ1.add(golem);
+        manoJ1.add(golem);
+        manoJ1.add(golem);
 
 
         tablero.setCasilla(1,0,new Criatura(),0);
@@ -122,7 +130,7 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
-        textureCasilla = new Texture(Gdx.files.internal("icons\\casilla48.png"));
+        //textureCasilla = new Texture(Gdx.files.internal("icons\\casilla48.png"));
 
 
         dibujarTablero();
@@ -151,8 +159,12 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.end();
         stage.draw();
         batch.begin();
-        criaturasInvocadas.forEach(criatura -> batch.draw(criatura.getSpriteCriatura(),criatura.getPosition().x,criatura.getPosition().y));
-        //criaturasInvocadas.get(criaturasInvocadas.size()-1).setPosition(MEDIDA_CASILLA*finalX,MEDIDA_CASILLA*finalY);
+        partida.getCriaturasInvocadas().forEach(criatura -> {
+            Texture textureMonster = criatura.getSpriteCriatura();
+            Vector2 positionMonster = criatura.getPosition();
+            Vector2 positionSquareBoard = tablero.getCasilla((int) positionMonster.x,(int)positionMonster.y).getPositionGUI();
+            batch.draw(textureMonster,positionSquareBoard.x,positionSquareBoard.y);
+        });
         batch.end();
     }
 
@@ -230,60 +242,21 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     public void dibujarTablero() {
-
-        tablatableroGUI.setPosition(posXTablero,posYTablero);
-
+        tablatableroGUI.setPosition(tablero.posXTablero,tablero.posYTablero);
         //Imagenes de casillas. (Es la función que las dibuja por pantalla)
         for(int x2=0;x2<=xTablero-1;x2++) {
             for(int y2=0;y2<=yTablero-1;y2++) {
-                int finalY = y2;
-                casillasTableroGUI[x2][y2] = new Image(textureCasilla);
-                casillasTableroGUI[x2][y2].setPosition((MEDIDA_CASILLA*x2),MEDIDA_CASILLA*y2);
-                int finalX = x2;
-                addListenerToBoard(x2, y2, finalY, finalX);
-                tablatableroGUI.addActor(casillasTableroGUI[x2][y2]);
+                tablatableroGUI.addActor(tablero.getCasilla(x2,y2).getImageCasilla());
             }
         }
         stage.addActor(tablatableroGUI);
-    }
-
-    private void addListenerToBoard(int x2, int y2, int finalY, int finalX) {
-        casillasTableroGUI[x2][y2].addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Casilla[][] casillas = tablero.getCasillas();
-                //Listener cuando tenemos una carta escogida.
-                if(selectedCard!=null && tablero.getCasilla(finalX,finalY).getCriatura()== null) {
-                    selectedCard.setPosition(posXTablero+(MEDIDA_CASILLA*finalX),posYTablero + (MEDIDA_CASILLA*finalY));
-                    tablero.getCasilla(finalX,finalY).setCriatura((Criatura) selectedCard);
-                    criaturasInvocadas.add((Criatura) selectedCard);
-                    selectedCard=null;
-                    Color defaultColor = casillasTableroGUI[1][1].getColor();
-
-                    for(int i=0;i<=casillas.length-1;i++) {
-                        casillasTableroGUI[i][0].setColor(defaultColor);
-                    }
-
-                }else {
-                    //sin carta selecionada
-                    if(tablero.getCasilla(finalX,finalY).getCriatura() != null){
-                        for(int i=0;i<=casillas.length-1;i++) {
-                            if(tablero.getCasilla(i,0).getCriatura()==null) {
-                                casillasTableroGUI[i][0].setColor(255,0,255,255);
-                            }
-                            selectedCard=tablero.getCasilla(finalX,finalY).getCriatura();
-                        }
-                    }
-                }
-            }});
     }
 
     private void dibujarManoJ1() {
         //Dibujar manoJ1
         for(int i=0;i<cartasManoJ1GUI.length;i++) {
             cartasManoJ1GUI[i] = new Image(textureCard);
-            cartasManoJ1GUI[i].setPosition(posXTablero + (MEDIDA_CASILLA*i),posyManoJ1);
-            mano.get(i).setPosition(posXTablero + (MEDIDA_CASILLA*i),posyManoJ1);
+            cartasManoJ1GUI[i].setPosition(tablero.posXTablero + (MEDIDA_CASILLA*i),posyManoJ1);
             final int finali = i;
             cartasManoJ1GUI[i].addListener(new ClickListener() {
                 @Override
@@ -291,10 +264,11 @@ public class DuelScreen extends MyGdxGameScreen {
                     Casilla[][] casillas = tablero.getCasillas();
                     for(int i=0;i<=casillas.length-1;i++) {
                         if(tablero.getCasilla(i,0).getCriatura()==null) {
-                            casillasTableroGUI[i][0].setColor(255,0,255,255);
+                            tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
+                            tablero.getCasilla(i,0).setState(1);
                         }
                     }
-                    selectedCard= mano.get(finali);
+                    partida.setSelectedCard(manoJ1.get(finali));
                 }});
             stage.addActor(cartasManoJ1GUI[i]);
         }
@@ -304,7 +278,7 @@ public class DuelScreen extends MyGdxGameScreen {
         //Dibujar manoJ2
         for(int i=0;i<cartasmanoJ2GUI.length;i++) {
             cartasmanoJ2GUI[i] = new Image(textureCasilla);
-            cartasmanoJ2GUI[i].setPosition(posXTablero+ (MEDIDA_CASILLA*i),posyManoJ2);
+            cartasmanoJ2GUI[i].setPosition(tablero.posXTablero+ (MEDIDA_CASILLA*i),posyManoJ2);
             stage.addActor(cartasmanoJ2GUI[i]);
         }
     }
@@ -330,9 +304,9 @@ public class DuelScreen extends MyGdxGameScreen {
         for (int i = 0; i < casillasMagicasJ1GUI.length; i++) {
             casillasMagicasJ1GUI[i] = new Image(textureCasilla);
             if (i == 0) {
-                casillasMagicasJ1GUI[i].setPosition(posXTablero + (MEDIDA_CASILLA * (i + 1)), posyMagicasJ1);
+                casillasMagicasJ1GUI[i].setPosition(tablero.posXTablero + (MEDIDA_CASILLA * (i + 1)), posyMagicasJ1);
             } else {
-                casillasMagicasJ1GUI[i].setPosition(posXTablero + (MEDIDA_CASILLA * (i + i + 1)), posyMagicasJ1);
+                casillasMagicasJ1GUI[i].setPosition(tablero.posXTablero + (MEDIDA_CASILLA * (i + i + 1)), posyMagicasJ1);
             }
             final int finali = i;
             casillasMagicasJ1GUI[i].addListener(new ClickListener() {
@@ -350,9 +324,9 @@ public class DuelScreen extends MyGdxGameScreen {
         for (int i = 0; i < casillasmagicasJ2GUI.length; i++) {
             casillasmagicasJ2GUI[i] = new Image(textureCasilla);
             if (i == 0) {
-                casillasmagicasJ2GUI[i].setPosition(posXTablero + (MEDIDA_CASILLA * (i + 1)), posyMagicasJ2);
+                casillasmagicasJ2GUI[i].setPosition(tablero.posXTablero + (MEDIDA_CASILLA * (i + 1)), posyMagicasJ2);
             } else {
-                casillasmagicasJ2GUI[i].setPosition(posXTablero + (MEDIDA_CASILLA * (i + i + 1)), posyMagicasJ2);
+                casillasmagicasJ2GUI[i].setPosition(tablero.posXTablero + (MEDIDA_CASILLA * (i + i + 1)), posyMagicasJ2);
             }
             final int finali = i;
             casillasmagicasJ2GUI[i].addListener(new ClickListener() {

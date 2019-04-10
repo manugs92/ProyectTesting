@@ -1,8 +1,6 @@
-package com.mygdx.view;
+package com.mygdx.screens;
 
 
-import com.badlogic.gdx.Screen;
-import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameScreen;
 
 /*

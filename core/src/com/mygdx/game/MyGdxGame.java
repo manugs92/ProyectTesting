@@ -1,15 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.view.ScreenManager;
+import com.mygdx.screens.ScreenManager;
 
 public class MyGdxGame extends Game {
 
-	public final static int SCREEN_WIDTH = 1920;
-	public final static int SCREEN_HEIGHT = 1080;
+	public final static int SCREEN_WIDTH = 1280;
+	public final static int SCREEN_HEIGHT = 700;
 
 	FitViewport fitViewport;
 	OrthographicCamera camera;

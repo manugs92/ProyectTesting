@@ -1,4 +1,4 @@
-package com.mygdx.view;
+package com.mygdx.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;

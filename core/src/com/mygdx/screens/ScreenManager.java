@@ -1,4 +1,4 @@
-package com.mygdx.view;
+package com.mygdx.screens;
 
 import com.mygdx.game.MyGdxGame;
 

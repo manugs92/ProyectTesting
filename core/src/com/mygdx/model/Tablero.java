@@ -1,20 +1,39 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.MyGdxGameAssetManager;
+
 import java.util.ArrayList;
 
+import static com.mygdx.model.Casilla.MEDIDA_CASILLA;
+
 public class Tablero {
+
+
+    public final float posXTablero = 400;
+    public final float posYTablero = (MyGdxGame.SCREEN_HEIGHT /5)-5;
 
     private Casilla[][] casillas= new Casilla[7][9];
     private CasillaMagica[] casillaMagicaJ1 = new CasillaMagica[3];
     private CasillaMagica[] casillaMagicaJ2  = new CasillaMagica[3];
     private ArrayList<Carta> cementerioJ1 = new ArrayList<Carta>();
     private ArrayList<Carta> cementerioJ2 = new ArrayList<Carta>();
-    private boolean casillaLibre= true;
+    private MyGdxGameAssetManager assetManager= new MyGdxGameAssetManager();
 
-    public Tablero() {
+    public Tablero(Partida partida) {
+        assetManager.loadImagesDuelScreen();
+        assetManager.manager.finishLoading();
         for(int x=0;x<=6;x++) {
             for(int y=0;y<=8;y++) {
                 casillas[x][y] = new Casilla();
+                casillas[x][y].setState(0);
+                casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
+                casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
+                casillas[x][y].setPositionGUI(posXTablero+(MEDIDA_CASILLA*x),posYTablero+(MEDIDA_CASILLA*y));
+                casillas[x][y].getImageCasilla().setPosition(MEDIDA_CASILLA*x,MEDIDA_CASILLA*y);
+                casillas[x][y].addListenerToBoard(this,partida,x, y);
             }
         }
     }
@@ -45,14 +64,9 @@ public class Tablero {
         }
     }
 
-
-
-
-
     public Casilla getCasilla(int x,int y) {
         return casillas[x][y];
     }
-
 
     public CasillaMagica getCasillaMagica(int player, int pos) {
         if(player==0) {
@@ -66,20 +80,12 @@ public class Tablero {
         return casillas;
     }
 
-
-
-
     public void addCardToGraveyard(int player,Carta carta) {
         if(player==0) {
             cementerioJ1.add(carta);
         }else{
             cementerioJ2.add(carta);
         }
-    }
-
-    public void moverCriatura(Criatura criatura,int xOrigen, int yOrigen, int xDestino,int yDestino) {
-        casillas[xOrigen][yOrigen].setCriatura(null);
-        casillas[xDestino][yDestino].setCriatura(criatura);
     }
 
     public void AtacarCriatura(Criatura criaturaAtacante,int xOrigen, int yOrigen, Criatura criaturaAtacada, int xDestino, int yDestino) {
