@@ -10,16 +10,17 @@ public class Casilla extends Actor {
     private static int WIDTH=48;
     private static int HEIGHT=48;
 
-    private Image texture;
+    private Texture imagenCasilla;
     private Criatura criatura;
     private Trampa trampa;
     private int posX;
     private int posY;
     private boolean isInvocation;
 
-    public Casilla(int posY, int posX){
+    public Casilla(int posY, int posX,Texture imagenCasilla){
         this.posX=posX;
         this.posY=posY;
+        this.imagenCasilla=imagenCasilla;
         positionChanged();
 
     }
@@ -83,7 +84,13 @@ public class Casilla extends Actor {
         Casilla.HEIGHT = HEIGHT;
     }
 
-    public void setTexture(Image image) {
-        this.texture=image;
+    public void setTexture() {
+
+    }
+    public void setImagenCasilla(Texture textura) {
+        this.imagenCasilla =textura;
+    }
+    public Texture getImagenCasilla() {
+        return this.imagenCasilla;
     }
 }

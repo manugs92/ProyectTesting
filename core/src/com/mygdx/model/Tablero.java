@@ -6,35 +6,34 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mygdx.game.MyGdxGameScreen;
+
 
 import java.util.ArrayList;
 
-public class Tablero extends MyGdxGameScreen {
+public class Tablero {
 
     private final Table tablaTablero = new Table();
-    private Image textureCasilla;
     private Casilla[][] casillas = new Casilla[9][7];
     private CasillaMagica[] casillaMagicaJ1 = new CasillaMagica[3];
     private CasillaMagica[] casillaMagicaJ2 = new CasillaMagica[3];
     private ArrayList<Carta> cementerioJ1 = new ArrayList<Carta>();
     private ArrayList<Carta> cementerioJ2 = new ArrayList<Carta>();
+    private Texture imagenCasilla= new Texture(Gdx.files.internal("backgrounds/bg2.jpg"));
     private boolean casillaLibre = true;
 
     //TODO que se pinte el tablero
-    textureCasilla = new Texture(Gdx.files.internal("icons\\casilla48.png"));
-
 
     public Tablero(int posXTablero, int posYTablero) {
+
         tablaTablero.setPosition(posXTablero, posYTablero);
         boolean casillaInvocacion = true;
 
         for (int x = 0; x <= 6; x++) {
 
             for (int y = 0; y <= 8; y++) {
-                casillas[y][x] = new Casilla(Casilla.getWIDTH() * y, Casilla.getHEIGHT() * x);
+                casillas[y][x] = new Casilla(Casilla.getWIDTH() * y, Casilla.getHEIGHT() * x,imagenCasilla );
                 casillas[y][x].setInvocation(casillaInvocacion);
-                tablaTablero.addActor(casillas[y][x]);
+                tablaTablero.addActor(casillas[y][x].getImagenCasilla());
 
             }
             casillaInvocacion = false;
@@ -46,7 +45,7 @@ public class Tablero extends MyGdxGameScreen {
     public void dibujarTablero(Stage stage) {
         for (Casilla[] x : casillas) {
             for (Casilla y : x){
-                y.setTexture( new Image(textureCasilla));
+//                y.setTexture( new Image(textureCasilla));
             }
 
         }
