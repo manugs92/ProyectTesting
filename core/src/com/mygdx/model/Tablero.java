@@ -35,7 +35,6 @@ public class Tablero {
         boolean casillaInvocacion = true;
 
         for (int x = 0; x <= 6; x++) {
-
             for (int y = 0; y <= 8; y++) {
 //                casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
 //                casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
