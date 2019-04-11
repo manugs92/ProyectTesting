@@ -90,6 +90,8 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
 
+
+
     @Override
     public void render(float delta) {
         /*
@@ -106,12 +108,12 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.end();
         stage.draw();
         batch.begin();
-        partida.getCriaturasInvocadas().forEach(criatura -> {
+        for (Criatura criatura : partida.getCriaturasInvocadas()) {
             Texture textureMonster = criatura.getSpriteCriatura();
             Vector2 positionMonster = criatura.getPosition();
-            Vector2 positionSquareBoard = tablero.getCasilla((int) positionMonster.x,(int)positionMonster.y).getPositionGUI();
-            batch.draw(textureMonster,positionSquareBoard.x,positionSquareBoard.y);
-        });
+            Vector2 positionSquareBoard = tablero.getCasilla((int) positionMonster.x, (int) positionMonster.y).getPositionGUI();
+            batch.draw(textureMonster, positionSquareBoard.x, positionSquareBoard.y);
+        }
         batch.end();
     }
 
