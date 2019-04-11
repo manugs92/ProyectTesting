@@ -4,10 +4,29 @@ import java.util.ArrayList;
 
 public class Partida {
 
+
+    //NORMAS DE PARTIDA.
+    private final int MAX_CARDS_IN_HAND = 6;
+
+
     private  Carta selectedCard = new Carta();
-    private static ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
-    private ArrayList<Carta> manoJ1 = new ArrayList<Carta>();
-    private ArrayList<Carta> manoJ2 = new ArrayList<Carta>();
+    private ArrayList<Criatura> criaturasInvocadas;
+    private ArrayList<Carta> manoJ1;
+    private ArrayList<Carta> manoJ2;
+    private ArrayList<Carta> mazoJ1;
+    private Mazo mazoSrcJ1 = new Mazo();
+
+
+    public Partida() {
+        this.setSelectedCard(null);
+        this.criaturasInvocadas =  new ArrayList<>();
+        this.manoJ1 = new ArrayList<Carta>();
+        this.manoJ2 = new ArrayList<Carta>();
+        this.mazoJ1 = mazoSrcJ1.DefaultDeck();
+        for(int i=0;i<5;i++) {
+            this.manoJ1.add(mazoJ1.get(i));
+        }
+    }
 
     public Carta getSelectedCard() {
         return selectedCard;

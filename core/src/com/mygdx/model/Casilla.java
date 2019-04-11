@@ -1,6 +1,6 @@
 package com.mygdx.model;
 
-import com.badlogic.gdx.graphics.Color;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,7 +17,6 @@ public class Casilla {
     private int state;
 
     public static final int MEDIDA_CASILLA = 48;
-
 
     public void setCriatura(Criatura criatura) {
         this.criatura=criatura;
@@ -94,7 +93,7 @@ public class Casilla {
 
                 }else {
                     //sin carta selecionada
-                    if(tablero.getCasilla(x2,y2).getCriatura() != null){
+                    if(Casilla.this.getCriatura() != null){
                         for(int i=0;i<=tablero.getCasillas().length-1;i++) {
                             if(tablero.getCasilla(i,0).getCriatura()==null) {
                                 tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
