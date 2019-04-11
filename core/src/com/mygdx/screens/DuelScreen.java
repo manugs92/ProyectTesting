@@ -106,7 +106,9 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.begin();
         batch.draw(textureBgScreen,0,0);
         batch.end();
+
         stage.draw();
+
         batch.begin();
         for (Criatura criatura : partida.getCriaturasInvocadas()) {
             Texture textureMonster = criatura.getSpriteCriatura();

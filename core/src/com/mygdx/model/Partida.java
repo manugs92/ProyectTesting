@@ -3,8 +3,6 @@ package com.mygdx.model;
 import java.util.ArrayList;
 
 public class Partida {
-
-
     //NORMAS DE PARTIDA.
     private final int MAX_CARDS_IN_HAND = 6;
 
