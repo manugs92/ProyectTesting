@@ -17,6 +17,9 @@ import gui.BackgroundScroll;
 
 import java.util.ArrayList;
 
+import static com.mygdx.model.Criatura.TipoElemental.FUEGO;
+import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
+
 /*
  * Screen Mostrada en duelo singlePlayer.
  * */
@@ -71,7 +74,7 @@ public class DuelScreen extends MyGdxGameScreen {
         stage.setDebugAll(true);
 
         textureCard = new Texture("icons\\handled_card.png");
-        tablero.setCasilla(1,0,new Criatura(),0);
+        tablero.setCasilla(1,0,new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,3,1),0);
 
         /*GUI de la vista*/
         Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
@@ -113,7 +116,7 @@ public class DuelScreen extends MyGdxGameScreen {
         for (Criatura criatura : partida.getCriaturasInvocadas()) {
             Texture textureMonster = criatura.getSpriteCriatura();
             Vector2 positionMonster = criatura.getPosition();
-            Vector2 positionSquareBoard = tablero.getCasilla((int) positionMonster.x, (int) positionMonster.y).getPositionGUI();
+            Vector2 positionSquareBoard = tablero.getCasilla((int) positionMonster.x, (int) positionMonster.y).getCoordinatesPx();
             batch.draw(textureMonster, positionSquareBoard.x, positionSquareBoard.y);
         }
         batch.end();

@@ -10,11 +10,20 @@ public class Carta {
     private Tipo tipo;
     private Texture image;
     private Vector2 position = new Vector2();
+    private Vector2 lastPosition = new Vector2();
 
 
-    public Vector2 getLastPosition() { return null; }
 
-    public void setLastPosition(float x, float y) { }
+    public Vector2 getLastPosition() {
+        return this.lastPosition;
+    }
+
+    public void setLastPosition(float x, float y) {
+
+            this.lastPosition.x = x;
+            this.lastPosition.y=y;
+
+    }
 
     public String getNombre() {
         return nombre;

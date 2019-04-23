@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
+import static com.mygdx.model.Criatura.TipoElemental.FUEGO;
+import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
+
 public class Mazo {
 
     public final int MAX_CARDS = 40;
@@ -23,14 +26,9 @@ public class Mazo {
         Texture textureCard = new Texture("icons\\handled_card.png");
         Texture textureSpriteCard= new Texture("icons\\Spritecard.png");
         for(int i=0;i<=MIN_CARDS-1;i++) {
-            Criatura golem = new Criatura();
-            golem.setNombre("golem");
-            golem.setAtaque(5);
-            golem.setMovimiento(1);
-            golem.setDefensa(5);
-            golem.setAlcance(1);
+            Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,3,1);
+            golem.setNombre("DragonSp");
             golem.setImage(textureCard);
-            golem.setSpriteCriatura(textureSpriteCard);
             golem.setLastPosition(-1,-1);
             mazo.add(golem);
         }
