@@ -17,20 +17,19 @@ public class Criatura extends Carta {
     TipoElemental elemental;
     Texture spriteCriatura;
     ArrayList<Equipamiento> equipamientos = new ArrayList<Equipamiento>();
-    private Vector2 lastPosition = new Vector2();
 
-
-    @Override
-    public Vector2 getLastPosition() {
-        return lastPosition;
+    public Criatura(TipoEspecie criatura, TipoElemental elemental,Texture spriteCriatura, int ataque,int defensa,int movimiento,int alcance){
+        this.criatura=criatura;
+        this.elemental=elemental;
+        this.spriteCriatura=spriteCriatura;
+        this.ataque=ataque;
+        this.defensa=defensa;
+        this.movimiento=movimiento;
+        this.alcance=alcance;
+        tipo = Tipo.CRIATURA;
     }
 
-    @Override
-    public void setLastPosition(float x, float y) {
 
-        this.lastPosition.x = x;
-        this.lastPosition.y=y;
-    }
 
     public int getAtaque() {
         return ataque;
