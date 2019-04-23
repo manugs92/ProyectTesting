@@ -89,7 +89,7 @@ public class Casilla {
                         selectedCard = null;
                         partida.setSelectedCard(selectedCard);
 
-
+//00
                         for (int i = 0; i <= tablero.getCasillas().length - 1; i++) {
                             tablero.getCasilla(i, 0).getImageCasilla().setColor(255, 255, 255, 255);
                             tablero.getCasilla(i, 0).setState(0);
