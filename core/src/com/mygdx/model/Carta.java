@@ -14,6 +14,8 @@ public class Carta {
 
     public Vector2 getLastPosition() { return null; }
 
+    public int getAlcance() {return 0;}
+
     public void setLastPosition(float x, float y) { }
 
     public String getNombre() {

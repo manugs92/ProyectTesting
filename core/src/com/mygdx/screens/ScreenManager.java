@@ -24,7 +24,8 @@ public class ScreenManager {
 
     public void setDefaultScreen() {
         mainScreen = new MainScreen(this);
-        parent.setScreen(mainScreen);
+        //parent.setScreen(mainScreen);
+        parent.setScreen(new DuelScreen(this));
     }
 
     public void changeScreen(int screen){

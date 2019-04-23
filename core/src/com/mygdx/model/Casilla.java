@@ -73,8 +73,7 @@ public class Casilla {
             public void clicked(InputEvent event, float x, float y) {
                 //Listener cuando tenemos una carta escogida.
                 Carta selectedCard = partida.getSelectedCard();
-
-                        //si la carta seleccionada no es nula, y donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo)
+                //si la carta seleccionada no es nula, y donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo)
                 if(selectedCard !=null && Casilla.this.getCriatura()== null && Casilla.this.getState() != 0) {
                     //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)
                     if(selectedCard.getLastPosition().x != -1 && selectedCard.getLastPosition().y != -1) {
@@ -92,7 +91,6 @@ public class Casilla {
                         tablero.getCasilla(i,0).getImageCasilla().setColor(255,255,255,255);
                         tablero.getCasilla(i,0).setState(0);
                     }
-
                 }else {
                     //TODO mover por tablero
                     //sin carta selecionada

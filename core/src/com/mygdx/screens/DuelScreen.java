@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
@@ -97,7 +98,7 @@ public class DuelScreen extends MyGdxGameScreen {
         /*
          * Dibujamos las texturas (imagenes) y el contenido de la stage.
          * */
-        Gdx.gl.glClearColor(0f, 00, 0f, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(cam.combined);
