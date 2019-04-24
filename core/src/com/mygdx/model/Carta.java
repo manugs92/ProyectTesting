@@ -9,14 +9,27 @@ public class Carta {
     private int costeInvocacion;
     private Tipo tipo;
     private Texture image;
-    private Vector2 position = new Vector2();
+    private Vector2 position = new Vector2(); //Posicion actual dentro del tablero
+    private Vector2 lastPosition = new Vector2(); //Ultima posicion dentro del tablero
+    private Vector2 firstPosition = new Vector2(); //Primera posicion dentro del tablero.
 
 
-    public Vector2 getLastPosition() { return null; }
+    public Vector2 getFirstPosition() {
+        return firstPosition;
+    }
+
+    public void setFirstPosition(float x, float y) {
+        this.firstPosition.x = x;
+        this.firstPosition.y = y;
+    }
+
+    public Vector2 getLastPosition() {
+        return this.lastPosition;
+    }
+
+    public void setLastPosition(float x, float y) { this.lastPosition.x = x;this.lastPosition.y=y; }
 
     public int getAlcance() {return 0;}
-
-    public void setLastPosition(float x, float y) { }
 
     public String getNombre() {
         return nombre;

@@ -8,10 +8,12 @@ public class MyGdxGameAssetManager {
     public final AssetManager manager = new AssetManager();
 
     public final String imageSquare = "icons/casilla48.png";
+    public final String imageSquare2 = "icons/casilla48_2.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
 
     public void loadImagesDuelScreen() {
         manager.load(imageSquare, Texture.class);
+        manager.load(imageSquare2, Texture.class);
         manager.load(backgroundScroll,Texture.class);
     }
 }

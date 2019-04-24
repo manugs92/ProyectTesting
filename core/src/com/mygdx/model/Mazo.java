@@ -30,6 +30,7 @@ public class Mazo {
             golem.setNombre("DragonSp");
             golem.setImage(textureCard);
             golem.setLastPosition(-1,-1);
+            golem.setFirstPosition(-1,-1);
             mazo.add(golem);
         }
         return mazo;

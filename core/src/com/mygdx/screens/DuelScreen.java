@@ -27,8 +27,14 @@ import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
 public class DuelScreen extends MyGdxGameScreen {
 
 
-    /*TODO: Seguir optimizando esta clase, y mover cada cosa a su sitio.
-    * Llevar el DuelScreenLog a otra clase y crearlo desde allí.
+    /* TODO: DibujarMano, crearla desde la clase mano, y desde aquí, solo pasar el actor. (Habrá dos manos en partida, J1 y J2)
+    *  TODO: DibujarMazo, crear el "shuffle", y coger las cartas de ahí para añadirlas a la mano.
+    *  TODO: El mazo, será un gráfico que hay que renderizar en el render continuamente. (Todo lo que se modifique por pantalla estará ahí).
+    *  TODO: Método para moverse por el tablero en base a movimiento.
+    *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
+    *  TODO: Método para atacar al monstruo.
+    *  TODO: Llevar el DuelScreenLog a otra clase y crearlo desde allí.
+    *
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
@@ -72,7 +78,7 @@ public class DuelScreen extends MyGdxGameScreen {
         assetManager.manager.finishLoading();
 
         //Debugeamos el stage, para ver como están posicionados los elementos.
-        stage.setDebugAll(true);
+        stage.setDebugAll(false);
 
         textureCard = new Texture("icons\\handled_card.png");
         tablero.setCasilla(1,0,new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,3,1),0);
@@ -87,13 +93,10 @@ public class DuelScreen extends MyGdxGameScreen {
         dibujarTablero();
         dibujarMagicasJ1();
         dibujarMagicasJ2();
-        dibujarManoJ1();
         dibujarManoJ2();
         dibujarMazoJ1();
         dibujarMazoJ2();
     }
-
-
 
 
     @Override
@@ -110,10 +113,28 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.begin();
         batch.draw(textureBgScreen,0,0);
         batch.end();
-
+        dibujarManoJ1();
         stage.draw();
 
         batch.begin();
+
+        //Dibujamos las cartas invocadas.
+        for (Carta carta : partida.getInvoquedCards()) {
+            Texture textureCard = carta.getImage();
+            Vector2 firstPositionCard = carta.getFirstPosition();
+            float xTablero = firstPositionCard.x;
+            float yTablero = firstPositionCard.y;
+            Vector2 positionCardPx = tablero.getCasilla((int)xTablero,(int)yTablero).getCoordinatesPx();
+            float xPx = positionCardPx.x;
+            float yPx = positionCardPx.y;
+            if(tablero.getCasilla((int)xTablero,(int)yTablero).getState() == 1) {
+               batch.draw(tablero.getCasilla((int)xTablero,(int)yTablero).getTextureCasilla2(),xPx,yPx);
+            }else {
+                batch.draw(textureCard,xPx,yPx);
+            }
+        }
+
+        //Dibujamos los sprites de las cartas invocadas. (Estos se moverán por el tablero)
         for (Criatura criatura : partida.getCriaturasInvocadas()) {
             Texture textureMonster = criatura.getSpriteCriatura();
             Vector2 positionMonster = criatura.getPosition();
@@ -170,23 +191,54 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private void dibujarManoJ1() {
         //Dibujar manoJ1
-        for(int i=0;i<partida.getManoJ1().size();i++) {
-            cartasManoJ1GUI[i] = new Image(textureCard);
-            cartasManoJ1GUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
-            final int finali = i;
-            cartasManoJ1GUI[i].addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Casilla[][] casillas = tablero.getCasillas();
-                    for(int i=0;i<=casillas.length-1;i++) {
-                        if(tablero.getCasilla(i,0).getCriatura()==null) {
-                            tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
-                            tablero.getCasilla(i,0).setState(1);
+        if(partida.init==0) {
+            for(int i=0;i<partida.getManoJ1().size();i++) {
+                cartasManoJ1GUI[i] = new Image(textureCard);
+                cartasManoJ1GUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
+                final int finali = i;
+
+                //Añadimos listener a cada casilla.
+                cartasManoJ1GUI[i].addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+
+                        //Obtenemos todas las casillas de invocación (x = 0-6) e (y = 0) y a cada una de ellas le seteamos la
+                        //disponibilidad de invocación a true.
+                        Casilla[][] casillas = tablero.getCasillas();
+                        for(int i=0;i<=casillas.length-1;i++) {
+                            boolean avoidInvoke = true;
+                            //Comprobamos si la casilla no tiene un monstruo invocado.
+                            if(tablero.getCasilla(i,0).getCriatura()==null) {
+                                //Si no hemos invocado ninguna carta, podremos invocar.
+                                if(partida.getInvoquedCards().size()>0) {
+                                    //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y dond están.
+                                    for (Carta carta : partida.getInvoquedCards()) {
+                                        //Si la posición de alguna carta invocada coincide, no se podrá invocar.
+                                        if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
+                                            avoidInvoke = false;
+                                        }
+                                    }
+                                    //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
+                                    if(avoidInvoke) {
+                                        tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
+                                        tablero.getCasilla(i,0).setState(1);
+                                    }
+                                    //Si no tiene ningun monstruo invocado, podremos invocar.
+                                }else {
+                                    tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
+                                    tablero.getCasilla(i,0).setState(1);
+                                }
+                            }
                         }
-                    }
-                    partida.setSelectedCard(manoJ1.get(finali));
-                }});
-            stage.addActor(cartasManoJ1GUI[i]);
+                        partida.setSelectedCard(manoJ1.get(finali));
+                    }});
+                stage.addActor(cartasManoJ1GUI[i]);
+            }
+            partida.init=1;
+        }
+        if(partida.getManoJ1().size()<partida.getCantidadCartas()) {
+            cartasManoJ1GUI[partida.getCantidadCartas()-1].remove();
+            partida.setCantidadCartas(partida.getManoJ1().size());
         }
     }
 
