@@ -6,7 +6,7 @@ public class Partida {
     //NORMAS DE PARTIDA.
     private final int MAX_CARDS_IN_HAND = 6;
 
-
+    private ArrayList<Jugador> jugadores = new ArrayList<>();
     private  Carta selectedCard = new Carta();
     private ArrayList<Criatura> criaturasInvocadas;
     private ArrayList<Carta> cartasColocadas;
@@ -20,13 +20,15 @@ public class Partida {
 
 
 
-    public Partida() {
+    public Partida(Jugador jugador) {
+        this.jugadores.add(jugador);
         this.setSelectedCard(null);
         this.criaturasInvocadas =  new ArrayList<>();
         this.cartasColocadas = new ArrayList<>();
-
+        this.mazos.add(jugador.getMazo());
         this.manoPartida = new Mano(mazos.get(0));
         this.cantidadCartas= manoPartida.getMano().size();
+
     }
 
     public Carta getSelectedCard() {
@@ -54,9 +56,7 @@ public class Partida {
     }
 
 
-    public int getCantidadCartas() {
-        return cantidadCartas;
-    }
+    public int getCantidadCartas() { return cantidadCartas; }
 
     public void setCantidadCartas(int cantidadCartas) {
         this.cantidadCartas = cantidadCartas;
@@ -70,4 +70,10 @@ public class Partida {
         this.manoPartida = manoPartida;
     }
 
+    public ArrayList<Mazo> getMazos() { return mazos; }
+
+    public void addJugador(Jugador jugador) {
+        this.jugadores.add(jugador);
+        this.mazos.add(jugador.getMazo());
+    }
 }

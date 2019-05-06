@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
-
 import java.util.ArrayList;
 
 public class Mano {
@@ -18,21 +16,11 @@ public class Mano {
 
     public Mano(Mazo mazo){
         for(int i=0;i<5;i++) {
-            this.mano.add(mazo.getMazo().get(i));
+            this.mano.add(mazo.getCartasMazo().get(i));
         }
-
-
     }
 
-
-
-    public void robar(Mazo mazo){
-        mano.add(mazo.getMazo().get(0));
-
-    }
-
-
-
+    public void robar(Mazo mazo){ mano.add(mazo.getCartasMazo().get(0)); }
 
     public void drawHand(int i, Partida partida, Tablero tablero, int MEDIDA_CASILLA, Image[] cartasManoJ1GUI, float posyManoJ1, Texture textureCard) {
         cartasManoJ1GUI[i] = new Image(textureCard);
@@ -63,12 +51,10 @@ public class Mano {
                             }
                             //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
                             if(avoidInvoke) {
-//                                        tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
                                 tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                             }
                             //Si no tiene ningun monstruo invocado, podremos invocar.
                         }else {
-//                                    tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
                             tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                         }
                     }

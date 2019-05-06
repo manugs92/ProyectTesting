@@ -16,4 +16,8 @@ public class MyGdxGameAssetManager {
         manager.load(imageSquare2, Texture.class);
         manager.load(backgroundScroll,Texture.class);
     }
+
+    public void loadImageDeck() {
+        manager.load(imageSquare, Texture.class);
+    }
 }

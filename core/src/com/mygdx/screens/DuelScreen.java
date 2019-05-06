@@ -38,9 +38,12 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
 
+    //Variables temporales (hasta que el jugador se cree desde algun lado)
+    Jugador jugador = new Jugador("Manu",0,assetManager);
+    Jugador jugador2 = new Jugador("Isma",1,assetManager);
+
     //Variables back end.
-    private Partida partida = new Partida();
-   // private ArrayList<Carta> manoJ1 = partida.getManoJ1();
+    private Partida partida = new Partida(jugador);
     private Tablero tablero = new Tablero(partida, assetManager);
     private int xTablero=tablero.getCasillas().length;
     private int yTablero=tablero.getCasillas()[0].length;
@@ -50,7 +53,6 @@ public class DuelScreen extends MyGdxGameScreen {
     //Variables usadas por la GUI
     private Texture textureBgScroll,textureCard,textureSpriteCard;
     private SpriteBatch batch;
-    private Image mazoj1GUI,mazoj2GUI;
     private Image[] cartasManoJ1GUI = new Image[7];
     private Image[] cartasmanoJ2GUI = new Image[7];
     private Table tablatableroGUI = new Table();
@@ -61,9 +63,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private final int MEDIDA_CASILLA = 48;
     private float posyManoJ1 = 10;
     private float posyManoJ2 = MyGdxGame.SCREEN_HEIGHT-60;
-    private float posXMazo = (tablero.POS_X_TABLERO + (MEDIDA_CASILLA*7));
-    private float posYMazoJ1 = 87;
-    private float posYMazoJ2 = MyGdxGame.SCREEN_HEIGHT-133;
 
 
     public DuelScreen(ScreenManager screenManagerR) {
@@ -75,6 +74,8 @@ public class DuelScreen extends MyGdxGameScreen {
 
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
+
+        partida.addJugador(jugador2);
 
         //Debugeamos el stage, para ver como están posicionados los elementos.
         stage.setDebugAll(false);
@@ -187,7 +188,6 @@ public class DuelScreen extends MyGdxGameScreen {
             }
             partida.init=1;
         }
-
         drawHandGraphic();
     }
 
@@ -203,7 +203,6 @@ public class DuelScreen extends MyGdxGameScreen {
         }
     }
 
-
     private void dibujarManoJ2() {
         //Dibujar manoJ2
         for(int i=0;i<cartasmanoJ2GUI.length;i++) {
@@ -215,17 +214,12 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private void dibujarMazoJ1(){
         //Dibujar mazoJ1
-        mazoj1GUI = new Image(assetManager.manager.get(assetManager.imageSquare, Texture.class));
-        mazoj1GUI.setPosition(posXMazo,posYMazoJ1);
-        stage.addActor(mazoj1GUI);
+        stage.addActor(partida.getMazos().get(0).getMazoGUI());
     }
-
 
     private void dibujarMazoJ2() {
         //Dibujar mazoJ2
-        mazoj2GUI = new Image(assetManager.manager.get(assetManager.imageSquare, Texture.class));
-        mazoj2GUI.setPosition(posXMazo,posYMazoJ2);
-        stage.addActor(mazoj2GUI);
+        stage.addActor(partida.getMazos().get(1).getMazoGUI());
     }
 
     private void dibujarMagicasJ1() {
