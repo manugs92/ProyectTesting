@@ -122,9 +122,9 @@ public class Casilla {
                         if(selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
                             selectedCard.setFirstPosition(x2,y2);
                             partida.addNewInvoquedCard(selectedCard);
-                            ArrayList<Carta> manoJ1 = partida.getManoJ1();
+                            ArrayList<Carta> manoJ1 = partida.getManoPartida().getMano();
                             manoJ1.remove(selectedCard);
-                            partida.setManoJ1(manoJ1);
+                            partida.getManoPartida().setMano(manoJ1);
                             for (int i = 0; i < tablero.getCasillas().length; i++) {
                                 tablero.getCasilla(i, 0).setState(State.APAGADA);
                             }

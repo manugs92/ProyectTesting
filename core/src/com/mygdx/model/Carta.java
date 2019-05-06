@@ -13,7 +13,7 @@ public class Carta {
     }
 
     private String nombre;
-    private int costeInvocacion;
+    private int costInvocation;
     private Tipo tipo;
     private Texture image;
     private Vector2 position = new Vector2(); //Posicion actual dentro del tablero
@@ -46,12 +46,12 @@ public class Carta {
         this.nombre = nombre;
     }
 
-    public int getCosteInvocacion() {
-        return costeInvocacion;
+    public int getCostInvocation() {
+        return costInvocation;
     }
 
-    public void setCosteInvocacion(int costeInvocacion) {
-        this.costeInvocacion = costeInvocacion;
+    public void setCostInvocation(int costInvocation) {
+        this.costInvocation = costInvocation;
     }
 
     public Tipo getTipo() {
