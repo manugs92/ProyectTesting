@@ -8,7 +8,19 @@ import java.util.ArrayList;
 
 public class Criatura extends Carta {
 
+    public enum TipoEspecie {
+        HUMANO,
+        DRAGON,
+        PLANTAS,
+        GOLEM;
+    }
 
+    public enum TipoElemental {
+        NORMAL,
+        FUEGO,
+        PLANTA,
+        GOLEM;
+    }
 
     int ataque, defensa, movimiento, alcance;
     Carta.Tipo tipo = Carta.Tipo.CRIATURA;
@@ -87,13 +99,11 @@ public class Criatura extends Carta {
         this.elemental = elemental;
     }
 
-    @Override
-    public Texture getSpriteCriatura() {
+    public Texture getSprite() {
         return spriteCriatura;
     }
 
-    @Override
-    public void setSpriteCriatura(Texture spriteCriatura) {
+    public void setSprite(Texture spriteCriatura) {
         this.spriteCriatura = spriteCriatura;
     }
 
@@ -105,18 +115,6 @@ public class Criatura extends Carta {
         this.equipamientos = equipamientos;
     }
 
-    public enum TipoEspecie {
-        HUMANO,
-        DRAGON,
-        PLANTAS,
-        GOLEM;
-    }
 
-    public enum TipoElemental {
-        NORMAL,
-        FUEGO,
-        PLANTA,
-        GOLEM;
-    }
 
 }

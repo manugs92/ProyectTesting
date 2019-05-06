@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
@@ -51,7 +50,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private Texture textureBgScroll,textureCard,textureSpriteCard;
     private SpriteBatch batch;
     private Image mazoj1GUI,mazoj2GUI;
-    private Image[] casillasmagicasJ2GUI = new Image[3];
     private Image[] cartasManoJ1GUI = new Image[7];
     private Image[] cartasmanoJ2GUI = new Image[7];
     private Table tablatableroGUI = new Table();
@@ -101,15 +99,12 @@ public class DuelScreen extends MyGdxGameScreen {
 
     @Override
     public void render(float delta) {
-        /*
-         * Dibujamos las texturas (imagenes) y el contenido de la stage.
-         * */
         Gdx.gl.glClearColor(0f, 0f, 0f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(cam.combined);
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.act(Math.min(delta, 1 / 30f));
         batch.begin();
         batch.draw(textureBgScreen,0,0);
         batch.end();
@@ -120,26 +115,19 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Dibujamos las cartas invocadas.
         for (Carta carta : partida.getInvoquedCards()) {
-            Texture textureCard = carta.getImage();
-            Vector2 firstPositionCard = carta.getFirstPosition();
-            float xTablero = firstPositionCard.x;
-            float yTablero = firstPositionCard.y;
-            Vector2 positionCardPx = tablero.getCasilla((int)xTablero,(int)yTablero).getCoordinatesPx();
-            float xPx = positionCardPx.x;
-            float yPx = positionCardPx.y;
-            if(tablero.getCasilla((int)xTablero,(int)yTablero).getState() == 1) {
-               batch.draw(tablero.getCasilla((int)xTablero,(int)yTablero).getTextureCasilla2(),xPx,yPx);
+            Casilla casillaFirstPostitionCard = tablero.getCasilla(carta.getFirstPosition());
+            Vector2 positionCardPx = casillaFirstPostitionCard.getCoordinatesPx();
+            if(casillaFirstPostitionCard.getState() == Casilla.State.ILUMINADA) {
+               batch.draw(casillaFirstPostitionCard.getTextureCasilla2(),positionCardPx.x, positionCardPx.y);
             }else {
-                batch.draw(textureCard,xPx,yPx);
+                batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y);
             }
         }
 
         //Dibujamos los sprites de las cartas invocadas. (Estos se moverán por el tablero)
         for (Criatura criatura : partida.getCriaturasInvocadas()) {
-            Texture textureMonster = criatura.getSpriteCriatura();
-            Vector2 positionMonster = criatura.getPosition();
-            Vector2 positionSquareBoard = tablero.getCasilla((int) positionMonster.x, (int) positionMonster.y).getCoordinatesPx();
-            batch.draw(textureMonster, positionSquareBoard.x, positionSquareBoard.y);
+            Vector2 positionSquareBoard = tablero.getCasilla(criatura.getPosition()).getCoordinatesPx();
+            batch.draw(criatura.getSprite(), positionSquareBoard.x, positionSquareBoard.y);
         }
         batch.end();
     }
@@ -183,7 +171,7 @@ public class DuelScreen extends MyGdxGameScreen {
         //Imagenes de casillas. (Es la función que las dibuja por pantalla)
         for(int x2=0;x2<=xTablero-1;x2++) {
             for(int y2=0;y2<=yTablero-1;y2++) {
-                tablatableroGUI.addActor(tablero.getCasilla(x2,y2).getImageCasilla());
+                tablatableroGUI.addActor(tablero.getCasilla(x2, y2).getImageCasilla());
             }
         }
         stage.addActor(tablatableroGUI);
@@ -205,6 +193,7 @@ public class DuelScreen extends MyGdxGameScreen {
                         //Obtenemos todas las casillas de invocación (x = 0-6) e (y = 0) y a cada una de ellas le seteamos la
                         //disponibilidad de invocación a true.
                         Casilla[][] casillas = tablero.getCasillas();
+                        tablero.setAllSquaresToOff(tablero);
                         for(int i=0;i<=casillas.length-1;i++) {
                             boolean avoidInvoke = true;
                             //Comprobamos si la casilla no tiene un monstruo invocado.
@@ -220,13 +209,13 @@ public class DuelScreen extends MyGdxGameScreen {
                                     }
                                     //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
                                     if(avoidInvoke) {
-                                        tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
-                                        tablero.getCasilla(i,0).setState(1);
+//                                        tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
+                                        tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                                     }
                                     //Si no tiene ningun monstruo invocado, podremos invocar.
                                 }else {
-                                    tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
-                                    tablero.getCasilla(i,0).setState(1);
+//                                    tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
+                                    tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                                 }
                             }
                         }

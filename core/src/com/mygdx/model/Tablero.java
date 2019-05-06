@@ -1,6 +1,7 @@
 package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
@@ -37,10 +38,10 @@ public class Tablero {
         for(int x=0;x<=TOTAL_CASILLAS_X-1;x++) {
             for(int y=0;y<=TOTAL_CASILLAS_Y-1;y++) {
                 casillas[x][y] = new Casilla();
-                casillas[x][y].setState(0);
                 casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
                 casillas[x][y].setTextureCasilla2(assetManager.manager.get(assetManager.imageSquare2, Texture.class));
                 casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
+                casillas[x][y].setState(Casilla.State.APAGADA);
                 casillas[x][y].setPositionGUI(POS_X_TABLERO +(MEDIDA_CASILLA*x), POS_Y_TABLERO +(MEDIDA_CASILLA*y));
                 casillas[x][y].getImageCasilla().setPosition(MEDIDA_CASILLA*x,MEDIDA_CASILLA*y);
                 casillas[x][y].addListenerToBoard(this,partida,x, y);
@@ -106,8 +107,12 @@ public class Tablero {
         }
     }
 
-    public Casilla getCasilla(int x,int y) {
-        return casillas[x][y];
+    public Casilla getCasilla(float x,float y) {
+        return casillas[(int) x][(int) y];
+    }
+
+    public Casilla getCasilla(Vector2 pos) {
+        return casillas[(int) pos.x][(int) pos.y];
     }
 
     public CasillaMagica getCasillaMagica(int player, int pos) {
@@ -129,6 +134,15 @@ public class Tablero {
             cementerioJ2.add(carta);
         }
     }
+
+    public void setAllSquaresToOff(Tablero tablero) {
+        for (int x = 0; x < tablero.getCasillas().length; x++) {
+            for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
+                tablero.getCasilla(x, y).setState(Casilla.State.APAGADA);
+            }
+        }
+    }
+
 
     public void AtacarCriatura(Criatura criaturaAtacante,int xOrigen, int yOrigen, Criatura criaturaAtacada, int xDestino, int yDestino) {
         //Comprobar ataques y defensas (para saber cual eliminar)

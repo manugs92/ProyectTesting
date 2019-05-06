@@ -26,7 +26,7 @@ public class Mazo {
         Texture textureCard = new Texture("icons\\handled_card.png");
         Texture textureSpriteCard= new Texture("icons\\Spritecard.png");
         for(int i=0;i<=MIN_CARDS-1;i++) {
-            Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,3,1);
+            Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,2,1);
             golem.setNombre("DragonSp");
             golem.setImage(textureCard);
             golem.setLastPosition(-1,-1);

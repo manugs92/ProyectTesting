@@ -5,6 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class Carta {
+    public enum Tipo {
+        CRIATURA,
+        MAGICA,
+        EQUIPAMIENTO,
+        TRAMPA;
+    }
+
     private String nombre;
     private int costeInvocacion;
     private Tipo tipo;
@@ -71,17 +78,4 @@ public class Carta {
     public Vector2 getPosition() {
         return this.position;
     }
-
-    public Texture getSpriteCriatura() {
-        return null;
-    }
-
-    public void setSpriteCriatura(Texture spriteCriatura) { }
-
-    public enum Tipo {
-    CRIATURA,
-    MAGICA,
-    EQUIPAMIENTO,
-    TRAMPA;
-}
 }
