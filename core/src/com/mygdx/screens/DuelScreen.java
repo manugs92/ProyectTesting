@@ -40,10 +40,11 @@ public class DuelScreen extends MyGdxGameScreen {
 
     //Variables back end.
     private Partida partida = new Partida();
-    private ArrayList<Carta> manoJ1 = partida.getManoJ1();
+   // private ArrayList<Carta> manoJ1 = partida.getManoJ1();
     private Tablero tablero = new Tablero(partida, assetManager);
     private int xTablero=tablero.getCasillas().length;
     private int yTablero=tablero.getCasillas()[0].length;
+    private int numCardsInHand;
 
 
     //Variables usadas por la GUI
@@ -180,56 +181,28 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarManoJ1() {
         //Dibujar manoJ1
         if(partida.init==0) {
-            for(int i=0;i<partida.getManoJ1().size();i++) {
-                cartasManoJ1GUI[i] = new Image(textureCard);
-                cartasManoJ1GUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
-                final int finali = i;
-
-                //Añadimos listener a cada casilla.
-                cartasManoJ1GUI[i].addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        //Obtenemos todas las casillas de invocación (x = 0-6) e (y = 0) y a cada una de ellas le seteamos la
-                        //disponibilidad de invocación a true.
-                        Casilla[][] casillas = tablero.getCasillas();
-                        tablero.setAllSquaresToOff(tablero);
-                        for(int i=0;i<=casillas.length-1;i++) {
-                            boolean avoidInvoke = true;
-                            //Comprobamos si la casilla no tiene un monstruo invocado.
-                            if(tablero.getCasilla(i,0).getCriatura()==null) {
-                                //Si no hemos invocado ninguna carta, podremos invocar.
-                                if(partida.getInvoquedCards().size()>0) {
-                                    //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y dond están.
-                                    for (Carta carta : partida.getInvoquedCards()) {
-                                        //Si la posición de alguna carta invocada coincide, no se podrá invocar.
-                                        if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
-                                            avoidInvoke = false;
-                                        }
-                                    }
-                                    //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
-                                    if(avoidInvoke) {
-//                                        tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
-                                        tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
-                                    }
-                                    //Si no tiene ningun monstruo invocado, podremos invocar.
-                                }else {
-//                                    tablero.getCasilla(i,0).getImageCasilla().setColor(255,0,255,255);
-                                    tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
-                                }
-                            }
-                        }
-                        partida.setSelectedCard(manoJ1.get(finali));
-                    }});
+            for(int i = 0; i<partida.getManoPartida().getMano().size(); i++) {
+                partida.getManoPartida().drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  cartasManoJ1GUI,  posyManoJ1, textureCard);
                 stage.addActor(cartasManoJ1GUI[i]);
             }
             partida.init=1;
         }
-        if(partida.getManoJ1().size()<partida.getCantidadCartas()) {
+
+        drawHandGraphic();
+    }
+
+
+
+
+    private void drawHandGraphic() {
+        numCardsInHand=partida.getManoPartida().getMano().size();
+
+        if(numCardsInHand<partida.getCantidadCartas()) {
             cartasManoJ1GUI[partida.getCantidadCartas()-1].remove();
-            partida.setCantidadCartas(partida.getManoJ1().size());
+            partida.setCantidadCartas(numCardsInHand);
         }
     }
+
 
     private void dibujarManoJ2() {
         //Dibujar manoJ2
