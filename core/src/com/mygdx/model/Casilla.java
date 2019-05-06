@@ -174,7 +174,6 @@ public class Casilla {
                     if(x<=criatura.getPosition().x+criatura.getMovimiento() && x>=criatura.getPosition().x-criatura.getMovimiento() && y<=criatura.getPosition().y+criatura.getMovimiento() && y>=criatura.getPosition().y-criatura.getMovimiento()) {
                         tablero.getCasilla(x, y).setState(State.ILUMINADA);
                     }
-
                 }else {
                     tablero.getCasilla(x, y).setState(State.APAGADA);
                 }

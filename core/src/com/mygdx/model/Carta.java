@@ -4,6 +4,8 @@ package com.mygdx.model;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
+import java.net.InetAddress;
+
 public class Carta {
     public enum Tipo {
         CRIATURA,
@@ -19,6 +21,7 @@ public class Carta {
     private Vector2 position = new Vector2(); //Posicion actual dentro del tablero
     private Vector2 lastPosition = new Vector2(); //Ultima posicion dentro del tablero
     private Vector2 firstPosition = new Vector2(); //Primera posicion dentro del tablero.
+    private InetAddress idPlayer;
 
 
     public Vector2 getFirstPosition() {

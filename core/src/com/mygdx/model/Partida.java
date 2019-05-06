@@ -15,6 +15,7 @@ public class Partida {
     public int init=0;
     private ArrayList<Carta> manoJ2;
     private ArrayList<Carta> mazoJ1;
+    private ArrayList<Mazo> mazos = new ArrayList<>();
     private Mazo mazoSrcJ1 = new Mazo();
 
 
