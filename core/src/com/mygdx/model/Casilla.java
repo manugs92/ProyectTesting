@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.util.ArrayList;
 
 public class Casilla {
 
@@ -122,7 +121,9 @@ public class Casilla {
                         if(selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
                             selectedCard.setFirstPosition(x2,y2);
                             partida.addNewInvoquedCard(selectedCard);
-                            partida.getManoPartida(0).getMano().remove(selectedCard);
+                            partida.getJugador(0).getMano().setCartaJugada(true);
+                            partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
+                            System.out.println(partida.getJugador(0).getMano().getCartasMano().size());
                             for (int i = 0; i < tablero.getCasillas().length; i++) {
                                 tablero.getCasilla(i, 0).setState(State.APAGADA);
                             }

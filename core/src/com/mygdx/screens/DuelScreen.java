@@ -36,8 +36,8 @@ public class DuelScreen extends MyGdxGameScreen {
 
     //Atributos de la GUI
     private final int MEDIDA_CASILLA = 48;
-    private float posyManoJ1 = 10;
-    private float posyManoJ2 = MyGdxGame.SCREEN_HEIGHT-60;
+    //private float posyManoJ1 = 10;
+    //private float posyManoJ2 = MyGdxGame.SCREEN_HEIGHT-60;
 
     //Variables temporales (hasta que el jugador se cree desde algun lado)
     Jugador jugador = new Jugador("Manu",0,assetManager);
@@ -70,11 +70,10 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Dibujamos todos las imagenes "estaticas".
         dibujarTablero();
-        dibujarMagicasJ1();
-        dibujarMagicasJ2();
-        dibujarManoJ2();
-        dibujarMazoJ1();
-        dibujarMazoJ2();
+        partida.getJugadores().forEach(j -> {
+            dibujarMagicas(j.getId());
+            dibujarMazo(j.getId());
+        });
     }
 
 
@@ -93,7 +92,9 @@ public class DuelScreen extends MyGdxGameScreen {
             partida.getDuelLog().setNewMsgFalse();
         }
         batch.end();
-        dibujarManoJ1();
+        partida.getJugadores().forEach(j -> {
+            dibujarMano(j.getId());
+        });
         stage.draw();
         batch.begin();
 
@@ -138,59 +139,39 @@ public class DuelScreen extends MyGdxGameScreen {
         stage.addActor(tablatableroGUI);
     }
 
-    private void dibujarManoJ1() {
-        //Dibujar manoJ1
-        if(partida.init==0) {
-            for(int i = 0; i<partida.getJugador(jugador.getId()).getMano().getCartasMano().size(); i++) {
-                partida.getJugador(jugador.getId()).getMano().drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  posyManoJ1);
-                stage.addActor(partida.getJugador(jugador.getId()).getMano().getCartaManoGUI()[i]);
+    private void dibujarMano(int jugadorId) {
+        //Dibujar manos
+        if(partida.getJugador(jugadorId).getMano().isCartaJugada() ||!partida.getJugador(jugadorId).getMano().isManoCargada() ) {
+            System.out.println("dibujo la mano de "+jugadorId);
+            for(int i = 0; i<partida.getJugador(jugadorId).getMano().getCartasMano().size(); i++) {
+                partida.getJugador(jugadorId).getMano().drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  jugadorId);
+                stage.addActor(partida.getJugador(jugadorId).getMano().getCartaManoGUI()[i]);
             }
-            partida.init=1;
-        }
-        updateHand(jugador.getId());
-    }
-
-    private void dibujarManoJ2() {
-        //Dibujar manoJ2
-        if(partida.init==1) {
-            for(int i=0;i<partida.getManoPartida(1).getMano().size();i++) {
-                partida.getManoPartida(0).drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  posyManoJ1);
-                stage.addActor(partida.getManoPartida(1).getCartaManoGUI()[i]);
-        }
-        partida.init=2;
-        }
-        updateHand(jugador2.getId());
-    }
-
-    private void updateHand(int jugadorid) {
-        partida.getJugador(jugadorid).getCardsInHand();
-        if(partida.getJugador(jugadorid).getCardsInHand()<partida.getManoPartida(jugadorid).getMano().size()) {
-            partida.getManoPartida(jugadorid).getCartaManoGUI()[partida.getCantidadCartas()-1].remove();
-            partida.setCantidadCartas(numCardsInHand);
+            if(partida.getJugador(jugadorId).getMano().isCartaJugada()) {
+                partida.getJugador(jugadorId).getMano().setCartaJugada(false);
+            }
+            partida.getJugador(jugadorId).getMano().setManoCargada(true);
+            updateHand(jugadorId);
         }
     }
 
-    private void dibujarMazoJ1(){
+    private void updateHand(int jugadorId) {
+        if(partida.getJugador(jugadorId).getCardsInHand()>partida.getJugador(jugadorId).getMano().getCartasMano().size()) {
+            partida.getJugador(jugadorId).getMano().getCartaManoGUI()[partida.getJugador(jugadorId).getCardsInHand()-1].remove();
+            partida.getJugador(jugadorId).setCardsInHand(partida.getJugador(jugadorId).getMano().getCartasMano().size());
+        }
+    }
+
+    private void dibujarMazo(int jugadorId){
         //Dibujar mazoJ1
-        stage.addActor(partida.getMazos().get(0).getMazoGUI());
+        stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoGUI());
     }
 
-    private void dibujarMazoJ2() {
-        //Dibujar mazoJ2
-        stage.addActor(partida.getMazos().get(1).getMazoGUI());
-    }
 
-    private void dibujarMagicasJ1() {
+    private void dibujarMagicas(int playerId) {
         //Magicas J1
        for(int i=0;i<=tablero.MAX_MAGIC_CARDS-1;i++) {
-            stage.addActor(tablero.getCasillaMagica(0,i).getImageCasilla());
-        }
-    }
-
-    private void dibujarMagicasJ2() {
-        //Magicas J2
-        for (int i = 0; i <=tablero.MAX_MAGIC_CARDS-1; i++) {
-            stage.addActor(tablero.getCasillaMagica(1,i).getImageCasilla());
+            stage.addActor(tablero.getCasillaMagica(playerId,i).getImageCasilla());
         }
     }
 }

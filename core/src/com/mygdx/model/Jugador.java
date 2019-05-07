@@ -19,6 +19,7 @@ public class Jugador {
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager) {
         this.nombre=nombre;
         this.mazo = new Mazo(assetManager);
+        this.mano=new Mano(this.mazo);
         this.id=id;
         if(this.id==0) {
             mazo.setPositionGUI(posXMazo,posYMazoJ1);
@@ -26,6 +27,7 @@ public class Jugador {
         }else {
             mazo.setPositionGUI(posXMazo,posYMazoJ2);
         }
+        this.cardsInHand=5;
     }
 
     public void setMazo(Mazo mazo) {
@@ -50,6 +52,10 @@ public class Jugador {
 
     public int getCardsInHand() {
         return cardsInHand;
+    }
+
+    public void setCardsInHand(int number) {
+        this.cardsInHand=number;
     }
 
     public Mano getMano() {
