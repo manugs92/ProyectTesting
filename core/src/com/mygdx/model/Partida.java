@@ -1,5 +1,7 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import java.util.ArrayList;
 
 public class Partida {
@@ -10,25 +12,16 @@ public class Partida {
     private  Carta selectedCard = new Carta();
     private ArrayList<Criatura> criaturasInvocadas;
     private ArrayList<Carta> cartasColocadas;
-
-    private int cantidadCartas;
+    private DuelLog duelLog;
     public int init=0;
 
-    private ArrayList<Mazo> mazos = new ArrayList<>();
-    private Mano manoPartida;
 
-
-
-
-    public Partida(Jugador jugador) {
+    public Partida(Jugador jugador, Skin skin) {
         this.jugadores.add(jugador);
         this.setSelectedCard(null);
         this.criaturasInvocadas =  new ArrayList<>();
         this.cartasColocadas = new ArrayList<>();
-        this.mazos.add(jugador.getMazo());
-        this.manoPartida = new Mano(mazos.get(0));
-        this.cantidadCartas= manoPartida.getMano().size();
-
+        this.duelLog = new DuelLog(skin);
     }
 
     public Carta getSelectedCard() {
@@ -55,25 +48,26 @@ public class Partida {
         return criaturasInvocadas;
     }
 
-
-    public int getCantidadCartas() { return cantidadCartas; }
-
-    public void setCantidadCartas(int cantidadCartas) {
-        this.cantidadCartas = cantidadCartas;
-    }
-
-    public Mano getManoPartida() {
-        return manoPartida;
-    }
-
-    public void setManoPartida(Mano manoPartida) {
-        this.manoPartida = manoPartida;
-    }
-
-    public ArrayList<Mazo> getMazos() { return mazos; }
-
     public void addJugador(Jugador jugador) {
         this.jugadores.add(jugador);
-        this.mazos.add(jugador.getMazo());
     }
+
+    public DuelLog getDuelLog() {
+        return duelLog;
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public Jugador getJugador(int jugadorId) {
+        return jugadores.get(jugadorId);
+    }
+
+    public void setDuelLog(DuelLog duelLog) {
+        this.duelLog = duelLog;
+    }
+
+//    public Jugador getManoPartida(int i) {
+//    }
 }

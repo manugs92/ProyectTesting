@@ -7,7 +7,9 @@ public class Jugador {
 
     private String nombre;
     private Mazo mazo;
+    private Mano mano;
     private int id;
+    private int cardsInHand;
 
     private float posXMazo = (Tablero.POS_X_TABLERO + (Casilla.MEDIDA_CASILLA*7));
     private float posYMazoJ1 = 87;
@@ -17,6 +19,7 @@ public class Jugador {
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager) {
         this.nombre=nombre;
         this.mazo = new Mazo(assetManager);
+        this.mano=new Mano(this.mazo);
         this.id=id;
         if(this.id==0) {
             mazo.setPositionGUI(posXMazo,posYMazoJ1);
@@ -24,6 +27,7 @@ public class Jugador {
         }else {
             mazo.setPositionGUI(posXMazo,posYMazoJ2);
         }
+        this.cardsInHand=5;
     }
 
     public void setMazo(Mazo mazo) {
@@ -40,6 +44,22 @@ public class Jugador {
 
     public Mazo getMazo() {
         return mazo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getCardsInHand() {
+        return cardsInHand;
+    }
+
+    public void setCardsInHand(int number) {
+        this.cardsInHand=number;
+    }
+
+    public Mano getMano() {
+        return mano;
     }
 
 }

@@ -3,6 +3,7 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.net.InetAddress;
 
@@ -14,9 +15,11 @@ public class Carta {
         TRAMPA;
     }
 
+
     private String nombre;
     private int costInvocation;
     private Tipo tipo;
+    protected Image cardDetailInfo;
     private Texture image;
     private Vector2 position = new Vector2(); //Posicion actual dentro del tablero
     private Vector2 lastPosition = new Vector2(); //Ultima posicion dentro del tablero
@@ -80,5 +83,13 @@ public class Carta {
 
     public Vector2 getPosition() {
         return this.position;
+    }
+
+    public Image getCardDetailInfo() {
+        return cardDetailInfo;
+    }
+
+    public void setCardDetailInfo(Image cardDetailInfo) {
+        this.cardDetailInfo = cardDetailInfo;
     }
 }
