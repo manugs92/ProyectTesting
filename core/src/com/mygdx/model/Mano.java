@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Mano {
 
-    private ArrayList<Carta> mano= new ArrayList<>();
+    private ArrayList<Carta> cartasMano = new ArrayList<>();
 
     private Image[] cartasManoGUI = new Image[7];
 
@@ -17,14 +17,14 @@ public class Mano {
 
     public Mano(Mazo mazo){
         for(int i=0;i<5;i++) {
-            this.mano.add(mazo.getCartasMazo().get(i));
+            this.cartasMano.add(mazo.getCartasMazo().get(i));
         }
     }
 
-    public void robar(Mazo mazo){ mano.add(mazo.getCartasMazo().get(0)); }
+    public void robar(Mazo mazo){ cartasMano.add(mazo.getCartasMazo().get(0)); }
 
     public void drawHand(int i, Partida partida, Tablero tablero, int MEDIDA_CASILLA, float posyManoJ1) {
-        cartasManoGUI[i] = new Image(mano.get(i).getImage());
+        cartasManoGUI[i] = new Image(cartasMano.get(i).getImage());
         cartasManoGUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
         final int finali = i;
 
@@ -60,17 +60,17 @@ public class Mano {
                         }
                     }
                 }
-                partida.setSelectedCard(mano.get(finali));
+                partida.setSelectedCard(cartasMano.get(finali));
             }});
     }
 
 
-    public ArrayList<Carta> getMano() {
-        return mano;
+    public ArrayList<Carta> getCartasMano() {
+        return cartasMano;
     }
 
-    public void setMano(ArrayList<Carta> mano) {
-        this.mano = mano;
+    public void setCartasMano(ArrayList<Carta> cartasMano) {
+        this.cartasMano = cartasMano;
     }
 
     public Image[] getCartaManoGUI() {

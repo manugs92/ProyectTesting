@@ -13,14 +13,7 @@ public class Partida {
     private ArrayList<Criatura> criaturasInvocadas;
     private ArrayList<Carta> cartasColocadas;
     private DuelLog duelLog;
-
-    private int cantidadCartas;
     public int init=0;
-
-    private ArrayList<Mazo> mazos = new ArrayList<>();
-    private ArrayList<Mano> manos = new ArrayList<>();
-
-
 
 
     public Partida(Jugador jugador, Skin skin) {
@@ -28,9 +21,6 @@ public class Partida {
         this.setSelectedCard(null);
         this.criaturasInvocadas =  new ArrayList<>();
         this.cartasColocadas = new ArrayList<>();
-        this.mazos.add(jugador.getMazo());
-        this.manos.add(new Mano(mazos.get(0)));
-        this.cantidadCartas= manos.get(0).getMano().size();
         this.duelLog = new DuelLog(skin);
     }
 
@@ -58,30 +48,20 @@ public class Partida {
         return criaturasInvocadas;
     }
 
-
-    public int getCantidadCartas() { return cantidadCartas; }
-
-    public void setCantidadCartas(int cantidadCartas) {
-        this.cantidadCartas = cantidadCartas;
-    }
-
-    public Mano getManoPartida(int jugador) {
-            return manos.get(jugador);
-    }
-
-    public void setManoPartida(Mano manoPartida,int jugador) {
-        this.manos.set(jugador,manoPartida);
-    }
-
-    public ArrayList<Mazo> getMazos() { return mazos; }
-
     public void addJugador(Jugador jugador) {
         this.jugadores.add(jugador);
-        this.mazos.add(jugador.getMazo());
     }
 
     public DuelLog getDuelLog() {
         return duelLog;
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public Jugador getJugador(int jugadorId) {
+        return jugadores.get(jugadorId);
     }
 
     public void setDuelLog(DuelLog duelLog) {

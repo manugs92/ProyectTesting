@@ -31,7 +31,6 @@ public class DuelScreen extends MyGdxGameScreen {
 
     //Variables usadas por la GUI
     private SpriteBatch batch;
-    private Image[] cartasmanoJ2GUI = new Image[7];
     private Table tablatableroGUI = new Table();
     private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
 
@@ -49,7 +48,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private Tablero tablero = new Tablero(partida, assetManager);
     private int xTablero=tablero.getCasillas().length;
     private int yTablero=tablero.getCasillas()[0].length;
-    private int numCardsInHand;
 
 
     public DuelScreen(ScreenManager screenManagerR) {
@@ -143,29 +141,32 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarManoJ1() {
         //Dibujar manoJ1
         if(partida.init==0) {
-            for(int i = 0; i<partida.getManoPartida(0).getMano().size(); i++) {
-                partida.getManoPartida(0).drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  posyManoJ1);
-                stage.addActor(partida.getManoPartida(0).getCartaManoGUI()[i]);
+            for(int i = 0; i<partida.getJugador(jugador.getId()).getMano().getCartasMano().size(); i++) {
+                partida.getJugador(jugador.getId()).getMano().drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  posyManoJ1);
+                stage.addActor(partida.getJugador(jugador.getId()).getMano().getCartaManoGUI()[i]);
             }
             partida.init=1;
         }
-        updateHand(0);
-    }
-
-    private void updateHand(int jugador) {
-        numCardsInHand=partida.getManoPartida(jugador).getMano().size();
-        if(numCardsInHand<partida.getCantidadCartas()) {
-            partida.getManoPartida(jugador).getCartaManoGUI()[partida.getCantidadCartas()-1].remove();
-            partida.setCantidadCartas(numCardsInHand);
-        }
+        updateHand(jugador.getId());
     }
 
     private void dibujarManoJ2() {
         //Dibujar manoJ2
-        for(int i=0;i<cartasmanoJ2GUI.length;i++) {
-            cartasmanoJ2GUI[i] = new Image(assetManager.manager.get(assetManager.imageSquare, Texture.class));
-            cartasmanoJ2GUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ2);
-            stage.addActor(cartasmanoJ2GUI[i]);
+        if(partida.init==1) {
+            for(int i=0;i<partida.getManoPartida(1).getMano().size();i++) {
+                partida.getManoPartida(0).drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  posyManoJ1);
+                stage.addActor(partida.getManoPartida(1).getCartaManoGUI()[i]);
+        }
+        partida.init=2;
+        }
+        updateHand(jugador2.getId());
+    }
+
+    private void updateHand(int jugadorid) {
+        partida.getJugador(jugadorid).getCardsInHand();
+        if(partida.getJugador(jugadorid).getCardsInHand()<partida.getManoPartida(jugadorid).getMano().size()) {
+            partida.getManoPartida(jugadorid).getCartaManoGUI()[partida.getCantidadCartas()-1].remove();
+            partida.setCantidadCartas(numCardsInHand);
         }
     }
 

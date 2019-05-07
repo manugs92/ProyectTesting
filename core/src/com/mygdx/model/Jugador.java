@@ -7,7 +7,9 @@ public class Jugador {
 
     private String nombre;
     private Mazo mazo;
+    private Mano mano;
     private int id;
+    private int cardsInHand;
 
     private float posXMazo = (Tablero.POS_X_TABLERO + (Casilla.MEDIDA_CASILLA*7));
     private float posYMazoJ1 = 87;
@@ -40,6 +42,18 @@ public class Jugador {
 
     public Mazo getMazo() {
         return mazo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getCardsInHand() {
+        return cardsInHand;
+    }
+
+    public Mano getMano() {
+        return mano;
     }
 
 }
