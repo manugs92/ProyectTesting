@@ -14,10 +14,12 @@ public class MyGdxGameAssetManager {
     public void loadImagesDuelScreen() {
         manager.load(imageSquare, Texture.class);
         manager.load(imageSquare2, Texture.class);
-        manager.load(backgroundScroll,Texture.class);
     }
 
     public void loadImageDeck() {
         manager.load(imageSquare, Texture.class);
     }
+
+    public void loadScrollLog() { manager.load(backgroundScroll,Texture.class);}
+
 }

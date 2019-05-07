@@ -1,24 +1,15 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.*;
-import gui.BackgroundScroll;
-
-import java.util.ArrayList;
-
-import static com.mygdx.model.Criatura.TipoElemental.FUEGO;
-import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
 
 /*
  * Screen Mostrada en duelo singlePlayer.
@@ -38,31 +29,27 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
 
-    //Variables temporales (hasta que el jugador se cree desde algun lado)
-    Jugador jugador = new Jugador("Manu",0,assetManager);
-    Jugador jugador2 = new Jugador("Isma",1,assetManager);
-
-    //Variables back end.
-    private Partida partida = new Partida(jugador);
-    private Tablero tablero = new Tablero(partida, assetManager);
-    private int xTablero=tablero.getCasillas().length;
-    private int yTablero=tablero.getCasillas()[0].length;
-    private int numCardsInHand;
-
-
     //Variables usadas por la GUI
-    private Texture textureBgScroll,textureCard,textureSpriteCard;
     private SpriteBatch batch;
-    private Image[] cartasManoJ1GUI = new Image[7];
     private Image[] cartasmanoJ2GUI = new Image[7];
     private Table tablatableroGUI = new Table();
-    private ScrollPane scrollPane;
-
+    private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
 
     //Atributos de la GUI
     private final int MEDIDA_CASILLA = 48;
     private float posyManoJ1 = 10;
     private float posyManoJ2 = MyGdxGame.SCREEN_HEIGHT-60;
+
+    //Variables temporales (hasta que el jugador se cree desde algun lado)
+    Jugador jugador = new Jugador("Manu",0,assetManager);
+    Jugador jugador2 = new Jugador("Isma",1,assetManager);
+
+    //Variables back end.
+    private Partida partida = new Partida(jugador,skin);
+    private Tablero tablero = new Tablero(partida, assetManager);
+    private int xTablero=tablero.getCasillas().length;
+    private int yTablero=tablero.getCasillas()[0].length;
+    private int numCardsInHand;
 
 
     public DuelScreen(ScreenManager screenManagerR) {
@@ -71,25 +58,19 @@ public class DuelScreen extends MyGdxGameScreen {
 
     @Override
     public void show() {
-
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
 
+        //Añadimos jugador2 a la partida.
         partida.addJugador(jugador2);
 
         //Debugeamos el stage, para ver como están posicionados los elementos.
         stage.setDebugAll(false);
 
-        textureCard = new Texture("icons\\handled_card.png");
-        tablero.setCasilla(1,0,new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,3,1),0);
-
-        /*GUI de la vista*/
-        Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
-        dibujarScroll(skin);
-
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
 
+        //Dibujamos todos las imagenes "estaticas".
         dibujarTablero();
         dibujarMagicasJ1();
         dibujarMagicasJ2();
@@ -109,10 +90,13 @@ public class DuelScreen extends MyGdxGameScreen {
         stage.act(Math.min(delta, 1 / 30f));
         batch.begin();
         batch.draw(textureBgScreen,0,0);
+        if(partida.getDuelLog().isNewMsg()) {
+            dibujarLog();
+            partida.getDuelLog().setNewMsgFalse();
+        }
         batch.end();
         dibujarManoJ1();
         stage.draw();
-
         batch.begin();
 
         //Dibujamos las cartas invocadas.
@@ -141,31 +125,8 @@ public class DuelScreen extends MyGdxGameScreen {
         textureBgScreen.dispose();
     }
 
-    private void dibujarScroll(Skin skin) {
-        textureBgScroll = assetManager.manager.get(assetManager.backgroundScroll, Texture.class);
-        textureBgScroll.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        Table scrollTable = new Table();
-        scrollTable.setPosition(0,0);
-        BackgroundScroll backgroundScroll = new BackgroundScroll(batch,textureBgScroll,0,0,0,0,MyGdxGame.SCREEN_WIDTH,MyGdxGame.SCREEN_HEIGHT);
-        scrollTable.setBackground(backgroundScroll);
-
-        scrollPane = new ScrollPane(scrollTable,skin);
-        scrollPane.setColor(Color.BLUE);
-        scrollPane.setPosition(0,0);
-        scrollPane.setWidth(400);
-        scrollPane.setHeight(stage.getHeight());
-        scrollPane.setScrollbarsVisible(true);
-        scrollPane.setForceScroll(false,true);
-        scrollPane.setFadeScrollBars(true);
-
-        for(int i=0;i<99;i++) {
-            Label label = new Label(String.valueOf(i),skin);
-            label.getStyle().fontColor.set(Color.WHITE);
-            scrollTable.add(label).expandX().expandY().fillX().pad(5,5,5,5);
-            scrollTable.row();
-        }
-
-        stage.addActor(scrollPane);
+    private void dibujarLog() {
+       stage.addActor(partida.getDuelLog().writeLog(assetManager,batch));
     }
 
     public void dibujarTablero() {
@@ -182,23 +143,19 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarManoJ1() {
         //Dibujar manoJ1
         if(partida.init==0) {
-            for(int i = 0; i<partida.getManoPartida().getMano().size(); i++) {
-                partida.getManoPartida().drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  cartasManoJ1GUI,  posyManoJ1, textureCard);
-                stage.addActor(cartasManoJ1GUI[i]);
+            for(int i = 0; i<partida.getManoPartida(0).getMano().size(); i++) {
+                partida.getManoPartida(0).drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  posyManoJ1);
+                stage.addActor(partida.getManoPartida(0).getCartaManoGUI()[i]);
             }
             partida.init=1;
         }
-        drawHandGraphic();
+        updateHand(0);
     }
 
-
-
-
-    private void drawHandGraphic() {
-        numCardsInHand=partida.getManoPartida().getMano().size();
-
+    private void updateHand(int jugador) {
+        numCardsInHand=partida.getManoPartida(jugador).getMano().size();
         if(numCardsInHand<partida.getCantidadCartas()) {
-            cartasManoJ1GUI[partida.getCantidadCartas()-1].remove();
+            partida.getManoPartida(jugador).getCartaManoGUI()[partida.getCantidadCartas()-1].remove();
             partida.setCantidadCartas(numCardsInHand);
         }
     }

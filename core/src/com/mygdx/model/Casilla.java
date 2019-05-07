@@ -122,9 +122,9 @@ public class Casilla {
                         if(selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
                             selectedCard.setFirstPosition(x2,y2);
                             partida.addNewInvoquedCard(selectedCard);
-                            ArrayList<Carta> manoJ1 = partida.getManoPartida().getMano();
+                            ArrayList<Carta> manoJ1 = partida.getManoPartida(0).getMano();
                             manoJ1.remove(selectedCard);
-                            partida.getManoPartida().setMano(manoJ1);
+                            partida.getManoPartida(0).setMano(manoJ1);
                             for (int i = 0; i < tablero.getCasillas().length; i++) {
                                 tablero.getCasilla(i, 0).setState(State.APAGADA);
                             }
@@ -135,6 +135,9 @@ public class Casilla {
                                 }
                             }
                         }
+                        partida.getDuelLog().addMsgToLog("monstruo colocado en casilla.");
+                        partida.getDuelLog().setNewMsgTrue();
+                        partida.getDuelLog().getScrollPane().remove();
                         selectedCard.setPosition(x2, y2);
                         selectedCard.setLastPosition(x2, y2);
                         setCriatura((Criatura) selectedCard);

@@ -1,6 +1,5 @@
 package com.mygdx.model;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -9,6 +8,8 @@ import java.util.ArrayList;
 public class Mano {
 
     private ArrayList<Carta> mano= new ArrayList<>();
+
+    private Image[] cartasManoGUI = new Image[7];
 
     public Mano(){
 
@@ -22,13 +23,13 @@ public class Mano {
 
     public void robar(Mazo mazo){ mano.add(mazo.getCartasMazo().get(0)); }
 
-    public void drawHand(int i, Partida partida, Tablero tablero, int MEDIDA_CASILLA, Image[] cartasManoJ1GUI, float posyManoJ1, Texture textureCard) {
-        cartasManoJ1GUI[i] = new Image(textureCard);
-        cartasManoJ1GUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
+    public void drawHand(int i, Partida partida, Tablero tablero, int MEDIDA_CASILLA, float posyManoJ1) {
+        cartasManoGUI[i] = new Image(mano.get(i).getImage());
+        cartasManoGUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
         final int finali = i;
 
         //Añadimos listener a cada casilla.
-        cartasManoJ1GUI[i].addListener(new ClickListener() {
+        cartasManoGUI[i].addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
@@ -70,5 +71,9 @@ public class Mano {
 
     public void setMano(ArrayList<Carta> mano) {
         this.mano = mano;
+    }
+
+    public Image[] getCartaManoGUI() {
+        return cartasManoGUI;
     }
 }
