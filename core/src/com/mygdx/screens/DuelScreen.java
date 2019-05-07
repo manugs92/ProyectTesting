@@ -50,7 +50,7 @@ public class DuelScreen extends MyGdxGameScreen {
     private int yTablero=tablero.getCasillas()[0].length;
 
     //Informacion de carta
-    CardInformation cardInformation=new CardInformation();
+    CardInformation cardInformation= new CardInformation();
 
 
     public DuelScreen(ScreenManager screenManagerR) {
@@ -102,8 +102,7 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.begin();
 
        //Mostramos la informacion de la carta
-        if(cardInformation.isNewCardInfo())
-       cardInformation.updateInfoPane();
+        if(cardInformation.isNewCardInfo()) cardInformation.updateInfoPane();
 
         //Dibujamos las cartas invocadas.
         for (Carta carta : partida.getInvoquedCards()) {
