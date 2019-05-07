@@ -67,4 +67,7 @@ public class Partida {
     public void setDuelLog(DuelLog duelLog) {
         this.duelLog = duelLog;
     }
+
+//    public Jugador getManoPartida(int i) {
+//    }
 }

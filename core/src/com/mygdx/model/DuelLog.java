@@ -27,25 +27,6 @@ public class DuelLog {
         duelLog.add("Duelo empezado.");
     }
 
-    public void setNewMsgTrue() {
-        this.newMsg=true;
-    }
-
-    public void setNewMsgFalse() {
-        this.newMsg = false;
-    }
-
-    public boolean isNewMsg() {
-        return this.newMsg;
-    }
-
-    public ScrollPane getScrollPane() {
-        return scrollPane;
-    }
-
-    public void addMsgToLog(String msg){
-        duelLog.add(msg);
-    }
 
     public ScrollPane writeLog(MyGdxGameAssetManager assetManager, Batch batch) {
         assetManager.loadScrollLog();
@@ -78,5 +59,24 @@ public class DuelLog {
 
         newMsg=false;
         return scrollPane;
+    }
+    public void setNewMsgTrue() {
+        this.newMsg=true;
+    }
+
+    public void setNewMsgFalse() {
+        this.newMsg = false;
+    }
+
+    public boolean isNewMsg() {
+        return this.newMsg;
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public void addMsgToLog(String msg){
+        duelLog.add(msg);
     }
 }

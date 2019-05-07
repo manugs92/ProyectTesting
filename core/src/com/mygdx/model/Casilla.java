@@ -101,12 +101,20 @@ public class Casilla {
         this.state = state;
     }
 
-    public void addListenerToBoard(Tablero tablero, Partida partida, int x2, int y2) {
+    public void addListenerToBoard(Tablero tablero, Partida partida, int x2, int y2, CardInformation cardInformation) {
         imageCasilla.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
                 //Listener cuando tenemos una carta escogida.
                 Carta selectedCard = partida.getSelectedCard();
+
+                if(selectedCard != null) {
+                  cardInformation.setNewCardInfo(true);
+                  cardInformation.carta=selectedCard;
+                }else{
+                    cardInformation.setNewCardInfo(false);
+
+                }
 
                 //si la carta seleccionada no es nula, ni mágica ni equipamiento y  donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo)
                 if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && Casilla.this.getCriatura() == null && Casilla.this.getState() != State.APAGADA) {
@@ -122,7 +130,7 @@ public class Casilla {
                         if(selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
                             selectedCard.setFirstPosition(x2,y2);
                             partida.addNewInvoquedCard(selectedCard);
-                            partida.getManoPartida(0).getMano().remove(selectedCard);
+                          //  partida.getManoPartida(0).getMano().remove(selectedCard);
                             for (int i = 0; i < tablero.getCasillas().length; i++) {
                                 tablero.getCasilla(i, 0).setState(State.APAGADA);
                             }
