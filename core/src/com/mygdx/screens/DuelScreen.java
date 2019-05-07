@@ -147,24 +147,21 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private void dibujarMano(int jugadorId) {
         //Dibujar manos
-        if(partida.getJugador(jugadorId).getMano().isCartaJugada() ||!partida.getJugador(jugadorId).getMano().isManoCargada() ) {
-            System.out.println("dibujo la mano de "+jugadorId);
+        if(!partida.getJugador(jugadorId).getMano().isManoCargada() ) {
             for(int i = 0; i<partida.getJugador(jugadorId).getMano().getCartasMano().size(); i++) {
                 partida.getJugador(jugadorId).getMano().drawHand(i, partida,  tablero,  MEDIDA_CASILLA,  jugadorId);
                 stage.addActor(partida.getJugador(jugadorId).getMano().getCartaManoGUI()[i]);
             }
-            if(partida.getJugador(jugadorId).getMano().isCartaJugada()) {
-                partida.getJugador(jugadorId).getMano().setCartaJugada(false);
-            }
             partida.getJugador(jugadorId).getMano().setManoCargada(true);
-            updateHand(jugadorId);
         }
+        updateHand(jugadorId);
     }
 
     private void updateHand(int jugadorId) {
         if(partida.getJugador(jugadorId).getCardsInHand()>partida.getJugador(jugadorId).getMano().getCartasMano().size()) {
             partida.getJugador(jugadorId).getMano().getCartaManoGUI()[partida.getJugador(jugadorId).getCardsInHand()-1].remove();
             partida.getJugador(jugadorId).setCardsInHand(partida.getJugador(jugadorId).getMano().getCartasMano().size());
+            partida.getJugador(jugadorId).getMano().setCartaJugada(false);
         }
     }
 

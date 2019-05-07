@@ -129,9 +129,7 @@ public class Casilla {
                         if(selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
                             selectedCard.setFirstPosition(x2,y2);
                             partida.addNewInvoquedCard(selectedCard);
-                            partida.getJugador(0).getMano().setCartaJugada(true);
                             partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
-                            System.out.println(partida.getJugador(0).getMano().getCartasMano().size());
                             for (int i = 0; i < tablero.getCasillas().length; i++) {
                                 tablero.getCasilla(i, 0).setState(State.APAGADA);
                             }
@@ -177,7 +175,6 @@ public class Casilla {
         Criatura selectedCard;
         selectedCard = tablero.getCasilla(x2, y2).getCriatura();
         partida.setSelectedCard(selectedCard);
-        System.out.println(criatura.getMovimiento());
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for(int y=0;y<tablero.getCasillas()[x].length;y++) {
                 if (!tablero.getCasilla(x, y).tieneCriatura()) {
