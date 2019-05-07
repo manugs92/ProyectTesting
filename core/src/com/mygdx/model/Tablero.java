@@ -18,6 +18,8 @@ public class Tablero {
     public final int MAX_MAGIC_CARDS = 3;
     public float POS_Y_MAGICAS_J1 = 87;
     public float POS_Y_MAGICAS_J2 = MyGdxGame.SCREEN_HEIGHT-133;
+    private CardInformation cardInformation=new CardInformation();
+
 
     //Constantes del tablero. (internas)
     public final int TOTAL_CASILLAS_X = 7;
@@ -34,6 +36,7 @@ public class Tablero {
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
 
+
         //Creamos casillas de movimiento del tablero.
         for(int x=0;x<=TOTAL_CASILLAS_X-1;x++) {
             for(int y=0;y<=TOTAL_CASILLAS_Y-1;y++) {
@@ -44,7 +47,7 @@ public class Tablero {
                 casillas[x][y].setState(Casilla.State.APAGADA);
                 casillas[x][y].setPositionGUI(POS_X_TABLERO +(MEDIDA_CASILLA*x), POS_Y_TABLERO +(MEDIDA_CASILLA*y));
                 casillas[x][y].getImageCasilla().setPosition(MEDIDA_CASILLA*x,MEDIDA_CASILLA*y);
-                casillas[x][y].addListenerToBoard(this,partida,x, y);
+                casillas[x][y].addListenerToBoard(this,partida,x, y,cardInformation);
             }
         }
 
