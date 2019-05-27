@@ -25,14 +25,22 @@ public class DuelScreen extends MyGdxGameScreen {
     *  Crear el "shuffle", y coger las cartas de ahí para añadirlas a la mano.
     *  En el mazo renderizado, listener de robar cartas cuando es tu turno.
     *  isma
-    *  TODO: Botón de pasar turno. (solo cuando sea tu turno esté activo)
-    *  TODO: No poder tener más cartas del máximo permitido. (Obligar a tirar, haciendo click derecho)
-    *  TODO: En partida poner de quien es el turno. (Iluminar el avatar de ese jugador)
-    *  TODO: Solo un ataque de monstruo por turno.
+    *  TODO: No poder tener más cartas del máximo permitido. (Obligar a tirar, haciendo click derecho, al darle a finalizar turno)
+    *
+    *  TODO: Mostrar vidas de los jugadores, y la cantidad que estos tienen. (encima del corazón)
+    *  TODO: Mostrar orbes de invocación, y la cantidad que estos tienen. (encima de los orbes)
     *
     *  TODO: Botón de rendirse. -> Al hacer click, ir a pantalla "Resumen de partida".
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
-    *  TODO: Método para atacar al monstruo.
+    *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance)
+    *  TODO: Método de atacar monstruo.
+    *  TODO: Método de quitar vidas.
+    *  TODO: Método de quitar orbes al invocar.
+    *
+    *  TODO: Todo lo que se haga, mostrarlo en el log.
+    *
+    *  TODO: Crear Screen de resumen partida. (Poner quien ha ganado, el log, vidas, turno ..etc)
+    *  TODO: Botón de ir a menú principal.
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
