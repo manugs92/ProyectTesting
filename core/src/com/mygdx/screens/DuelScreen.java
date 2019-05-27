@@ -249,9 +249,9 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     private void dibujarAvisos() {
-        if(partida.getAvisosPartida().isShowed()) {
+        if(partida.getAvisosPartida().isShowed() && partida.getJugador(0).getMano().getCartasMano().size()> Partida.MAX_CARDS_IN_HAND ) {
             font.setColor(255,255,255,255);
-            font.draw(batch, String.valueOf(partida.getAvisosPartida().getTexttoShow()),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
+            font.draw(batch, partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
         }
 
     }

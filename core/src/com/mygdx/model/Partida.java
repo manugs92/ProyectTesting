@@ -72,13 +72,13 @@ public class Partida {
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println(jugadores.get(ownerTurn).getMano().getCartasMano().size());
-                System.out.println(MAX_CARDS_IN_HAND);
                 if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
                     avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
+                    getJugador(0).avoidToDrawCard(false);
+                }else {
+                    ownerTurn = 1;
+                    turn++;
                 }
-                ownerTurn = 1;
-                turn++;
                 super.clicked(event, x, y);
             }
         });

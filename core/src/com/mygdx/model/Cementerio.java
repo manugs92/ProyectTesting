@@ -104,4 +104,7 @@ public class Cementerio {
         isShowed = showed;
     }
 
+    public void setCardInGraveyard(Carta carta) {
+        this.cardsInGraveyard.add(carta);
+    }
 }

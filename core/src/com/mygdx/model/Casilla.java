@@ -98,18 +98,16 @@ public class Casilla {
                 Carta selectedCard = partida.getSelectedCard();
 
                 if(partida.getJugador(0).getCementerio().isSelected()) {
-                    System.out.println("entro aqui.");
                     selectedCard=null;
-                    partida.setSelectedCard(selectedCard);
+                    partida.setSelectedCard(null);
                     partida.getJugador(0).getCementerio().setSelected(false);
                     partida.getJugador(0).getCementerio().setShowed(false);
                 }
                 //Seleccionamos la carta donde hemos hecho click. (Mediante partida, ya que la almacena ella)
-
                 partida.getCardInformation().updateCardInformation(partida);
 
                 //si la carta seleccionada no es nula, ni mágica ni equipamiento y  donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo)
-                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && Casilla.this.getCriatura() == null && Casilla.this.getState() != State.APAGADA && !((Criatura)selectedCard).isMoved()) {
+                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && Casilla.this.getCriatura() == null && Casilla.this.getState() != State.APAGADA) {
                     //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)y no es trampa
                     if (selectedCard.getLastPosition().x != -1 && selectedCard.getLastPosition().y != -1 && selectedCard.getTipo() != Carta.Tipo.TRAMPA) {
                         //aqui borras el monstruo de la casilla anterior.
@@ -142,15 +140,15 @@ public class Casilla {
                         partida.getCardInformation().updateCardInformation(partida);
                     }
                 } else {
-                    if(selectedCard!=null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura()) && !((Criatura)selectedCard).isMoved()) {
+                    if(selectedCard!=null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
                         tablero.setAllSquaresToOff(tablero);
-                        if(tablero.getCasilla(x2,y2).tieneCriatura()) {
+                        if(tablero.getCasilla(x2,y2).tieneCriatura() && !tablero.getCasilla(x2,y2).getCriatura().isMoved()) {
                             casillasDisponibles(tablero, x2, y2, partida);
                         }else {
-                            partida.setSelectedCard(null);
+                            partida.setSelectedCard(tablero.getCasilla(x2,y2).getCriatura());
                             partida.getCardInformation().updateCardInformation(partida);
                         }
-                    }else if(selectedCard!=null && selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura()) && !((Criatura)selectedCard).isMoved()) {
+                    }else if(selectedCard!=null && selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
                         tablero.setAllSquaresToOff(tablero);
                         partida.setSelectedCard(null);
                         partida.getCardInformation().updateCardInformation(partida);
@@ -161,6 +159,8 @@ public class Casilla {
                             if(!((Criatura)selectedCard).isMoved()) {
                                 casillasDisponibles(tablero, x2, y2, partida);
                             }
+                            partida.setSelectedCard(selectedCard);
+                            partida.getCardInformation().updateCardInformation(partida);
                         }
                     }
                 }

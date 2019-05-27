@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 public class AvisosPartida {
 
     private enum avisos {DESCARTAR_CARTAS};
-    private String texttoShow;
+    private String texttoShow = "";
 
     private final float posXAvisos = 870;
-    private final float posYAvisos = 220;
+    private final float posYAvisos = 180;
 
     private avisos avisos = null;
     private boolean showed = false;
@@ -30,6 +30,7 @@ public class AvisosPartida {
                 default:
                     avisos = null;
                     showed = false;
+                    texttoShow ="";
                     break;
         }
     }
@@ -41,5 +42,7 @@ public class AvisosPartida {
     public boolean isShowed() {
         return showed;
     }
+
+    public avisos getAvisos() {return avisos;}
 
 }

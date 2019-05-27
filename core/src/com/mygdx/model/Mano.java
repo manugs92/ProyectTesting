@@ -85,7 +85,7 @@ public class Mano {
                     });
 
 
-                    if(partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) {
+                    if(partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali)) && partida.getOwnerTurn()==0) {
                         for(int i=0;i<=casillas.length-1;i++) {
                             boolean avoidInvoke = true;
                             //Comprobamos si la casilla no tiene un monstruo invocado.
@@ -126,7 +126,17 @@ public class Mano {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    System.out.println("xd");
+                    if(cartasMano.size()>Partida.MAX_CARDS_IN_HAND && partida.getAvisosPartida().isShowed()) {
+                        partida.getJugador(0).getCementerio().setCardInGraveyard(cartasMano.get(i));
+                        cartasMano.remove(cartasMano.get(i));
+                        if(cartasMano.size()<=Partida.MAX_CARDS_IN_HAND) {
+                            partida.getAvisosPartida().setAvisos(0,cartasMano.size());
+                            partida.setOwnerTurn(1);
+                            partida.addTurn();
+                        }else {
+                            partida.getAvisosPartida().setAvisos(1,cartasMano.size());
+                        }
+                    }
                 }
             });
         }
