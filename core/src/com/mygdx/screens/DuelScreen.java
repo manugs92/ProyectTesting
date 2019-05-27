@@ -20,6 +20,7 @@ public class DuelScreen extends MyGdxGameScreen {
 
 
     /*
+    //
     *  Crear el "shuffle", y coger las cartas de ahí para añadirlas a la mano.
     *  En el mazo renderizado, listener de robar cartas cuando es tu turno.
     *  TODO: No poder tener más cartas del máximo permitido. (Obligar a tirar)
