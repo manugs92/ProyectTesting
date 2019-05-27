@@ -22,7 +22,7 @@ public class MyGdxGameScreen implements Screen {
         this.stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
 
-        textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.jpg"));
+        textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 

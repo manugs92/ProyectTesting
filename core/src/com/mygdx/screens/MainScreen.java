@@ -40,7 +40,7 @@ public class MainScreen extends MyGdxGameScreen {
 
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("backgrounds\\bg.jpg"));
+        texture = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
 
 
         //Listeners de los botones.

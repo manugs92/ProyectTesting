@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.*;
@@ -23,10 +25,11 @@ public class DuelScreen extends MyGdxGameScreen {
     //
     *  Crear el "shuffle", y coger las cartas de ahí para añadirlas a la mano.
     *  En el mazo renderizado, listener de robar cartas cuando es tu turno.
+    *  isma
+    *  TODO: Botón de pasar turno. (solo cuando sea tu turno esté activo)
     *  TODO: No poder tener más cartas del máximo permitido. (Obligar a tirar, haciendo click derecho)
     *  TODO: En partida poner de quien es el turno. (Iluminar el avatar de ese jugador)
     *  TODO: Solo un ataque de monstruo por turno.
-    *  TODO: Botón de pasar turno. (solo cuando sea tu turno esté activo)
     *
     *  TODO: Botón de rendirse. (Hacerlo con longclick)
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
@@ -74,10 +77,12 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Dibujamos todos las imagenes "estaticas".
         dibujarTablero();
+        createButtons();
         partida.getJugadores().forEach(j -> {
             dibujarMagicas(j.getId());
             dibujarCementerio(j.getId());
             dibujarAvatarJugadores(j.getId());
+
             partida.getJugador(j.getId()).getCementerio().addListenerToGraveyard(partida,j.getId());
         });
     }
@@ -218,4 +223,24 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarAvatarJugadores(int jugadorId) {
         stage.addActor(partida.getJugador(jugadorId).getAvatar());
     }
+
+    private void createButtons(){
+        Image passT=new Image();
+        passT.setPosition(100,200);
+        passT =new Image(new Texture("icons/pasarturno_0.png"));
+        stage.addActor(passT);
+
+        passT.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+
+
+
+            }
+        });
+
+    }
+
+
 }
