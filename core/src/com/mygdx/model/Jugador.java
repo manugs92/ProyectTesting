@@ -24,6 +24,8 @@ public class Jugador {
     private int invocationOrbs = Partida.INITIAL_INVOCATION_ORBS;
     private Image livesGUI;
     private Image invocationOrbsGUI;
+    private Vector2 poslives = new Vector2();
+    private Vector2 posInvocationOrbs = new Vector2();
 
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
