@@ -28,7 +28,7 @@ public class Jugador {
         assetManager.manager.finishLoading();
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
-            posAvatar.x = MyGdxGame.SCREEN_WIDTH-128;
+            posAvatar.x = MyGdxGame.SCREEN_WIDTH - 128;
             posAvatar.y = 10;
         }else {
             avatar = new Image(assetManager.manager.get(assetManager.rivalAvatar,Texture.class));
