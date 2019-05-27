@@ -9,7 +9,7 @@ public class MyGdxGameAssetManager {
 
     public final String imageSquare = "icons/casilla48.png";
     public final String imageSquare2 = "icons/casilla48_2.png";
-    public final String imageBackCard = "icons/casilla48.png";
+    public final String imageBackCard = "icons/back_card.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
 
     public final String myAvatar = "icons/mugshot3.png";
