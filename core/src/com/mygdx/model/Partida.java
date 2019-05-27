@@ -2,9 +2,11 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -19,8 +21,11 @@ public class Partida {
     public static final int INITIAL_LIVES = 20;
     public static final int INITIAL_INVOCATION_ORBS = 4;
 
+
     private final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
     private final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;
+    private final float posXButtonPassTurn = 900;
+    private final float posYButtonPassTurn = 200;
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private Carta selectedCard;
@@ -34,6 +39,7 @@ public class Partida {
     private Image buttonRendirse;
     private int winnerId;
     private estadoPartida estadoPartida;
+    private Image passTurn;
 
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
         assetManager.loadImagesDuelScreen();
@@ -50,7 +56,7 @@ public class Partida {
         ownerTurn=jugador.getId();
         jugador.avoidToDrawCard(true);
         winnerId=-1;
-        buttonRendirse = new Image(assetManager.manager.get(assetManager.imageButtonRendirse, Texture.class));
+        buttonRendirse = new Image(assetManager.manager.get(assetManager.whiteFlagIcon, Texture.class));
         buttonRendirse.setPosition(posXButtonRendirse,posYButtonRendirse);
         buttonRendirse.addListener(new ActorGestureListener() {
             @Override
@@ -58,6 +64,16 @@ public class Partida {
                 winnerId=1;
                 estadoPartida = estadoPartida.FINALIZADA;
                 return super.longPress(actor, x, y);
+            }
+        });
+        passTurn =new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
+        passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
+        passTurn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ownerTurn = 1;
+                turn++;
+                super.clicked(event, x, y);
             }
         });
     }
@@ -137,4 +153,6 @@ public class Partida {
     public int getWinnerId() { return winnerId;}
 
     public void setWinnerId(int playerId) {this.winnerId=playerId;}
+
+    public Image getPassTurn() { return passTurn; }
 }

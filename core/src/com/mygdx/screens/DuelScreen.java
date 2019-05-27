@@ -75,12 +75,9 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Dibujamos todos las imagenes "estaticas".
         dibujarTablero();
-        createButtons();
         partida.getJugadores().forEach(j -> {
             dibujarMagicas(j.getId());
             dibujarCementerio(j.getId());
-            dibujarAvatarJugadores(j.getId());
-
             partida.getJugador(j.getId()).getCementerio().addListenerToGraveyard(partida,j.getId());
         });
 
@@ -105,6 +102,7 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarMano(j.getId());
             dibujarMazo(j.getId());
             dibujarNombreJugador(j.getId());
+            dibujarAvatarJugadores(j.getId());
         });
 
         drawArrows();
@@ -113,6 +111,11 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Mostramos la informacion de la carta
         if(partida.getCardInformation().isNewCardInfo()) { dibujarInformacionCarta(); }
+
+        //Mostramos botón de pasar turno si es tu turno.
+        if(partida.getTurn()==0) { stage.addActor(partida.getPassTurn()); }
+        else { partida.getPassTurn().remove(); }
+
 
         stage.draw();
         batch.begin();
@@ -214,26 +217,23 @@ public class DuelScreen extends MyGdxGameScreen {
         }
     }
 
-    private void dibujarAvatarJugadores(int jugadorId) { stage.addActor(partida.getJugador(jugadorId).getAvatar()); }
+    private void dibujarAvatarJugadores(int jugadorId) {
+        if(partida.getOwnerTurn()==jugadorId) {
+            stage.addActor(partida.getJugador(jugadorId).getAvatar());
+            partida.getJugador(jugadorId).getAvatar2().remove();
+        }else {
+            stage.addActor(partida.getJugador(jugadorId).getAvatar2());
+            partida.getJugador(jugadorId).getAvatar().remove();
+        }
+
+    }
 
     private void dibujarNombreJugador(int jugadorId) {
         font.setColor(255,255,255,255);
         font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getNombre()), partida.getJugador(jugadorId).getPosName().x, partida.getJugador(jugadorId).getPosName().y);
     }
 
-    private void dibujarBotones() { stage.addActor(partida.getButtonRendirse()); }
-
-    private void createButtons(){
-        Image passT=new Image();
-        passT.setPosition(100,200);
-        passT =new Image(new Texture("icons/pasarturno_0.png"));
-        stage.addActor(passT);
-
-        passT.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-            }
-        });
+    private void dibujarBotones() {
+        stage.addActor(partida.getButtonRendirse());
     }
 }
