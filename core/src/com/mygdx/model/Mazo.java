@@ -66,7 +66,7 @@ public class Mazo {
     }
 
     public ArrayList<Carta> DefaultDeck() {
-        Texture textureCard = new Texture("icons\\handled_card.png");
+        Texture textureCard = new Texture("icons\\carta.png");
         Texture textureSpriteCard= new Texture("icons\\spyro.png");
         Texture textureCard2 = new Texture("icons\\handled_card2.png");
         Texture textureSpriteCard2= new Texture("icons\\Spritecard2.png");
