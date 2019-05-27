@@ -18,7 +18,6 @@ public class Tablero {
     public final int MAX_MAGIC_CARDS = 3;
     public float POS_Y_MAGICAS_J1 = 87;
     public float POS_Y_MAGICAS_J2 = MyGdxGame.SCREEN_HEIGHT-133;
-    private CardInformation cardInformation=new CardInformation();
 
 
     //Constantes del tablero. (internas)
@@ -29,8 +28,7 @@ public class Tablero {
     private Casilla[][] casillas= new Casilla[TOTAL_CASILLAS_X][TOTAL_CASILLAS_Y];
     private CasillaMagica[] casillaMagicaJ1 = new CasillaMagica[3];
     private CasillaMagica[] casillaMagicaJ2  = new CasillaMagica[3];
-    private ArrayList<Carta> cementerioJ1 = new ArrayList<Carta>();
-    private ArrayList<Carta> cementerioJ2 = new ArrayList<Carta>();
+
 
     public Tablero(Partida partida,MyGdxGameAssetManager assetManager) {
         assetManager.loadImagesDuelScreen();
@@ -47,7 +45,7 @@ public class Tablero {
                 casillas[x][y].setState(Casilla.State.APAGADA);
                 casillas[x][y].setPositionGUI(POS_X_TABLERO +(MEDIDA_CASILLA*x), POS_Y_TABLERO +(MEDIDA_CASILLA*y));
                 casillas[x][y].getImageCasilla().setPosition(MEDIDA_CASILLA*x,MEDIDA_CASILLA*y);
-                casillas[x][y].addListenerToBoard(this,partida,x, y,cardInformation);
+                casillas[x][y].addListenerToBoard(this,partida,x, y);
             }
         }
 
@@ -128,14 +126,6 @@ public class Tablero {
 
     public Casilla[][] getCasillas() {
         return casillas;
-    }
-
-    public void addCardToGraveyard(int player,Carta carta) {
-        if(player==0) {
-            cementerioJ1.add(carta);
-        }else{
-            cementerioJ2.add(carta);
-        }
     }
 
     public void setAllSquaresToOff(Tablero tablero) {

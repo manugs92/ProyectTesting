@@ -1,6 +1,7 @@
 package com.mygdx.model;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.game.MyGdxGameAssetManager;
 
 import java.util.ArrayList;
 
@@ -9,19 +10,27 @@ public class Partida {
     private final int MAX_CARDS_IN_HAND = 6;
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
-    private  Carta selectedCard = new Carta();
+    private Carta selectedCard;
     private ArrayList<Criatura> criaturasInvocadas;
     private ArrayList<Carta> cartasColocadas;
+    private Tablero tablero;
     private DuelLog duelLog;
-    public int init=0;
+    private CardInformation cardInformation;
+    private int turn;
+    private int ownerTurn;
 
 
-    public Partida(Jugador jugador, Skin skin) {
-        this.jugadores.add(jugador);
-        this.setSelectedCard(null);
-        this.criaturasInvocadas =  new ArrayList<>();
-        this.cartasColocadas = new ArrayList<>();
-        this.duelLog = new DuelLog(skin);
+    public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
+        jugadores.add(jugador);
+        selectedCard = null;
+        criaturasInvocadas =  new ArrayList<>();
+        cartasColocadas = new ArrayList<>();
+        duelLog = new DuelLog(skin);
+        tablero=new Tablero(this, assetManager);
+        cardInformation=new CardInformation();
+        turn=0;
+        ownerTurn=jugador.getId();
+        jugador.avoidToDrawCard(true);
     }
 
     public Carta getSelectedCard() {
@@ -68,6 +77,28 @@ public class Partida {
         this.duelLog = duelLog;
     }
 
-//    public Jugador getManoPartida(int i) {
-//    }
+    public Tablero getTablero() {
+        return this.tablero;
+    }
+
+    public CardInformation getCardInformation() {
+        return cardInformation;
+    }
+
+    public void addTurn() {
+        turn+=1;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setOwnerTurn(int idPlayer) {
+        ownerTurn=idPlayer;
+    }
+
+    public int getOwnerTurn() {
+        return ownerTurn;
+    }
+
 }

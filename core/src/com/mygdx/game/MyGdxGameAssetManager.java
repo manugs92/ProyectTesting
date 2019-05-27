@@ -12,6 +12,9 @@ public class MyGdxGameAssetManager {
     public final String imageBackCard = "icons/casilla48.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
 
+    public final String myAvatar = "icons/mugshot3.png";
+    public final String rivalAvatar = "icons/mugshot3.png";
+
     public void loadImagesDuelScreen() {
         manager.load(imageSquare, Texture.class);
         manager.load(imageSquare2, Texture.class);
@@ -24,5 +27,10 @@ public class MyGdxGameAssetManager {
     public void loadBackCard() {manager.load(imageBackCard,Texture.class);}
 
     public void loadScrollLog() { manager.load(backgroundScroll,Texture.class);}
+
+    public void loadAvatars() {
+        manager.load(myAvatar,Texture.class);
+        manager.load(rivalAvatar,Texture.class);
+    }
 
 }

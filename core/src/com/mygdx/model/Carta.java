@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.net.InetAddress;
 
-public class Carta {
+public abstract class Carta {
     public enum Tipo {
         CRIATURA,
         MAGICA,

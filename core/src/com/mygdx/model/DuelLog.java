@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class DuelLog {
 
-    ArrayList<String> duelLog = new ArrayList<>();
-    boolean newMsg;
-    Texture textureBgScroll;
-    Skin skin;
-    ScrollPane scrollPane;
+    private ArrayList<String> duelLog = new ArrayList<>();
+    private boolean newMsg;
+    private Texture textureBgScroll;
+    private Skin skin;
+    private ScrollPane scrollPane;
 
     public DuelLog(Skin skin) {
         this.skin=skin;

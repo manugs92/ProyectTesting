@@ -8,9 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class CasillaMagica {
 
-    //CONSTANTES DE CASILLAS MAGICAS
-    public static final int MEDIDA_CASILLA = 48;
-
     private Magica cartaMagica;
     private Vector2 positionGUI = new Vector2();
     private Texture textureCasilla;

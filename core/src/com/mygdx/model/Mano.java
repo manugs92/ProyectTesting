@@ -9,49 +9,66 @@ import com.mygdx.game.MyGdxGameAssetManager;
 
 import java.util.ArrayList;
 
+import static com.mygdx.model.Casilla.MEDIDA_CASILLA;
+
 public class Mano {
 
-    private float posyManoJ1 = 10;
-    private float posyManoJ2 = MyGdxGame.SCREEN_HEIGHT-60;
+    public final static float POS_Y_MANO_J1 = 10;
+    private final float POS_Y_MANO_J2 = MyGdxGame.SCREEN_HEIGHT-60;
 
     private ArrayList<Carta> cartasMano = new ArrayList<>();
-    private boolean cartaJugada;
+    private int numberCardsInHand;
+    private int cartaJugada;
     private boolean manoCargada;
 
-    private Image[] cartasManoGUI = new Image[7];
-    private Image[] defaultImage = new Image[7];
+
+    private ArrayList<Image> cartasManoGUI = new ArrayList<>();
+    private ArrayList<Image> defaultImage = new ArrayList<>();
+    private MyGdxGameAssetManager assetManager =  new MyGdxGameAssetManager();
 
 
     public Mano(Mazo mazo){
-        MyGdxGameAssetManager assetManager =  new MyGdxGameAssetManager();
         assetManager.loadBackCard();
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
+        ArrayList<Carta> cartasToRemove = new ArrayList<>();
         for(int i=0;i<5;i++) {
-            this.cartasMano.add(mazo.getCartasMazo().get(i));
-            this.defaultImage[i] = new Image(assetManager.manager.get(assetManager.imageBackCard, Texture.class));
+            cartasMano.add(mazo.getShuffleMazo().get(i));
+            cartasToRemove.add(mazo.getShuffleMazo().get(i));
+            defaultImage.add(i,new Image(assetManager.manager.get(assetManager.imageBackCard, Texture.class)));
         }
-        this.cartaJugada=false;
-        this.manoCargada=false;
+        mazo.getShuffleMazo().removeAll(cartasToRemove);
+        cartaJugada=0;
+        manoCargada=false;
+        numberCardsInHand=5;
     }
 
-    public void robar(Mazo mazo){ cartasMano.add(mazo.getCartasMazo().get(0)); }
+    public void robar(Mazo mazo){ cartasMano.add(mazo.getShuffleMazo().get(0)); }
 
-    public void drawHand(int i, Partida partida, Tablero tablero, int MEDIDA_CASILLA, int jugadorId) {
+    public void drawHand(int i, Partida partida, int jugadorId) {
+
+        partida.getJugadores().forEach(j -> {
+            if(j.getCementerio().isSelected()) {
+                partida.setSelectedCard(null);
+                partida.getTablero().setAllSquaresToOff(partida.getTablero());
+            }
+        });
+
+        Tablero tablero = partida.getTablero();
 
         if(jugadorId==0) {
-            cartasManoGUI[i] = new Image(cartasMano.get(i).getImage());
-            cartasManoGUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ1);
+            cartasManoGUI.add(i,new Image(cartasMano.get(i).getImage()));
+            cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
         }else {
-            cartasManoGUI[i] = defaultImage[i];
-            cartasManoGUI[i].setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i),posyManoJ2);
+            cartasManoGUI.add(i,defaultImage.get(i));
+            cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J2);
         }
 
         final int finali = i;
 
         if(jugadorId==0) {
             //Añadimos listener a cada casilla.
-            cartasManoGUI[i].addListener(new ClickListener() {
+            cartasManoGUI.get(i).addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
@@ -59,34 +76,50 @@ public class Mano {
                     //disponibilidad de invocación a true.
                     Casilla[][] casillas = tablero.getCasillas();
                     tablero.setAllSquaresToOff(tablero);
-                    for(int i=0;i<=casillas.length-1;i++) {
-                        boolean avoidInvoke = true;
-                        //Comprobamos si la casilla no tiene un monstruo invocado.
-                        if(tablero.getCasilla(i,0).getCriatura()==null) {
-                            //Si no hemos invocado ninguna carta, podremos invocar.
-                            if(partida.getInvoquedCards().size()>0) {
-                                //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y dond están.
-                                for (Carta carta : partida.getInvoquedCards()) {
-                                    //Si la posición de alguna carta invocada coincide, no se podrá invocar.
-                                    if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
-                                        avoidInvoke = false;
+                    partida.getJugadores().forEach(j -> {
+                        j.getCementerio().setSelected(false);
+                        j.getCementerio().setShowed(false);
+                    });
+
+
+                    if(partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) {
+                        for(int i=0;i<=casillas.length-1;i++) {
+                            boolean avoidInvoke = true;
+                            //Comprobamos si la casilla no tiene un monstruo invocado.
+                            if(tablero.getCasilla(i,0).getCriatura()==null) {
+                                //Si no hemos invocado ninguna carta, podremos invocar.
+                                if(partida.getInvoquedCards().size()>0) {
+                                    //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y donde están.
+                                    for (Carta carta : partida.getInvoquedCards()) {
+                                        //Si la posición de alguna carta invocada coincide, no se podrá invocar.
+                                        if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
+                                            avoidInvoke = false;
+                                        }
                                     }
-                                }
-                                //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
-                                if(avoidInvoke) {
+                                    //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
+                                    if(avoidInvoke) {
+                                        tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
+                                    }
+                                    //Si no tiene ningun monstruo invocado, podremos invocar.
+                                }else {
                                     tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                                 }
-                                //Si no tiene ningun monstruo invocado, podremos invocar.
-                            }else {
-                                tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                             }
                         }
+                        partida.setSelectedCard(cartasMano.get(finali));
+                    }else {
+                        partida.setSelectedCard(null);
+                        partida.getCardInformation().updateCardInformation(partida);
                     }
-                    partida.setSelectedCard(cartasMano.get(finali));
+
+                    if(partida.getSelectedCard()!= null) {
+                        partida.getCardInformation().setNewCardInfo(true);
+                        partida.getCardInformation().setCardDetailInfo(partida.getSelectedCard());
+                        partida.getCardInformation().getInfoPane().remove();
+                    }
                 }});
         }
     }
-
 
     public ArrayList<Carta> getCartasMano() {
         return cartasMano;
@@ -96,15 +129,47 @@ public class Mano {
         this.cartasMano = cartasMano;
     }
 
-    public Image[] getCartaManoGUI() {
+    public ArrayList<Image> getCartaManoGUI() {
         return cartasManoGUI;
     }
 
-    public boolean isCartaJugada() { return cartaJugada; }
+    public int getCartaJugada() { return cartaJugada; }
 
-    public void setCartaJugada(boolean cartaJugada) { this.cartaJugada = cartaJugada; }
+    public void setCartaJugada(int cartaJugada) { this.cartaJugada = cartaJugada; }
 
     public boolean isManoCargada() { return manoCargada; }
 
     public void setManoCargada(boolean manoCargada) { this.manoCargada = manoCargada; }
+
+    public int getCardsInHand() {
+        return numberCardsInHand;
+    }
+
+    public void setCardsInHand(int number) {
+        this.numberCardsInHand=number;
+    }
+
+    public void updateHand(Partida partida) {
+
+        manoCargada=true;
+        ArrayList<Image> cardsToRemove = new ArrayList<>();
+
+        if(numberCardsInHand > cartasMano.size()) {
+            numberCardsInHand = cartasMano.size();
+            cartasManoGUI.get(cartaJugada).remove();
+            cartasManoGUI.get(cartasMano.size()).remove();
+            for(int i=0;i<cartasMano.size();i++) { cartasManoGUI.get(i).remove(); }
+            cardsToRemove=cartasManoGUI;
+            cartasManoGUI.removeAll(cardsToRemove);
+            manoCargada=false;
+        }
+
+        if(numberCardsInHand < cartasMano.size()) {
+            numberCardsInHand = cartasMano.size();
+            for(int i=0;i<cartasMano.size()-1;i++) { cartasManoGUI.get(i).remove(); }
+            cardsToRemove=cartasManoGUI;
+            cartasManoGUI.removeAll(cardsToRemove);
+            manoCargada=false;
+        }
+    }
 }

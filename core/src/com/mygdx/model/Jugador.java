@@ -1,5 +1,9 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -8,26 +12,30 @@ public class Jugador {
     private String nombre;
     private Mazo mazo;
     private Mano mano;
+    private Cementerio cementerio;
     private int id;
-    private int cardsInHand;
+    private boolean avoidToDrawCard;
+    private Image avatar;
+    private Vector2 posAvatar = new Vector2();
 
-    private float posXMazo = (Tablero.POS_X_TABLERO + (Casilla.MEDIDA_CASILLA*7));
-    private float posYMazoJ1 = 87;
-    private float posYMazoJ2 = MyGdxGame.SCREEN_HEIGHT-133;
-
-
-    public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager) {
+    public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
-        this.mazo = new Mazo(assetManager);
-        this.mano=new Mano(this.mazo);
         this.id=id;
-        if(this.id==0) {
-            mazo.setPositionGUI(posXMazo,posYMazoJ1);
-            System.out.println(posXMazo+" "+posYMazoJ1);
+        this.mazo = new Mazo(assetManager,this);
+        this.mano=new Mano(this.mazo);
+        this.cementerio=new Cementerio(assetManager,this);
+        assetManager.loadAvatars();
+        assetManager.manager.finishLoading();
+        if(id==0) {
+            avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
+            posAvatar.x = MyGdxGame.SCREEN_WIDTH-128;
+            posAvatar.y = 10;
         }else {
-            mazo.setPositionGUI(posXMazo,posYMazoJ2);
+            avatar = new Image(assetManager.manager.get(assetManager.rivalAvatar,Texture.class));
+            posAvatar.x = MyGdxGame.SCREEN_WIDTH-128;
+            posAvatar.y = MyGdxGame.SCREEN_HEIGHT-128;
         }
-        this.cardsInHand=5;
+        avatar.setPosition(posAvatar.x,posAvatar.y);
     }
 
     public void setMazo(Mazo mazo) {
@@ -50,16 +58,23 @@ public class Jugador {
         return id;
     }
 
-    public int getCardsInHand() {
-        return cardsInHand;
-    }
-
-    public void setCardsInHand(int number) {
-        this.cardsInHand=number;
-    }
-
     public Mano getMano() {
         return mano;
     }
 
+    public boolean isAvoidToDrawCard() { return avoidToDrawCard; }
+
+    public void avoidToDrawCard(Boolean isAvoid) { avoidToDrawCard=isAvoid; }
+
+    public Cementerio getCementerio() {
+        return cementerio;
+    }
+
+    public void setCementerio(Cementerio cementerio) {
+        this.cementerio = cementerio;
+    }
+
+    public Image getAvatar() {
+        return avatar;
+    }
 }

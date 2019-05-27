@@ -30,6 +30,7 @@ public class Criatura extends Carta {
     TipoElemental elemental;
     Texture spriteCriatura;
     ArrayList<Equipamiento> equipamientos = new ArrayList<Equipamiento>();
+    Boolean moved;
 
     public Criatura(TipoEspecie criatura, TipoElemental elemental,Texture spriteCriatura, int ataque,int defensa,int movimiento,int alcance){
         this.criatura=criatura;
@@ -41,6 +42,7 @@ public class Criatura extends Carta {
         this.alcance=alcance;
         tipo = Tipo.CRIATURA;
         this.cardDetailInfo=new Image(spriteCriatura);
+        this.moved=false;
     }
 
 
@@ -117,6 +119,13 @@ public class Criatura extends Carta {
         this.equipamientos = equipamientos;
     }
 
+    public Boolean isMoved() {
+        return moved;
+    }
+
+    public void setMoved(Boolean moved) {
+        this.moved = moved;
+    }
 
 
 }
