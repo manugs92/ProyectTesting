@@ -9,7 +9,7 @@ import com.mygdx.game.MyGdxGameAssetManager;
 
 public class Jugador {
 
-    //
+    //oh shit.
     private String nombre;
     private Mazo mazo;
     private Mano mano;
