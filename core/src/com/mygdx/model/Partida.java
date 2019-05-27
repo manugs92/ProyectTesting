@@ -17,10 +17,9 @@ public class Partida {
     private enum estadoPartida{ESPERANDO_JUGADORES,EMPEZADA,FINALIZADA};
 
     //NORMAS DE PARTIDA.
-    public final int MAX_CARDS_IN_HAND = 6;
+    public static final int MAX_CARDS_IN_HAND = 2;
     public static final int INITIAL_LIVES = 20;
     public static final int INITIAL_INVOCATION_ORBS = 4;
-
 
     private final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
     private final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;
@@ -39,6 +38,7 @@ public class Partida {
     private Image buttonRendirse;
     private int winnerId;
     private estadoPartida estadoPartida;
+    private AvisosPartida avisosPartida;
     private Image passTurn;
 
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
@@ -66,11 +66,17 @@ public class Partida {
                 return super.longPress(actor, x, y);
             }
         });
-        passTurn =new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
+        avisosPartida = new AvisosPartida();
+        passTurn = new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
         passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println(jugadores.get(ownerTurn).getMano().getCartasMano().size());
+                System.out.println(MAX_CARDS_IN_HAND);
+                if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
+                    avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
+                }
                 ownerTurn = 1;
                 turn++;
                 super.clicked(event, x, y);
@@ -155,4 +161,8 @@ public class Partida {
     public void setWinnerId(int playerId) {this.winnerId=playerId;}
 
     public Image getPassTurn() { return passTurn; }
+
+    public AvisosPartida getAvisosPartida() {
+        return avisosPartida;
+    }
 }

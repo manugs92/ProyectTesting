@@ -110,6 +110,7 @@ public class DuelScreen extends MyGdxGameScreen {
         });
 
         drawArrows();
+        dibujarAvisos();
 
         batch.end();
 
@@ -245,5 +246,13 @@ public class DuelScreen extends MyGdxGameScreen {
 
         stage.addActor(partida.getJugador(jugadorId).getLivesGUI());
         stage.addActor(partida.getJugador(jugadorId).getManaOrb());
+    }
+
+    private void dibujarAvisos() {
+        if(partida.getAvisosPartida().isShowed()) {
+            font.setColor(255,255,255,255);
+            font.draw(batch, String.valueOf(partida.getAvisosPartida().getTexttoShow()),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
+        }
+
     }
 }
