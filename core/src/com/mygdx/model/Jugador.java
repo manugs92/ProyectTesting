@@ -22,7 +22,7 @@ public class Jugador {
     private Vector2 posName = new Vector2();
     private int lives = Partida.INITIAL_LIVES;
     private int invocationOrbs = Partida.INITIAL_INVOCATION_ORBS;
-    private Image livesGUI;
+    private Image livesGUI,manaOrb;
     private Image invocationOrbsGUI;
     private Vector2 poslives = new Vector2();
     private Vector2 posInvocationOrbs = new Vector2();
@@ -36,6 +36,9 @@ public class Jugador {
         assetManager.loadMyAvatars();
         assetManager.loadOtherAvatars();
         assetManager.manager.finishLoading();
+        livesGUI=new Image(new Texture(assetManager.lives));
+        manaOrb= new Image(new Texture(assetManager.manaOrb));
+
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
             avatar2 = new Image(assetManager.manager.get(assetManager.myAvatar2,Texture.class));
@@ -43,6 +46,8 @@ public class Jugador {
             posAvatar.y = 80;
             posName.x = MyGdxGame.SCREEN_WIDTH - 208;
             posName.y= 60;
+            livesGUI.setPosition(1010, 160);
+            manaOrb.setPosition(livesGUI.getX(),livesGUI.getY()-80);
         }else {
             avatar = new Image(assetManager.manager.get(assetManager.rivalAvatar,Texture.class));
             avatar2 = new Image(assetManager.manager.get(assetManager.rivalAvatar2,Texture.class));
@@ -50,6 +55,8 @@ public class Jugador {
             posAvatar.y = MyGdxGame.SCREEN_HEIGHT-208;
             posName.x = MyGdxGame.SCREEN_WIDTH - 208;
             posName.y=MyGdxGame.SCREEN_HEIGHT-228;
+            livesGUI.setPosition(1010, MyGdxGame.SCREEN_HEIGHT-125);
+            manaOrb.setPosition(livesGUI.getX(),livesGUI.getY()-80);
         }
         avatar.setPosition(posAvatar.x,posAvatar.y);
         avatar2.setPosition(posAvatar.x,posAvatar.y);
@@ -96,4 +103,20 @@ public class Jugador {
     public Image getAvatar2() {return avatar2;}
 
     public Vector2 getPosName() { return posName; }
+
+    public Image getLivesGUI() {
+        return livesGUI;
+    }
+
+    public void setLivesGUI(Image livesGUI) {
+        this.livesGUI = livesGUI;
+    }
+
+    public Image getManaOrb() {
+        return manaOrb;
+    }
+
+    public void setManaOrb(Image manaOrb) {
+        this.manaOrb = manaOrb;
+    }
 }

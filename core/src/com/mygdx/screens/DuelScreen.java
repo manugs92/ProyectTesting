@@ -2,18 +2,13 @@ package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.*;
-
-import java.util.ArrayList;
 
 /*
  * Screen Mostrada en duelo singlePlayer.
@@ -87,9 +82,11 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarMagicas(j.getId());
             dibujarCementerio(j.getId());
             partida.getJugador(j.getId()).getCementerio().addListenerToGraveyard(partida,j.getId());
+            drawLivesAndMana(j.getId());
         });
 
         dibujarBotones();
+
     }
 
 
@@ -99,7 +96,6 @@ public class DuelScreen extends MyGdxGameScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(cam.combined);
-
         stage.act(Math.min(delta, 1 / 30f));
         batch.begin();
         batch.draw(textureBgScreen,0,0);
@@ -232,6 +228,7 @@ public class DuelScreen extends MyGdxGameScreen {
         }else {
             stage.addActor(partida.getJugador(jugadorId).getAvatar2());
             partida.getJugador(jugadorId).getAvatar().remove();
+
         }
 
     }
@@ -243,5 +240,10 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private void dibujarBotones() {
         stage.addActor(partida.getButtonRendirse());
+    }
+    private void drawLivesAndMana(int jugadorId){
+
+        stage.addActor(partida.getJugador(jugadorId).getLivesGUI());
+        stage.addActor(partida.getJugador(jugadorId).getManaOrb());
     }
 }

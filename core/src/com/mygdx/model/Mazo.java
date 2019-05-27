@@ -67,7 +67,7 @@ public class Mazo {
 
     public ArrayList<Carta> DefaultDeck() {
         Texture textureCard = new Texture("icons\\handled_card.png");
-        Texture textureSpriteCard= new Texture("icons\\Spritecard.png");
+        Texture textureSpriteCard= new Texture("icons\\spyro.png");
         Texture textureCard2 = new Texture("icons\\handled_card2.png");
         Texture textureSpriteCard2= new Texture("icons\\Spritecard2.png");
         while (cartasMazo.size()<=MIN_CARDS-1) {

@@ -8,6 +8,9 @@ public class MyGdxGameAssetManager {
     public final AssetManager manager = new AssetManager();
 
     public final String imageSquare = "icons/casilla48.png";
+    public final String manaOrb= "icons/mana_orb.png";
+    public final String lives = "icons/lives.png";
+
     public final String imageSquare2 = "icons/casilla48_2.png";
     public final String imageBackCard = "icons/back_card.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
@@ -24,6 +27,7 @@ public class MyGdxGameAssetManager {
         manager.load(imageSquare2, Texture.class);
         manager.load(passTurnIcon,Texture.class);
         manager.load(whiteFlagIcon,Texture.class);
+        manager.load(lives, Texture.class);
 
     }
 
