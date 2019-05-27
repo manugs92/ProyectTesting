@@ -22,7 +22,6 @@ public class DuelScreen extends MyGdxGameScreen {
 
 
     /*
-    //
     *  Crear el "shuffle", y coger las cartas de ahí para añadirlas a la mano.
     *  En el mazo renderizado, listener de robar cartas cuando es tu turno.
     *  isma
@@ -31,7 +30,7 @@ public class DuelScreen extends MyGdxGameScreen {
     *  TODO: En partida poner de quien es el turno. (Iluminar el avatar de ese jugador)
     *  TODO: Solo un ataque de monstruo por turno.
     *
-    *  TODO: Botón de rendirse. (Hacerlo con longclick)
+    *  TODO: Botón de rendirse. -> Al hacer click, ir a pantalla "Resumen de partida".
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
     *  TODO: Método para atacar al monstruo.
     * */
@@ -43,7 +42,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private Table tablatableroGUI = new Table();
     private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
     private BitmapFont font = new BitmapFont();
-
 
 
     //Variables temporales (hasta que el jugador se cree desde algun lado)
@@ -85,6 +83,8 @@ public class DuelScreen extends MyGdxGameScreen {
 
             partida.getJugador(j.getId()).getCementerio().addListenerToGraveyard(partida,j.getId());
         });
+
+        dibujarBotones();
     }
 
 
@@ -104,6 +104,7 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getJugadores().forEach(j -> {
             dibujarMano(j.getId());
             dibujarMazo(j.getId());
+            dibujarNombreJugador(j.getId());
         });
 
         drawArrows();
@@ -128,6 +129,8 @@ public class DuelScreen extends MyGdxGameScreen {
         //Dibujamos última carta enviada al cementerio.
         partida.getJugadores().forEach(j -> dibujarCartaCemenerio(j.getId()));
         batch.end();
+
+        if(partida.getWinnerId()!=-1) { screenManager.changeScreen(screenManager.MAIN_SCREEN); }
     }
 
     @Override
@@ -161,12 +164,7 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getJugador(jugadorId).getMano().updateHand(partida);
     }
 
-
-    private void dibujarMazo(int jugadorId){
-        //Dibujar mazoJ1
-        stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoGUI());
-    }
-
+    private void dibujarMazo(int jugadorId){ stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoGUI()); }
 
     private void dibujarCantidadCartasMazo(int jugadorId) {
         font.setColor(0,0,0,255);
@@ -174,9 +172,7 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     private void dibujarMagicas(int jugadorID) {
-       for(int i=0;i<=tablero.MAX_MAGIC_CARDS-1;i++) {
-            stage.addActor(tablero.getCasillaMagica(jugadorID,i).getImageCasilla());
-        }
+       for(int i=0;i<=tablero.MAX_MAGIC_CARDS-1;i++) { stage.addActor(tablero.getCasillaMagica(jugadorID,i).getImageCasilla()); }
     }
 
     private void dibujarCriaturasInvocadas(Criatura criatura) {
@@ -196,9 +192,7 @@ public class DuelScreen extends MyGdxGameScreen {
         else { batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y); }
     }
 
-    private void dibujarCementerio(int jugadorId) {
-        stage.addActor(partida.getJugador(jugadorId).getCementerio().getGraveyardGUI());
-    }
+    private void dibujarCementerio(int jugadorId) { stage.addActor(partida.getJugador(jugadorId).getCementerio().getGraveyardGUI()); }
 
     private void dibujarCartaCemenerio(int jugadorId) {
         Cementerio cementerio = partida.getJugador(jugadorId).getCementerio();
@@ -220,9 +214,14 @@ public class DuelScreen extends MyGdxGameScreen {
         }
     }
 
-    private void dibujarAvatarJugadores(int jugadorId) {
-        stage.addActor(partida.getJugador(jugadorId).getAvatar());
+    private void dibujarAvatarJugadores(int jugadorId) { stage.addActor(partida.getJugador(jugadorId).getAvatar()); }
+
+    private void dibujarNombreJugador(int jugadorId) {
+        font.setColor(255,255,255,255);
+        font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getNombre()), partida.getJugador(jugadorId).getPosName().x, partida.getJugador(jugadorId).getPosName().y);
     }
+
+    private void dibujarBotones() { stage.addActor(partida.getButtonRendirse()); }
 
     private void createButtons(){
         Image passT=new Image();
@@ -234,13 +233,7 @@ public class DuelScreen extends MyGdxGameScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-
-
-
             }
         });
-
     }
-
-
 }

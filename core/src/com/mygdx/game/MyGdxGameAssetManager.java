@@ -11,13 +11,15 @@ public class MyGdxGameAssetManager {
     public final String imageSquare2 = "icons/casilla48_2.png";
     public final String imageBackCard = "icons/back_card.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
+    public final String imageButtonRendirse = "icons/casilla48_2.png";
 
-    public final String myAvatar = "icons/mugshot3.png";
-    public final String rivalAvatar = "icons/mugshot3.png";
+    public final String myAvatar = "icons/mugshot2.png";
+    public final String rivalAvatar = "icons/mugshot.png";
 
     public void loadImagesDuelScreen() {
         manager.load(imageSquare, Texture.class);
         manager.load(imageSquare2, Texture.class);
+        manager.load(imageButtonRendirse,Texture.class);
     }
 
     public void loadImageDeck() {

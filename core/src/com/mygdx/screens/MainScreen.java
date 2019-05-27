@@ -9,9 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.MyGdxGameScreen;
 
-
-
-
 /*
  * Screen inicial para cuando abrimos el juego.
  * */
@@ -41,7 +38,6 @@ public class MainScreen extends MyGdxGameScreen {
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
-
 
         //Listeners de los botones.
         preferences.addListener(new ChangeListener() {

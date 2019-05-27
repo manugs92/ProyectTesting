@@ -17,6 +17,9 @@ public class Jugador {
     private boolean avoidToDrawCard;
     private Image avatar;
     private Vector2 posAvatar = new Vector2();
+    private Vector2 posName = new Vector2();
+    private int lives = Partida.INITIAL_LIVES;
+    private int invocationOrbs = Partida.INITIAL_INVOCATION_ORBS;
 
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
@@ -28,12 +31,16 @@ public class Jugador {
         assetManager.manager.finishLoading();
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
-            posAvatar.x = MyGdxGame.SCREEN_WIDTH - 128;
-            posAvatar.y = 10;
+            posAvatar.x = MyGdxGame.SCREEN_WIDTH - 208;
+            posAvatar.y = 80;
+            posName.x = MyGdxGame.SCREEN_WIDTH - 208;
+            posName.y= 60;
         }else {
             avatar = new Image(assetManager.manager.get(assetManager.rivalAvatar,Texture.class));
-            posAvatar.x = MyGdxGame.SCREEN_WIDTH-128;
-            posAvatar.y = MyGdxGame.SCREEN_HEIGHT-128;
+            posAvatar.x = MyGdxGame.SCREEN_WIDTH-208;
+            posAvatar.y = MyGdxGame.SCREEN_HEIGHT-208;
+            posName.x = MyGdxGame.SCREEN_WIDTH - 208;
+            posName.y=MyGdxGame.SCREEN_HEIGHT-228;
         }
         avatar.setPosition(posAvatar.x,posAvatar.y);
     }
@@ -74,7 +81,7 @@ public class Jugador {
         this.cementerio = cementerio;
     }
 
-    public Image getAvatar() {
-        return avatar;
-    }
+    public Image getAvatar() { return avatar; }
+
+    public Vector2 getPosName() { return posName; }
 }

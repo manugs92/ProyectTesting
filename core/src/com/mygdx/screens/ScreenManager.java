@@ -24,34 +24,35 @@ public class ScreenManager {
 
     public void setDefaultScreen() {
         mainScreen = new MainScreen(this);
-        //parent.setScreen(mainScreen);
-        parent.setScreen(new DuelScreen(this));
+        parent.setScreen(mainScreen);
+        //parent.setScreen(new DuelScreen(this));
     }
 
     public void changeScreen(int screen){
         switch(screen){
             case MAIN_SCREEN:
-                if(mainScreen == null) mainScreen = new MainScreen(this);
+                mainScreen = new MainScreen(this);
+                System.out.println("Hola");
                 parent.setScreen(mainScreen);
                 break;
 
             case LOADING_SCREEN:
-                if(loadingScreen == null) loadingScreen = new LoadingScreen(this);
+               loadingScreen = new LoadingScreen(this);
                 parent.setScreen(loadingScreen);
                 break;
 
             case START_GAME:
-                if(startGame == null) startGame = new StartGame(this);
+                startGame = new StartGame(this);
                 parent.setScreen(startGame);
                 break;
 
             case PREFERENCES:
-                if(preferencesScreen == null) preferencesScreen = new PreferencesScreen(this);
+                preferencesScreen = new PreferencesScreen(this);
                 parent.setScreen(preferencesScreen);
                 break;
 
             case DUEL_SCREEN:
-                if(duelScreen==null) duelScreen = new DuelScreen(this);
+                duelScreen = new DuelScreen(this);
                 parent.setScreen(duelScreen);
                 break;
         }

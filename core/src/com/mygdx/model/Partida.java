@@ -1,13 +1,26 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
 import java.util.ArrayList;
 
 public class Partida {
+
+    private enum estadoPartida{ESPERANDO_JUGADORES,EMPEZADA,FINALIZADA};
+
     //NORMAS DE PARTIDA.
-    private final int MAX_CARDS_IN_HAND = 6;
+    public final int MAX_CARDS_IN_HAND = 6;
+    public static final int INITIAL_LIVES = 20;
+    public static final int INITIAL_INVOCATION_ORBS = 4;
+
+    private final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
+    private final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private Carta selectedCard;
@@ -18,9 +31,14 @@ public class Partida {
     private CardInformation cardInformation;
     private int turn;
     private int ownerTurn;
-
+    private Image buttonRendirse;
+    private int winnerId;
+    private estadoPartida estadoPartida;
 
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
+        assetManager.loadImagesDuelScreen();
+        assetManager.manager.finishLoading();
+        estadoPartida = estadoPartida.EMPEZADA;
         jugadores.add(jugador);
         selectedCard = null;
         criaturasInvocadas =  new ArrayList<>();
@@ -31,6 +49,17 @@ public class Partida {
         turn=0;
         ownerTurn=jugador.getId();
         jugador.avoidToDrawCard(true);
+        winnerId=-1;
+        buttonRendirse = new Image(assetManager.manager.get(assetManager.imageButtonRendirse, Texture.class));
+        buttonRendirse.setPosition(posXButtonRendirse,posYButtonRendirse);
+        buttonRendirse.addListener(new ActorGestureListener() {
+            @Override
+            public boolean longPress(Actor actor, float x, float y) {
+                winnerId=1;
+                estadoPartida = estadoPartida.FINALIZADA;
+                return super.longPress(actor, x, y);
+            }
+        });
     }
 
     public Carta getSelectedCard() {
@@ -101,4 +130,11 @@ public class Partida {
         return ownerTurn;
     }
 
+    public Image getButtonRendirse() {
+        return buttonRendirse;
+    }
+
+    public int getWinnerId() { return winnerId;}
+
+    public void setWinnerId(int playerId) {this.winnerId=playerId;}
 }
