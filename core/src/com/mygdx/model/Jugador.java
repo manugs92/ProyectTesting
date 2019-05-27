@@ -9,6 +9,7 @@ import com.mygdx.game.MyGdxGameAssetManager;
 
 public class Jugador {
 
+    //
     private String nombre;
     private Mazo mazo;
     private Mano mano;
