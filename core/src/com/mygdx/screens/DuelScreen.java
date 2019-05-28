@@ -15,6 +15,7 @@ import com.mygdx.model.*;
  * */
 public class DuelScreen extends MyGdxGameScreen {
 
+
     /*
     *  TODO: Botón de rendirse. -> Al hacer click, ir a pantalla "Resumen de partida".
     *  TODO: Crear Screen de resumen partida. (Poner quien ha ganado, el log, vidas, turno ..etc)

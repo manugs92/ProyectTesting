@@ -40,24 +40,26 @@ public class MainScreen extends MyGdxGameScreen {
         texture = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
 
         //Listeners de los botones.
-        preferences.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                screenManager.changeScreen(screenManager.PREFERENCES);
-            }
-        });
-
         newGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screenManager.changeScreen(screenManager.START_GAME);
+                screenManager.changeScreen(screenManager.DUEL_SCREEN);
             }
         });
+
+        preferences.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                screenManager.changeScreen(screenManager.SUMMARY_SCREEN);
+            }
+        });
+
 
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screenManager.changeScreen(screenManager.DUEL_SCREEN);
+                //screenManager.changeScreen(screenManager.START_GAME);
+                Gdx.app.exit();
             }
         });
 

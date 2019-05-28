@@ -11,12 +11,15 @@ public class ScreenManager {
     private PreferencesScreen preferencesScreen;
     private StartGame startGame;
     private DuelScreen duelScreen;
+    private SummaryScreen summaryScreen;
 
     public final static int MAIN_SCREEN = 0;
     public final static int LOADING_SCREEN  = 1;
     public final static int START_GAME = 2;
     public final static int PREFERENCES = 3;
     public final static int DUEL_SCREEN = 4;
+    public final static int SUMMARY_SCREEN = 5;
+
 
     public ScreenManager(MyGdxGame myGdxGame) {
         this.parent=myGdxGame;
@@ -54,6 +57,11 @@ public class ScreenManager {
             case DUEL_SCREEN:
                 duelScreen = new DuelScreen(this);
                 parent.setScreen(duelScreen);
+                break;
+
+            case SUMMARY_SCREEN:
+                summaryScreen = new SummaryScreen(this);
+                parent.setScreen(summaryScreen);
                 break;
         }
     }
