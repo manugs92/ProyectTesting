@@ -95,7 +95,6 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.setProjectionMatrix(cam.combined);
         stage.act(Math.min(delta, 1 / 30f));
         batch.begin();
-        batch.draw(textureBgScreen,0,0);
 
         if(partida.getDuelLog().isNewMsg()) { dibujarLog(); }
 
@@ -142,7 +141,6 @@ public class DuelScreen extends MyGdxGameScreen {
     @Override
     public void dispose() {
         super.dispose();
-        textureBgScreen.dispose();
     }
 
     private void dibujarLog() {
@@ -167,7 +165,7 @@ public class DuelScreen extends MyGdxGameScreen {
                 stage.addActor(partida.getJugador(jugadorId).getMano().getCartaManoGUI().get(i));
             }
         }
-        partida.getJugador(jugadorId).getMano().updateHand(partida);
+        partida.getJugador(jugadorId).getMano().updateHand();
     }
 
     private void dibujarMazo(int jugadorId){ stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoGUI()); }

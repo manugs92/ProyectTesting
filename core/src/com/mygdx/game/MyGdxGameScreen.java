@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.screens.ScreenManager;
 
@@ -24,37 +25,29 @@ public class MyGdxGameScreen implements Screen {
 
         textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        stage.addActor(new Image(textureBgScreen));
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() { }
 
     @Override
-    public void render(float delta) {
-
-    }
+    public void render(float delta) { }
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
-        fitViewport.update(width, height); }
-
-    @Override
-    public void pause() {
-
+        fitViewport.update(width, height);
     }
 
     @Override
-    public void resume() {
-
-    }
+    public void pause() { }
 
     @Override
-    public void hide() {
+    public void resume() { }
 
-    }
+    @Override
+    public void hide() { }
 
     @Override
     public void dispose() {

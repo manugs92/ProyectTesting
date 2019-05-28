@@ -2,10 +2,8 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
@@ -45,8 +43,6 @@ public class Mano {
         manoCargada=false;
         numberCardsInHand=5;
     }
-
-    public void robar(Mazo mazo){ cartasMano.add(mazo.getShuffleMazo().get(0)); }
 
     public void drawHand(int i, Partida partida, int jugadorId) {
 
@@ -180,7 +176,7 @@ public class Mano {
         this.numberCardsInHand=number;
     }
 
-    public void updateHand(Partida partida) {
+    public void updateHand() {
 
         manoCargada=true;
         ArrayList<Image> cardsToRemove = new ArrayList<>();

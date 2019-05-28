@@ -35,7 +35,6 @@ public class ScreenManager {
         switch(screen){
             case MAIN_SCREEN:
                 mainScreen = new MainScreen(this);
-                System.out.println("Hola");
                 parent.setScreen(mainScreen);
                 break;
 

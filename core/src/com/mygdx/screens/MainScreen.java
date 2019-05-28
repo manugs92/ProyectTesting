@@ -73,7 +73,7 @@ public class MainScreen extends MyGdxGameScreen {
         table.add(preferences).fillX().uniformX().size(500,100);
         table.row().pad(20, 0, 20, 0);
         table.add(exit).fillX().uniformX().size(500,100);
-        stage.addActor(new Image(textureBgScreen));
+
 
         //Asignamos la imagen al stage.
         stage.addActor(table);
@@ -89,9 +89,6 @@ public class MainScreen extends MyGdxGameScreen {
         Gdx.gl.glClearColor(0f, 00, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        batch.begin();
-        batch.draw(textureBgScreen,0,0);
-        batch.end();
         stage.draw();
     }
 
@@ -105,7 +102,6 @@ public class MainScreen extends MyGdxGameScreen {
 
     @Override
     public void dispose() {
-        textureBgScreen.dispose();
         stage.dispose();
     }
 }
