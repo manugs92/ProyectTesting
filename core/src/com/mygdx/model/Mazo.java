@@ -76,12 +76,14 @@ public class Mazo {
             golem.setImage(textureCard);
             golem.setLastPosition(-1,-1);
             golem.setFirstPosition(-1,-1);
+            golem.setCostInvocation(2);
             cartasMazo.add(golem);
             Criatura golem2 = new Criatura(DRAGON,FUEGO,textureSpriteCard2,7,10,2,1);
             golem2.setNombre("DragonSp2");
             golem2.setImage(textureCard2);
             golem2.setLastPosition(-1,-1);
             golem2.setFirstPosition(-1,-1);
+            golem2.setCostInvocation(4);
             cartasMazo.add(golem2);
         }
         return cartasMazo;

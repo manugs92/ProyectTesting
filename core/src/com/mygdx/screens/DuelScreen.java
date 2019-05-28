@@ -15,27 +15,28 @@ import com.mygdx.model.*;
  * */
 public class DuelScreen extends MyGdxGameScreen {
 
-
     /*
-    *  Crear el "shuffle", y coger las cartas de ahí para añadirlas a la mano.
-    *  En el mazo renderizado, listener de robar cartas cuando es tu turno.
-    *  isma
-    *  TODO: No poder tener más cartas del máximo permitido. (Obligar a tirar, haciendo click derecho, al darle a finalizar turno)
-    *
-    *  TODO: Mostrar vidas de los jugadores, y la cantidad que estos tienen. (encima del corazón)
-    *  TODO: Mostrar orbes de invocación, y la cantidad que estos tienen. (encima de los orbes)
-    *
     *  TODO: Botón de rendirse. -> Al hacer click, ir a pantalla "Resumen de partida".
+    *  TODO: Crear Screen de resumen partida. (Poner quien ha ganado, el log, vidas, turno ..etc)
+    *
+    *  TODO: Método de atacar monstruo.
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
     *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance)
-    *  TODO: Método de atacar monstruo.
+    *  TODO: Si atacas, atacas a su defensa, y él a la tuya. (puede haber victoria, empate, o derrota)
+    *  TODO: Sonido al realizar ataque.
+    *
     *  TODO: Método de quitar vidas.
-    *  TODO: Método de quitar orbes al invocar.
+    *
+    *  TODO: Método de al pasar turno ganar un orbe de invocación.
     *
     *  TODO: Todo lo que se haga, mostrarlo en el log.
     *
-    *  TODO: Crear Screen de resumen partida. (Poner quien ha ganado, el log, vidas, turno ..etc)
-    *  TODO: Botón de ir a menú principal.
+    *  TODO: IA que solo invoque un monstruo por turno y lo mueva para adelante (pero no te ataque)
+    *
+    *  TODO: Cementerio, solo aparecer flecha si hay más de una carta. Y al darle click a avanzar o atrasar, mostrar la que toque.
+    *
+    *  TODO: Ocultar todo al hacer click en pasar turno.
+    *
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
@@ -45,7 +46,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private Table tablatableroGUI = new Table();
     private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
     private BitmapFont font = new BitmapFont();
-
 
     //Variables temporales (hasta que el jugador se cree desde algun lado)
     private Jugador jugador = new Jugador("Manu",0,assetManager,skin);
@@ -58,9 +58,7 @@ public class DuelScreen extends MyGdxGameScreen {
     private int yTablero=tablero.getTablero().getCasillas()[0].length;
 
 
-    public DuelScreen(ScreenManager screenManagerR) {
-        super(screenManagerR);
-    }
+    public DuelScreen(ScreenManager screenManagerR) { super(screenManagerR); }
 
     @Override
     public void show() {
@@ -82,11 +80,9 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarMagicas(j.getId());
             dibujarCementerio(j.getId());
             partida.getJugador(j.getId()).getCementerio().addListenerToGraveyard(partida,j.getId());
-            drawLivesAndMana(j.getId());
         });
 
         dibujarBotones();
-
     }
 
 
@@ -107,6 +103,7 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarMazo(j.getId());
             dibujarNombreJugador(j.getId());
             dibujarAvatarJugadores(j.getId());
+            drawLivesAndMana(j.getId());
         });
 
         drawArrows();
@@ -212,8 +209,7 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     private void drawArrows() {
-
-        if(partida.getJugador(0).getCementerio().isShowed() ||partida.getJugador(1).getCementerio().isShowed() ) {
+        if(partida.getJugador(0).getCementerio().isShowed() || partida.getJugador(1).getCementerio().isShowed() ) {
             stage.addActor(partida.getCardInformation().getLeftArrow());
             stage.addActor(partida.getCardInformation().getRightArrow());
         }else {
@@ -231,7 +227,6 @@ public class DuelScreen extends MyGdxGameScreen {
             partida.getJugador(jugadorId).getAvatar().remove();
 
         }
-
     }
 
     private void dibujarNombreJugador(int jugadorId) {
@@ -239,13 +234,14 @@ public class DuelScreen extends MyGdxGameScreen {
         font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getNombre()), partida.getJugador(jugadorId).getPosName().x, partida.getJugador(jugadorId).getPosName().y);
     }
 
-    private void dibujarBotones() {
-        stage.addActor(partida.getButtonRendirse());
-    }
-    private void drawLivesAndMana(int jugadorId){
+    private void dibujarBotones() { stage.addActor(partida.getButtonRendirse()); }
 
+    private void drawLivesAndMana(int jugadorId){
         stage.addActor(partida.getJugador(jugadorId).getLivesGUI());
         stage.addActor(partida.getJugador(jugadorId).getManaOrb());
+        font.setColor(255,255,255,255);
+        font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getLives()), partida.getJugador(jugadorId).getPoslives().x, partida.getJugador(jugadorId).getPoslives().y);
+        font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getInvocationOrbs()), partida.getJugador(jugadorId).getPosInvocationOrbs().x, partida.getJugador(jugadorId).getPosInvocationOrbs().y);
     }
 
     private void dibujarAvisos() {
@@ -253,6 +249,5 @@ public class DuelScreen extends MyGdxGameScreen {
             font.setColor(255,255,255,255);
             font.draw(batch, partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
         }
-
     }
 }

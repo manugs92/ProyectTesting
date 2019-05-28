@@ -97,12 +97,13 @@ public class Casilla {
 
                 Carta selectedCard = partida.getSelectedCard();
 
-                if(partida.getJugador(0).getCementerio().isSelected()) {
-                    selectedCard=null;
+                partida.getJugadores().forEach(j -> {
                     partida.setSelectedCard(null);
-                    partida.getJugador(0).getCementerio().setSelected(false);
-                    partida.getJugador(0).getCementerio().setShowed(false);
-                }
+                    j.getCementerio().setSelected(false);
+                    j.getCementerio().setShowed(false);
+                });
+
+
                 //Seleccionamos la carta donde hemos hecho click. (Mediante partida, ya que la almacena ella)
                 partida.getCardInformation().updateCardInformation(partida);
 
@@ -122,6 +123,7 @@ public class Casilla {
                             partida.addNewInvoquedCard(selectedCard);
                             partida.getJugador(0).getMano().setCartaJugada(partida.getJugador(0).getMano().getCartasMano().indexOf(selectedCard));
                             partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
+                            partida.getJugador(0).removeInvocationOrbs(selectedCard.getCostInvocation());
                             for (int i = 0; i < tablero.getCasillas().length; i++) {
                                 tablero.getCasilla(i, 0).setState(State.APAGADA);
                             }
@@ -142,7 +144,7 @@ public class Casilla {
                 } else {
                     if(selectedCard!=null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
                         tablero.setAllSquaresToOff(tablero);
-                        if(tablero.getCasilla(x2,y2).tieneCriatura() && !tablero.getCasilla(x2,y2).getCriatura().isMoved()) {
+                        if(tablero.getCasilla(x2,y2).tieneCriatura() && !tablero.getCasilla(x2,y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed()) {
                             casillasDisponibles(tablero, x2, y2, partida);
                         }else {
                             partida.setSelectedCard(tablero.getCasilla(x2,y2).getCriatura());
@@ -156,7 +158,7 @@ public class Casilla {
                         //sin carta selecionada
                         if (tieneCriatura()) {
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
-                            if(!((Criatura)selectedCard).isMoved()) {
+                            if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed()) {
                                 casillasDisponibles(tablero, x2, y2, partida);
                             }
                             partida.setSelectedCard(selectedCard);

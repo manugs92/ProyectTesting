@@ -85,32 +85,40 @@ public class Mano {
                     });
 
 
-                    if(partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali)) && partida.getOwnerTurn()==0) {
-                        for(int i=0;i<=casillas.length-1;i++) {
-                            boolean avoidInvoke = true;
-                            //Comprobamos si la casilla no tiene un monstruo invocado.
-                            if(tablero.getCasilla(i,0).getCriatura()==null) {
-                                //Si no hemos invocado ninguna carta, podremos invocar.
-                                if(partida.getInvoquedCards().size()>0) {
-                                    //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y donde están.
-                                    for (Carta carta : partida.getInvoquedCards()) {
-                                        //Si la posición de alguna carta invocada coincide, no se podrá invocar.
-                                        if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
-                                            avoidInvoke = false;
+                    if((partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) && partida.getOwnerTurn()==0 && !partida.getAvisosPartida().isShowed()) {
+                        if(cartasMano.get(finali).getTipo() == Carta.Tipo.CRIATURA && cartasMano.get(finali).getCostInvocation()<=partida.getJugador(0).getInvocationOrbs()) {
+                            for(int i=0;i<=casillas.length-1;i++) {
+                                boolean avoidInvoke = true;
+                                //Comprobamos si la casilla no tiene un monstruo invocado.
+                                if(tablero.getCasilla(i,0).getCriatura()==null) {
+                                    //Si no hemos invocado ninguna carta, podremos invocar.
+                                    if(partida.getInvoquedCards().size()>0) {
+                                        //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y donde están.
+                                        for (Carta carta : partida.getInvoquedCards()) {
+                                            //Si la posición de alguna carta invocada coincide, no se podrá invocar.
+                                            if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
+                                                avoidInvoke = false;
+                                            }
                                         }
-                                    }
-                                    //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
-                                    if(avoidInvoke) {
+                                        //Si hemos mirado todas las cartas invocadas y no hay ninguna en esa posición, podremos invocar.
+                                        if(avoidInvoke) {
+                                            tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
+                                        }
+                                        //Si no tiene ningun monstruo invocado, podremos invocar.
+                                    }else {
                                         tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                                     }
-                                    //Si no tiene ningun monstruo invocado, podremos invocar.
-                                }else {
-                                    tablero.getCasilla(i,0).setState(Casilla.State.ILUMINADA);
                                 }
                             }
+                            partida.setSelectedCard(cartasMano.get(finali));
+                        }else {
+                            partida.setSelectedCard(cartasMano.get(finali));
+                            partida.getCardInformation().updateCardInformation(partida);
                         }
+                    }else if(partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) {
                         partida.setSelectedCard(cartasMano.get(finali));
-                    }else {
+                        partida.getCardInformation().updateCardInformation(partida);
+                    } else {
                         partida.setSelectedCard(null);
                         partida.getCardInformation().updateCardInformation(partida);
                     }
@@ -129,6 +137,8 @@ public class Mano {
                     if(cartasMano.size()>Partida.MAX_CARDS_IN_HAND && partida.getAvisosPartida().isShowed()) {
                         partida.getJugador(0).getCementerio().setCardInGraveyard(cartasMano.get(i));
                         cartasMano.remove(cartasMano.get(i));
+                        partida.setSelectedCard(null);
+                        partida.getCardInformation().updateCardInformation(partida);
                         if(cartasMano.size()<=Partida.MAX_CARDS_IN_HAND) {
                             partida.getAvisosPartida().setAvisos(0,cartasMano.size());
                             partida.setOwnerTurn(1);

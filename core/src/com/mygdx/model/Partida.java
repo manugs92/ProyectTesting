@@ -17,7 +17,7 @@ public class Partida {
     private enum estadoPartida{ESPERANDO_JUGADORES,EMPEZADA,FINALIZADA};
 
     //NORMAS DE PARTIDA.
-    public static final int MAX_CARDS_IN_HAND = 2;
+    public static final int MAX_CARDS_IN_HAND = 6;
     public static final int INITIAL_LIVES = 20;
     public static final int INITIAL_INVOCATION_ORBS = 4;
 
@@ -74,11 +74,12 @@ public class Partida {
             public void clicked(InputEvent event, float x, float y) {
                 if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
                     avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
-                    getJugador(0).avoidToDrawCard(false);
                 }else {
                     ownerTurn = 1;
                     turn++;
                 }
+                getJugador(0).avoidToDrawCard(false);
+                getTablero().setAllSquaresToOff(getTablero());
                 super.clicked(event, x, y);
             }
         });

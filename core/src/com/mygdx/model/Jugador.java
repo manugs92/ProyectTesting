@@ -23,7 +23,6 @@ public class Jugador {
     private int lives = Partida.INITIAL_LIVES;
     private int invocationOrbs = Partida.INITIAL_INVOCATION_ORBS;
     private Image livesGUI,manaOrb;
-    private Image invocationOrbsGUI;
     private Vector2 poslives = new Vector2();
     private Vector2 posInvocationOrbs = new Vector2();
 
@@ -42,24 +41,26 @@ public class Jugador {
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
             avatar2 = new Image(assetManager.manager.get(assetManager.myAvatar2,Texture.class));
-            posAvatar.x = MyGdxGame.SCREEN_WIDTH - 208;
             posAvatar.y = 80;
-            posName.x = MyGdxGame.SCREEN_WIDTH - 208;
             posName.y= 60;
-            livesGUI.setPosition(1010, 160);
-            manaOrb.setPosition(livesGUI.getX(),livesGUI.getY()-80);
+            poslives.y = 160;
         }else {
             avatar = new Image(assetManager.manager.get(assetManager.rivalAvatar,Texture.class));
             avatar2 = new Image(assetManager.manager.get(assetManager.rivalAvatar2,Texture.class));
-            posAvatar.x = MyGdxGame.SCREEN_WIDTH-208;
             posAvatar.y = MyGdxGame.SCREEN_HEIGHT-208;
-            posName.x = MyGdxGame.SCREEN_WIDTH - 208;
             posName.y=MyGdxGame.SCREEN_HEIGHT-228;
-            livesGUI.setPosition(1010, MyGdxGame.SCREEN_HEIGHT-125);
-            manaOrb.setPosition(livesGUI.getX(),livesGUI.getY()-80);
+            poslives.y = MyGdxGame.SCREEN_HEIGHT-125;
         }
+        posAvatar.x = MyGdxGame.SCREEN_WIDTH - 208;
+        posName.x = MyGdxGame.SCREEN_WIDTH - 208;
+        poslives.x = 1010;
+        posInvocationOrbs.x=poslives.x;
+        posInvocationOrbs.y = poslives.y-80;
+
         avatar.setPosition(posAvatar.x,posAvatar.y);
         avatar2.setPosition(posAvatar.x,posAvatar.y);
+        livesGUI.setPosition(poslives.x,poslives.y);
+        manaOrb.setPosition(posInvocationOrbs.x,posInvocationOrbs.y);
     }
 
     public void setMazo(Mazo mazo) {
@@ -108,15 +109,23 @@ public class Jugador {
         return livesGUI;
     }
 
-    public void setLivesGUI(Image livesGUI) {
-        this.livesGUI = livesGUI;
-    }
 
     public Image getManaOrb() {
         return manaOrb;
     }
 
-    public void setManaOrb(Image manaOrb) {
-        this.manaOrb = manaOrb;
-    }
+    public int getLives() { return lives; }
+
+    public void setLives(int lives) { this.lives = lives; }
+
+    public int getInvocationOrbs() { return invocationOrbs; }
+
+    public void setInvocationOrbs(int invocationOrbs) { this.invocationOrbs = invocationOrbs; }
+
+    public void removeInvocationOrbs(int invocationOrbs) {this.invocationOrbs -= invocationOrbs;}
+
+    public Vector2 getPoslives() { return poslives; }
+
+    public Vector2 getPosInvocationOrbs() { return posInvocationOrbs; }
+
 }
