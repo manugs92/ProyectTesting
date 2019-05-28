@@ -13,7 +13,7 @@ import com.mygdx.game.MyGdxGameScreen;
  * Screen inicial para cuando abrimos el juego.
  * */
 public class MainScreen extends MyGdxGameScreen {
-    private Texture texture;
+
     private SpriteBatch batch;
 
     public MainScreen(ScreenManager screenManagerR) {
@@ -37,7 +37,6 @@ public class MainScreen extends MyGdxGameScreen {
 
         //Variables usadas para dibujar.
         batch = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
 
         //Listeners de los botones.
         newGame.addListener(new ChangeListener() {
@@ -74,6 +73,7 @@ public class MainScreen extends MyGdxGameScreen {
         table.add(preferences).fillX().uniformX().size(500,100);
         table.row().pad(20, 0, 20, 0);
         table.add(exit).fillX().uniformX().size(500,100);
+        stage.addActor(new Image(textureBgScreen));
 
         //Asignamos la imagen al stage.
         stage.addActor(table);
@@ -90,7 +90,7 @@ public class MainScreen extends MyGdxGameScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.begin();
-        batch.draw(texture, 0, 0);
+        batch.draw(textureBgScreen,0,0);
         batch.end();
         stage.draw();
     }
@@ -105,7 +105,7 @@ public class MainScreen extends MyGdxGameScreen {
 
     @Override
     public void dispose() {
-        texture.dispose();
+        textureBgScreen.dispose();
         stage.dispose();
     }
 }
