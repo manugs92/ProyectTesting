@@ -82,6 +82,7 @@ public class Mano {
 
 
                     if((partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) && partida.getOwnerTurn()==0 && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
+                        desSelected(partida, finali);
                         if(cartasMano.get(finali).getTipo() == Carta.Tipo.CRIATURA && cartasMano.get(finali).getCostInvocation()<=partida.getJugador(0).getInvocationOrbs()) {
                             for(int i=0;i<=casillas.length-1;i++) {
                                 boolean avoidInvoke = true;
@@ -110,7 +111,7 @@ public class Mano {
 
 
 
-                            desSelected(partida, finali);
+
 
                         }else {
                             partida.setSelectedCard(cartasMano.get(finali));
@@ -161,7 +162,7 @@ public class Mano {
         partida.getJugador(0).getMano().getCartaManoGUI().get(j).setColor(255,255,255,1f);
 
         }
-        partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(50,50,0,1f);
+        partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(0,255,255,255);
 
 //        if(partida.getSelectedCard().equals(cartasMano.get(finali))){
 //            partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(255,255,255,1f);
