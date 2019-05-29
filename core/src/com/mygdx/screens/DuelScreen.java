@@ -122,14 +122,15 @@ public class DuelScreen extends MyGdxGameScreen {
 
         //Mostramos la informacion de la carta
         if(partida.getCardInformation().isNewCardInfo()) { dibujarInformacionCarta(); }
+        //maquinna
+        iA.iaMove(partida);
+        partida.setOwnerTurn(0);
 
         //Mostramos botón de pasar turno si es tu turno.
         if(partida.getOwnerTurn()==0) { partida.getPassTurn().setVisible(true); }
         else { partida.getPassTurn().setVisible(false); }
 
-        //maquinna
-        iA.iaMove(partida);
-        partida.setOwnerTurn(0);
+
 
         stage.draw();
         batch.begin();
@@ -138,8 +139,8 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
 
         //Dibujamos los sprites de las cartas invocadas. (Estos se moverán por el tablero)
-        partida.getCriaturasInvocadasJ1().forEach(criatura -> dibujarCriaturasInvocadas(criatura));
-        partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura));
+        partida.getCriaturasInvocadasJ1().forEach(criatura -> dibujarCriaturasInvocadas(criatura,0));
+        partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura,1));
 
         //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
         partida.getJugadores().forEach(j -> {
@@ -205,9 +206,13 @@ public class DuelScreen extends MyGdxGameScreen {
        for(int i=0;i<=tablero.MAX_MAGIC_CARDS-1;i++) { stage.addActor(tablero.getCasillaMagica(jugadorID,i).getImageCasilla()); }
     }
 
-    private void dibujarCriaturasInvocadas(Criatura criatura) {
+    private void dibujarCriaturasInvocadas(Criatura criatura, int idPlayer) {
         Vector2 positionSquareBoard = tablero.getCasilla(criatura.getPosition()).getCoordinatesPx();
-        batch.draw(criatura.getSprite(), positionSquareBoard.x, positionSquareBoard.y);
+        if (idPlayer==0) {
+            batch.draw(criatura.getSprite(), positionSquareBoard.x, positionSquareBoard.y);
+        }else{
+            batch.draw(criatura.getSpriteFront(), positionSquareBoard.x, positionSquareBoard.y);
+        }
     }
 
     private void dibujarInformacionCarta() {
