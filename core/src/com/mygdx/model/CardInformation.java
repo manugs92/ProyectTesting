@@ -1,8 +1,10 @@
 package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class CardInformation {
 
@@ -11,12 +13,60 @@ public class CardInformation {
     private boolean newCardInfo=true;
     private Image leftArrow = new Image(new Texture("icons/left_arrow.png"));
     private Image rightArrow = new Image(new Texture("icons/right_arrow.png"));
+    private int positionInCementerio;
 
-    public CardInformation() {
+    public CardInformation(Partida partida) {
         leftArrow.setPosition(Tablero.POS_X_TABLERO - (Casilla.MEDIDA_CASILLA*3),Mano.POS_Y_MANO_J1);
         rightArrow.setPosition(Tablero.POS_X_TABLERO - (Casilla.MEDIDA_CASILLA*2),Mano.POS_Y_MANO_J1);
         leftArrow.setVisible(false);
         rightArrow.setVisible(false);
+        positionInCementerio = 0;
+
+        leftArrow.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (positionInCementerio > 0) {
+                    positionInCementerio--;
+                    setSelectedCardToPartida(partida);
+
+                    //Actualizaremos la información de la carta.
+                    partida.getCardInformation().setNewCardInfo(true);
+                    //Actualizamos la carta que se verá en el preview.
+                    partida.getCardInformation().setCardDetailInfo(partida.getSelectedCard());
+                    partida.getCardInformation().getInfoPane().remove();
+                    System.out.println("Posicion actual: " + positionInCementerio);
+                }
+            }
+        });
+
+        rightArrow.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+
+                if(partida.getJugador(0).getCementerio().isSelected()) {
+                    if(positionInCementerio<partida.getJugador(0).getCementerio().getCardsInGraveyard().size()) {
+                        positionInCementerio++;
+                        partida.setSelectedCard(partida.getJugador(0).getCementerio().getCardsInGraveyard().get(positionInCementerio));
+                        partida.getCardInformation().setNewCardInfo(true);
+                        //Actualizamos la carta que se verá en el preview.
+                        partida.getCardInformation().setCardDetailInfo(partida.getSelectedCard());
+                        partida.getCardInformation().getInfoPane().remove();
+                    }
+                }else if(partida.getJugador(1).getCementerio().isSelected()) {
+                    if(positionInCementerio<partida.getJugador(1).getCementerio().getCardsInGraveyard().size()) {
+                        positionInCementerio++;
+                        partida.setSelectedCard(partida.getJugador(1).getCementerio().getCardsInGraveyard().get(positionInCementerio));
+                        partida.getCardInformation().setNewCardInfo(true);
+                        //Actualizamos la carta que se verá en el preview.
+                        partida.getCardInformation().setCardDetailInfo(partida.getSelectedCard());
+                        partida.getCardInformation().getInfoPane().remove();
+                    }
+                }
+            }
+        });
+
     }
 
     public Table writeInfoPane(){
@@ -72,5 +122,21 @@ public class CardInformation {
 
     public void removeRightArrow() {
         rightArrow.remove();
+    }
+
+    public int getPositionInCementerio() {
+        return positionInCementerio;
+    }
+
+    public void setPositionInCementerio(int positionInCementerio) {
+        this.positionInCementerio = positionInCementerio;
+    }
+
+    public void setSelectedCardToPartida(Partida partida) {
+        if(partida.getJugador(0).getCementerio().isSelected()) {
+            partida.setSelectedCard(partida.getJugador(0).getCementerio().getCardsInGraveyard().get(positionInCementerio));
+        }else if(partida.getJugador(1).getCementerio().isSelected()) {
+            partida.setSelectedCard(partida.getJugador(1).getCementerio().getCardsInGraveyard().get(positionInCementerio));
+        }
     }
 }

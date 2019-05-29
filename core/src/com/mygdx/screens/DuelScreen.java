@@ -19,7 +19,6 @@ public class DuelScreen extends MyGdxGameScreen {
 
     /*
     *
-    *
     *  TODO: Método de atacar monstruo.
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
     *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance)
@@ -31,10 +30,6 @@ public class DuelScreen extends MyGdxGameScreen {
     *  TODO: Todo lo que se haga, mostrarlo en el log.
     *
     *  TODO: IA que solo invoque un monstruo por turno y lo mueva para adelante (pero no te ataque)
-    *
-    *  TODO: Cementerio, solo aparecer flecha si hay más de una carta. Y al darle click a avanzar o atrasar, mostrar la que toque.
-    *
-    *  TODO: Ocultar todo al hacer click en pasar turno.
     *
     *  TODO: Poner música de juego en (main menú,configuración), en duelo, y en resumeScreen.
     *  TODO: Poner sonidos al invocar, al robar, al atacar..
@@ -122,6 +117,7 @@ public class DuelScreen extends MyGdxGameScreen {
 
         drawArrows();
 
+
         batch.end();
 
         //Mostramos la informacion de la carta
@@ -144,7 +140,6 @@ public class DuelScreen extends MyGdxGameScreen {
         //Dibujamos los sprites de las cartas invocadas. (Estos se moverán por el tablero)
         partida.getCriaturasInvocadasJ1().forEach(criatura -> dibujarCriaturasInvocadas(criatura));
         partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura));
-
 
         //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
         partida.getJugadores().forEach(j -> {
@@ -242,9 +237,28 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     private void drawArrows() {
-        if(partida.getJugador(0).getCementerio().isShowed() || partida.getJugador(1).getCementerio().isShowed() ) {
-            partida.getCardInformation().getLeftArrow().setVisible(true);
-            partida.getCardInformation().getRightArrow().setVisible(true);
+        if(partida.getJugador(0).getCementerio().isShowed() && partida.getJugador(0).getCementerio().getCardsInGraveyard().size()>1) {
+            if(partida.getCardInformation().getPositionInCementerio()>0) {
+                partida.getCardInformation().getLeftArrow().setVisible(true);
+            }else{
+                partida.getCardInformation().getLeftArrow().setVisible(false);
+            }
+            if(partida.getCardInformation().getPositionInCementerio()<partida.getJugador(0).getCementerio().getCardsInGraveyard().size()-1) {
+                partida.getCardInformation().getRightArrow().setVisible(true);
+            }else {
+                partida.getCardInformation().getRightArrow().setVisible(false);
+            }
+        }else if(partida.getJugador(1).getCementerio().isShowed() && partida.getJugador(1).getCementerio().getCardsInGraveyard().size()>1) {
+            if(partida.getCardInformation().getPositionInCementerio()>0) {
+                partida.getCardInformation().getLeftArrow().setVisible(true);
+            }else {
+                partida.getCardInformation().getLeftArrow().setVisible(false);
+            }
+            if(partida.getCardInformation().getPositionInCementerio()<partida.getJugador(1).getCementerio().getCardsInGraveyard().size()-1) {
+                partida.getCardInformation().getRightArrow().setVisible(true);
+            }else {
+                partida.getCardInformation().getRightArrow().setVisible(false);
+            }
         }else {
             partida.getCardInformation().getLeftArrow().setVisible(false);
             partida.getCardInformation().getRightArrow().setVisible(false);
@@ -258,7 +272,6 @@ public class DuelScreen extends MyGdxGameScreen {
         }else {
             stage.addActor(partida.getJugador(jugadorId).getAvatar2());
             partida.getJugador(jugadorId).getAvatar().remove();
-
         }
     }
 

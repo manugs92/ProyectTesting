@@ -135,6 +135,9 @@ public class Mano {
                         partida.setSelectedCard(null);
                         partida.getCardInformation().updateCardInformation(partida);
                         if(cartasMano.size()<=Partida.MAX_CARDS_IN_HAND) {
+                            partida.getAvisosPartida().setAvisos(0,0);
+                            partida.getAvisosPartida().setShowed(false);
+                            partida.pasarTurno();
                             partida.deleteWidgets();
                         }else {
                             partida.getAvisosPartida().setAvisos(1,cartasMano.size());

@@ -35,7 +35,7 @@ public class IaOne {
                     if (partida.getOwnerTurn() == 1) {
                         state = State.INITIAL;
                     }
-                    System.out.println("WAIT FINISH");
+                    //System.out.println("WAIT FINISH");
                     break;
 
                 case INITIAL:
@@ -44,7 +44,7 @@ public class IaOne {
                     IA.addInvocationOrbs(1);
 
                     state = State.MOVE;
-                    System.out.println("INITIAL FINISH");
+                    //System.out.println("INITIAL FINISH");
 
                     break;
                 case INVOCATION:
@@ -70,7 +70,8 @@ public class IaOne {
                     state = State.WAIT;
                     partida.setOwnerTurn(0);
                     partida.getJugador(0).avoidToDrawCard(true);
-                    System.out.println("INITIAL FINICSH");
+                    partida.getJugador(0).addInvocationOrbs(1);
+                    //System.out.println("INITIAL FINICSH");
 
                     break;
 
@@ -79,11 +80,11 @@ public class IaOne {
                     criaturas = partida.getCriaturasInvocadasJ2();
                     if (criaturas.size() != 0) {
                         criatura = criaturas.get(0);
-                        System.out.println((int) criatura.getPosition().y - 1 + " hola ");
+                        //System.out.println((int) criatura.getPosition().y - 1 + " hola ");
                         if (casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1]== null) {
                             casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1].casillasDisponiblesIA(partida.getTablero(), criatura);
                             if (criatura != null) {
-                                System.out.println( " GAGA ");
+                               // System.out.println( " GAGA ");
                                 criatura.setPosition(casillasMoveIa.get(1).getCoordinatesMatrix().x, (casillasMoveIa.get(1).getCoordinatesMatrix().y));
 
 //                } else if (/*es posible moverse*/) {
@@ -97,7 +98,7 @@ public class IaOne {
                     }
 
                     state = State.INVOCATION;
-                    System.out.println("MOVE FINISH");
+                    //System.out.println("MOVE FINISH");
 
                     break;
 

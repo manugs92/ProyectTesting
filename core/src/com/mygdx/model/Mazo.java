@@ -46,12 +46,6 @@ public class Mazo {
         mazoAvoidToDrawGUI.setPosition(positionGUI.x,positionGUI.y);
 
         DefaultDeck();
-        /*mazoDefaultGUI.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float cx, float cy) {
-                drawCard(jugador);
-            }
-        });*/
 
         mazoAvoidToDrawGUI.addListener(new ClickListener() {
             @Override
@@ -67,6 +61,7 @@ public class Mazo {
             jugador.getMano().getCartasMano().add(shuffleMazo.get(0));
             shuffleMazo.remove(0);
             jugador.avoidToDrawCard(false);
+
         }
     }
 

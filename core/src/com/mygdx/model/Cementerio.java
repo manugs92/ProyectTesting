@@ -45,7 +45,7 @@ public class Cementerio {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
 
-                if(!partida.getJugador(jugadorId).getCementerio().isSelected()) {
+                if(!partida.getJugador(jugadorId).getCementerio().isSelected() && cardsInGraveyard.size()>0) {
                     /*Test de criatura en el cementerio*/
                     partida.setSelectedCard(cardsInGraveyard.get(cardsInGraveyard.size()-1));
                     partida.getCardInformation().setNewCardInfo(true);
@@ -61,9 +61,9 @@ public class Cementerio {
                             j.getCementerio().setSelected(false);
                         }
                     });
-                    partida.getCardInformation().getLeftArrow().setVisible(false);
-                    partida.getCardInformation().getRightArrow().setVisible(false);
-
+                    partida.getCardInformation().setPositionInCementerio(cardsInGraveyard.size()-1);
+                    //partida.getCardInformation().getLeftArrow().setVisible(false);
+                    //partida.getCardInformation().getRightArrow().setVisible(false);
                 }else {
                     partida.setSelectedCard(null);
                     partida.getCardInformation().updateCardInformation(partida);

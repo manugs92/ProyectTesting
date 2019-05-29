@@ -55,7 +55,7 @@ public class Partida {
         cartasColocadas = new ArrayList<>();
         duelLog = new DuelLog(skin);
         tablero=new Tablero(this, assetManager);
-        cardInformation=new CardInformation();
+        cardInformation=new CardInformation(this);
         numTurn =0;
         ownerTurn=jugador.getId();
         jugador.avoidToDrawCard(true);
@@ -82,12 +82,9 @@ public class Partida {
                 } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
                     avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
                 }else {
+                    getAvisosPartida().setAvisos(0,0);
                     getAvisosPartida().setShowed(false);
-                    ownerTurn=1;
-                    numTurn++;
-                    getJugador(0).avoidToDrawCard(true);
-                    getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
-                    jugadores.get(1).addInvocationOrbs(1);
+                    pasarTurno();
                 }
                 deleteWidgets();
                 super.clicked(event, x, y);
@@ -192,6 +189,16 @@ public class Partida {
         getCardInformation().getLeftArrow().setVisible(false);
         getCardInformation().getRightArrow().setVisible(false);
         getTablero().setAllSquaresToOff(getTablero());
+        setSelectedCard(null);
+        getCardInformation().updateCardInformation(this);
+    }
+
+    public void pasarTurno() {
+        ownerTurn=1;
+        numTurn++;
+        getJugador(0).avoidToDrawCard(true);
+        getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
+        jugadores.get(1).addInvocationOrbs(1);
     }
 
 }
