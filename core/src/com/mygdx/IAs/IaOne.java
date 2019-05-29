@@ -34,7 +34,7 @@ public class IaOne {
                     if (partida.getOwnerTurn() == 1) {
                         state = State.INITIAL;
                     }
-                    System.out.println("1");
+                    System.out.println("WAIT FINISH");
                     break;
 
                 case INITIAL:
@@ -52,6 +52,7 @@ public class IaOne {
                                 if (casillas[i][8].getCriatura() == null) {
                                     carta.setPosition(i, 8);
                                     partida.addNewInvoquedMonsterJ2((Criatura) carta);
+                                    IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) carta).getCostInvocation());
 
                                     break;
                                 }
@@ -61,7 +62,7 @@ public class IaOne {
                     });
 
                     state = State.MOVE;
-                    System.out.println("2");
+                    System.out.println("INITIAL FINICSH");
 
                     break;
 
@@ -71,7 +72,7 @@ public class IaOne {
                     if (criaturas.size()!=0) {
                         criatura = criaturas.get(0);
                         System.out.println((int) criatura.getPosition().y-1+" ");
-                        casillasMoveIa = casillas[(int) criatura.getPosition().x-1][(int) criatura.getPosition().y-1].casillasDisponiblesIA(partida.getTablero(), criatura);
+                        casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y-1].casillasDisponiblesIA(partida.getTablero(), criatura);
 
                         if (criatura != null) {
                             criatura.setPosition(casillasMoveIa.get(0).getCoordinatesMatrix().x , (casillasMoveIa.get(0).getCoordinatesMatrix().y ));
@@ -87,7 +88,7 @@ public class IaOne {
                     partida.setOwnerTurn(0);
                     partida.getJugador(0).avoidToDrawCard(true);
                         state = State.WAIT;
-                        System.out.println("3");
+                        System.out.println("MOVE FINISH");
 
                         break;
 
