@@ -43,6 +43,7 @@ public class Tablero {
                 casillas[x][y].setTextureCasilla2(assetManager.manager.get(assetManager.imageSquare2, Texture.class));
                 casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
                 casillas[x][y].setState(Casilla.State.APAGADA);
+                casillas[x][y].setCoordinatesMatrix(new Vector2(x,y));
                 casillas[x][y].setPositionGUI(POS_X_TABLERO +(MEDIDA_CASILLA*x), POS_Y_TABLERO +(MEDIDA_CASILLA*y));
                 casillas[x][y].getImageCasilla().setPosition(MEDIDA_CASILLA*x,MEDIDA_CASILLA*y);
                 casillas[x][y].addListenerToBoard(this,partida,x, y);

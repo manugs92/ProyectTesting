@@ -47,14 +47,18 @@ public class Mazo {
         mazoGUI.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
-                if(jugador.isAvoidToDrawCard() && cartasMazo.size()>0) {
-                    jugador.getMano().getCartasMano().add(shuffleMazo.get(0));
-                    shuffleMazo.remove(0);
-                    jugador.avoidToDrawCard(false);
-                }
+                drawCard(jugador);
             }
         });
         ShuffleMazo();
+    }
+
+    public void drawCard(Jugador jugador) {
+        if(jugador.isAvoidToDrawCard() && cartasMazo.size()>0) {
+            jugador.getMano().getCartasMano().add(shuffleMazo.get(0));
+            shuffleMazo.remove(0);
+            jugador.avoidToDrawCard(false);
+        }
     }
 
     public ArrayList<Carta> getCartasMazo() {

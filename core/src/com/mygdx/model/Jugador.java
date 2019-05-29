@@ -21,7 +21,7 @@ public class Jugador {
     private Vector2 posName = new Vector2();
     private int lives = Partida.INITIAL_LIVES;
     private int invocationOrbs = Partida.INITIAL_INVOCATION_ORBS;
-    private Image livesGUI,manaOrb;
+    private Image livesGUI, manaOrbGUI;
     private Vector2 poslives = new Vector2();
     private Vector2 posInvocationOrbs = new Vector2();
 
@@ -35,7 +35,7 @@ public class Jugador {
         assetManager.loadOtherAvatars();
         assetManager.manager.finishLoading();
         livesGUI=new Image(new Texture(assetManager.lives));
-        manaOrb= new Image(new Texture(assetManager.manaOrb));
+        manaOrbGUI = new Image(new Texture(assetManager.manaOrb));
 
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
@@ -59,7 +59,7 @@ public class Jugador {
         avatar.setPosition(posAvatar.x,posAvatar.y);
         avatar2.setPosition(posAvatar.x,posAvatar.y);
         livesGUI.setPosition(poslives.x,poslives.y);
-        manaOrb.setPosition(posInvocationOrbs.x,posInvocationOrbs.y);
+        manaOrbGUI.setPosition(posInvocationOrbs.x,posInvocationOrbs.y);
     }
 
     public void setMazo(Mazo mazo) {
@@ -109,8 +109,8 @@ public class Jugador {
     }
 
 
-    public Image getManaOrb() {
-        return manaOrb;
+    public Image getManaOrbGUI() {
+        return manaOrbGUI;
     }
 
     public int getLives() { return lives; }

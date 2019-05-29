@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.IAs.IaOne;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -28,12 +29,13 @@ public class Partida {
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private Carta selectedCard;
-    private ArrayList<Criatura> criaturasInvocadas;
+    private ArrayList<Criatura> criaturasInvocadasJ1;
+    private ArrayList<Criatura> criaturasInvocadasJ2;
     private ArrayList<Carta> cartasColocadas;
     private Tablero tablero;
     private DuelLog duelLog;
     private CardInformation cardInformation;
-    private int turn;
+    private int numTurn;
     private int ownerTurn;
     private Image buttonRendirse;
     private int winnerId;
@@ -41,18 +43,21 @@ public class Partida {
     private AvisosPartida avisosPartida;
     private Image passTurn;
 
+
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
         estadoPartida = estadoPartida.EMPEZADA;
         jugadores.add(jugador);
         selectedCard = null;
-        criaturasInvocadas =  new ArrayList<>();
+        criaturasInvocadasJ1 =  new ArrayList<>();
+        criaturasInvocadasJ2 =  new ArrayList<>();
+
         cartasColocadas = new ArrayList<>();
         duelLog = new DuelLog(skin);
         tablero=new Tablero(this, assetManager);
         cardInformation=new CardInformation();
-        turn=0;
+        numTurn =0;
         ownerTurn=jugador.getId();
         jugador.avoidToDrawCard(true);
         winnerId=-1;
@@ -69,14 +74,17 @@ public class Partida {
         avisosPartida = new AvisosPartida();
         passTurn = new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
         passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
+        Partida partida=this;
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
                     avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
+
                 }else {
                     ownerTurn = 1;
-                    turn++;
+
+                    numTurn++;
                 }
                 getJugador(0).avoidToDrawCard(false);
                 getTablero().setAllSquaresToOff(getTablero());
@@ -101,13 +109,20 @@ public class Partida {
         return cartasColocadas;
     }
 
-    public void addNewInvoquedMonster(Criatura criatura) {
-        criaturasInvocadas.add(criatura);
+    public void addNewInvoquedMonsterJ1(Criatura criatura) {
+        criaturasInvocadasJ1.add(criatura);
     }
 
-    public  ArrayList<Criatura> getCriaturasInvocadas() {
-        return criaturasInvocadas;
+    public  ArrayList<Criatura> getCriaturasInvocadasJ1() {
+        return criaturasInvocadasJ1;
     }
+    public void addNewInvoquedMonsterJ2(Criatura criatura) {
+        criaturasInvocadasJ2.add(criatura);
+    }
+    public  ArrayList<Criatura> getCriaturasInvocadasJ2() {
+        return criaturasInvocadasJ2;
+    }
+
 
     public void addJugador(Jugador jugador) {
         this.jugadores.add(jugador);
@@ -138,11 +153,11 @@ public class Partida {
     }
 
     public void addTurn() {
-        turn+=1;
+        numTurn +=1;
     }
 
-    public int getTurn() {
-        return turn;
+    public int getNumTurn() {
+        return numTurn;
     }
 
     public void setOwnerTurn(int idPlayer) {
