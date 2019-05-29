@@ -160,9 +160,12 @@ public class Casilla {
                     } else {
                         //sin carta selecionada
                         if (tieneCriatura()) {
-                            System.out.println("Acabo de coher una carta.");
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
+                            System.out.println("Se ha movido:"+((Criatura) selectedCard).isMoved());
+                            System.out.println("Hay un aviso activo: "+partida.getAvisosPartida().isShowed());
+                            System.out.println("Puedo robar?: "+partida.getJugador(0).isAvoidToDrawCard());
                             if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
+                                System.out.println("xd");
                                 casillasDisponibles(tablero, x2, y2, partida);
                             }
                             partida.setSelectedCard(selectedCard);

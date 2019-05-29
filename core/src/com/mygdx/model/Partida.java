@@ -82,14 +82,14 @@ public class Partida {
                 } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
                     avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
                 }else {
-                    ownerTurn = 1;
+                    getAvisosPartida().setShowed(false);
+                    ownerTurn=1;
                     numTurn++;
-                    getJugador(0).avoidToDrawCard(false);
+                    getJugador(0).avoidToDrawCard(true);
                     getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
-                    avisosPartida.setShowed(false);
-                    jugadores.get(0).addInvocationOrbs(1);
+                    jugadores.get(1).addInvocationOrbs(1);
                 }
-                getTablero().setAllSquaresToOff(getTablero());
+                deleteWidgets();
                 super.clicked(event, x, y);
             }
         });
@@ -183,4 +183,15 @@ public class Partida {
     public AvisosPartida getAvisosPartida() {
         return avisosPartida;
     }
+
+    public void deleteWidgets(){
+        jugadores.forEach(j -> {
+            j.getCementerio().setShowed(false);
+            j.getCementerio().setSelected(false);
+        });
+        getCardInformation().getLeftArrow().setVisible(false);
+        getCardInformation().getRightArrow().setVisible(false);
+        getTablero().setAllSquaresToOff(getTablero());
+    }
+
 }

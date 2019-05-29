@@ -108,7 +108,6 @@ public class Jugador {
         return livesGUI;
     }
 
-
     public Image getManaOrbGUI() {
         return manaOrbGUI;
     }

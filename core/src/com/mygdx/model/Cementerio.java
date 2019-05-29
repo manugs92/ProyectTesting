@@ -61,6 +61,9 @@ public class Cementerio {
                             j.getCementerio().setSelected(false);
                         }
                     });
+                    partida.getCardInformation().getLeftArrow().setVisible(false);
+                    partida.getCardInformation().getRightArrow().setVisible(false);
+
                 }else {
                     partida.setSelectedCard(null);
                     partida.getCardInformation().updateCardInformation(partida);

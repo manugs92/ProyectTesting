@@ -191,7 +191,15 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getJugador(jugadorId).getMano().updateHand();
     }
 
-    private void dibujarMazo(int jugadorId){ stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoGUI()); }
+    private void dibujarMazo(int jugadorId){
+        if(!partida.getJugador(jugadorId).isAvoidToDrawCard()) {
+            stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoDefaultGUI());
+            partida.getJugador(jugadorId).getMazo().getMazoAvoidToDrawGUI().remove();
+        }else {
+            stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoAvoidToDrawGUI());
+            partida.getJugador(jugadorId).getMazo().getMazoDefaultGUI().remove();
+        }
+    }
 
     private void dibujarCantidadCartasMazo(int jugadorId) {
         font.setColor(255,255,255,255);
@@ -270,10 +278,10 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     private void dibujarAvisos() {
-        if(partida.getAvisosPartida().isShowed() && partida.getJugador(0).getMano().getCartasMano().size()> Partida.MAX_CARDS_IN_HAND ) {
+        if(partida.getAvisosPartida().getAvisos() == AvisosPartida.avisos.DESCARTAR_CARTAS && partida.getJugador(0).getMano().getCartasMano().size()> Partida.MAX_CARDS_IN_HAND ) {
             font.setColor(255,255,255,255);
             font.draw(batch, partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
-        }else if(partida.getAvisosPartida().isShowed() && partida.getJugador(0).isAvoidToDrawCard()) {
+        }else if(partida.getAvisosPartida().getAvisos() == AvisosPartida.avisos.ANTES_DEBES_ROBAR && partida.getJugador(0).isAvoidToDrawCard()) {
             font.setColor(255,255,255,255);
             font.draw(batch,partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
         }else {

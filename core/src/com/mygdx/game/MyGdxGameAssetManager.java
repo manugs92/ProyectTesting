@@ -13,6 +13,7 @@ public class MyGdxGameAssetManager {
 
     public final String imageSquare2 = "icons/casilla48_2.png";
     public final String imageBackCard = "icons/back_card.png";
+    public final String imageBackCardToDraw = "icons/back_card_to_draw.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
 
     public final String myAvatar = "icons/mugshot2.png";
@@ -28,12 +29,14 @@ public class MyGdxGameAssetManager {
         manager.load(passTurnIcon,Texture.class);
         manager.load(whiteFlagIcon,Texture.class);
         manager.load(lives, Texture.class);
-
     }
 
     public void loadImageDeck() { manager.load(imageSquare, Texture.class); }
 
-    public void loadBackCard() {manager.load(imageBackCard,Texture.class);}
+    public void loadBackCard() {
+        manager.load(imageBackCard,Texture.class);
+        manager.load(imageBackCardToDraw,Texture.class);
+    }
 
     public void loadScrollLog() { manager.load(backgroundScroll,Texture.class);}
 

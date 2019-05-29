@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AvisosPartida {
 
-    private enum avisos {DESCARTAR_CARTAS,ANTES_DEBES_ROBAR};
+    public enum avisos {DESCARTAR_CARTAS,ANTES_DEBES_ROBAR};
     private String texttoShow = "";
 
     private final float posXAvisos = 870;
