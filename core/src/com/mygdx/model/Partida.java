@@ -19,7 +19,7 @@ public class Partida {
     //NORMAS DE PARTIDA.
     public static final int MAX_CARDS_IN_HAND = 6;
     public static final int INITIAL_LIVES = 20;
-    public static final int INITIAL_INVOCATION_ORBS = 4;
+    public static final int INITIAL_INVOCATION_ORBS = 6;
 
     private final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
     private final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;

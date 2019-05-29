@@ -53,7 +53,7 @@ public class DuelScreen extends MyGdxGameScreen {
 
     //Variables temporales (hasta que el jugador se cree desde algun lado)
     private Jugador jugador = new Jugador("Manu", 0, assetManager, skin);
-    private Jugador jugador2 = new Jugador("Isma", 1, assetManager, skin);
+    private Jugador jugador2 = new Jugador("P.maquina", 1, assetManager, skin);
 
     //Variables back end.
     private Partida partida = new Partida(jugador, skin, assetManager);

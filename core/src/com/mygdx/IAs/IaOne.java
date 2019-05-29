@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class IaOne {
 
     enum State {
-        WAIT, MOVE, INITIAL
+        WAIT, INITIAL, MOVE, INVOCATION
     }
 
     State state;
@@ -26,6 +26,7 @@ public class IaOne {
 
 
     public void iaMove(Partida partida) {
+        IA = partida.getJugador(1);
 
         while (partida.getOwnerTurn() == 1) {
 
@@ -38,30 +39,36 @@ public class IaOne {
                     break;
 
                 case INITIAL:
-                    IA = partida.getJugador(1);
-                    IA.setInvocationOrbs(partida.getJugador(1).getInvocationOrbs()+1);
-                    casillas = partida.getTablero().getCasillas();
-
-
                     //robar carta
                     IA.getMazo().drawCard(IA);
-                    IA.getMano().getCartasMano().forEach(carta -> {
+                    IA.addInvocationOrbs(1);
 
+                    state = State.MOVE;
+                    System.out.println("INITIAL FINISH");
+
+                    break;
+                case INVOCATION:
+                    casillas = partida.getTablero().getCasillas();
+
+                    for (Carta carta : IA.getMano().getCartasMano()) {
                         if (IA.getInvocationOrbs() > carta.getCostInvocation()) {
                             for (int i = 1; i < 7; i++) {
                                 if (casillas[i][8].getCriatura() == null) {
                                     carta.setPosition(i, 8);
+                                    carta.setFirstPosition(i,8);
                                     partida.addNewInvoquedMonsterJ2((Criatura) carta);
                                     IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) carta).getCostInvocation());
 
                                     break;
                                 }
                             }
+                            break;
                         }
+                    }
 
-                    });
-
-                    state = State.MOVE;
+                    state = State.WAIT;
+                    partida.setOwnerTurn(0);
+                    partida.getJugador(0).avoidToDrawCard(true);
                     System.out.println("INITIAL FINICSH");
 
                     break;
@@ -69,13 +76,14 @@ public class IaOne {
                 case MOVE:
                     casillas = partida.getTablero().getCasillas();
                     criaturas = partida.getCriaturasInvocadasJ2();
-                    if (criaturas.size()!=0) {
+                    if (criaturas.size() != 0) {
                         criatura = criaturas.get(0);
-                        System.out.println((int) criatura.getPosition().y-1+" ");
-                        casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y-1].casillasDisponiblesIA(partida.getTablero(), criatura);
-
-                        if (criatura != null) {
-                            criatura.setPosition(casillasMoveIa.get(0).getCoordinatesMatrix().x , (casillasMoveIa.get(0).getCoordinatesMatrix().y ));
+                        System.out.println((int) criatura.getPosition().y - 1 + " hola ");
+                        if (casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1] != null) {
+                            casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1].casillasDisponiblesIA(partida.getTablero(), criatura);
+                            if (criatura != null) {
+                                System.out.println( " GAGA ");
+                                criatura.setPosition(casillasMoveIa.get(0).getCoordinatesMatrix().x, (casillasMoveIa.get(0).getCoordinatesMatrix().y));
 
 //                } else if (/*es posible moverse*/) {
 //
@@ -83,15 +91,14 @@ public class IaOne {
 //                } else if ( /* */) {
 //
 //                }
+                            }
                         }
                     }
-                    partida.setOwnerTurn(0);
-                    partida.getJugador(0).avoidToDrawCard(true);
-                        state = State.WAIT;
-                        System.out.println("MOVE FINISH");
 
-                        break;
+                    state = State.INVOCATION;
+                    System.out.println("MOVE FINISH");
 
+                    break;
 
 
             }
