@@ -52,6 +52,7 @@ public class IaOne {
                                 if (casillas[i][8].getCriatura() == null) {
                                     carta.setPosition(i, 8);
                                     partida.addNewInvoquedMonsterJ2((Criatura) carta);
+                                    IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) carta).getCostInvocation());
 
                                     break;
                                 }
@@ -71,7 +72,7 @@ public class IaOne {
                     if (criaturas.size()!=0) {
                         criatura = criaturas.get(0);
                         System.out.println((int) criatura.getPosition().y-1+" ");
-                        casillasMoveIa = casillas[(int) criatura.getPosition().x-1][(int) criatura.getPosition().y-1].casillasDisponiblesIA(partida.getTablero(), criatura);
+                        casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y-1].casillasDisponiblesIA(partida.getTablero(), criatura);
 
                         if (criatura != null) {
                             criatura.setPosition(casillasMoveIa.get(0).getCoordinatesMatrix().x , (casillasMoveIa.get(0).getCoordinatesMatrix().y ));
