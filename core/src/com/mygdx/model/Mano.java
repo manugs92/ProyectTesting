@@ -1,6 +1,7 @@
 package com.mygdx.model;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -106,6 +107,11 @@ public class Mano {
                                 }
                             }
                             partida.setSelectedCard(cartasMano.get(finali));
+
+
+
+                            desSelected(partida, finali);
+
                         }else {
                             partida.setSelectedCard(cartasMano.get(finali));
                             partida.getCardInformation().updateCardInformation(partida);
@@ -115,6 +121,8 @@ public class Mano {
                         partida.getCardInformation().updateCardInformation(partida);
                     } else {
                         partida.setSelectedCard(null);
+                        partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(255,255,255,1f);
+
                         partida.getCardInformation().updateCardInformation(partida);
                     }
 
@@ -143,6 +151,18 @@ public class Mano {
                 }
             });
         }
+    }
+
+    private void desSelected(Partida partida, int finali) {
+        for (int j = 0; j < cartasMano.size(); j++) {
+        partida.getJugador(0).getMano().getCartaManoGUI().get(j).setColor(255,255,255,1f);
+
+        }
+        partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(50,50,0,1f);
+
+//        if(partida.getSelectedCard().equals(cartasMano.get(finali))){
+//            partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(255,255,255,1f);
+//        }
     }
 
     public ArrayList<Carta> getCartasMano() {

@@ -80,18 +80,21 @@ public class Mazo {
 
     public ArrayList<Carta> DefaultDeck() {
         Texture textureCard = new Texture("icons\\carta.png");
-        Texture textureSpriteCard= new Texture("icons\\spyro.png");
-        Texture textureCard2 = new Texture("icons\\handled_card2.png");
-        Texture textureSpriteCard2= new Texture("icons\\Spritecard2.png");
+        Texture textureSpriteSpyro= new Texture("icons\\spyro.png");
+        Texture textureSpriteSpyroFront= new Texture("icons\\spyro_front.png");
+
+        Texture textureCard2 = new Texture("icons\\manu_golem_card.png");
+        Texture textureSpriteGolemManu= new Texture("icons\\manu.png");
+        Texture textureSpriteGolemManuFront= new Texture("icons\\manu_front.png");
         while (cartasMazo.size()<=MIN_CARDS-1) {
-            Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,2,1);
+            Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront,7,10,2,1);
             golem.setNombre("DragonSp1");
             golem.setImage(textureCard);
             golem.setLastPosition(-1,-1);
             golem.setFirstPosition(-1,-1);
             golem.setCostInvocation(2);
             cartasMazo.add(golem);
-            Criatura golem2 = new Criatura(DRAGON,FUEGO,textureSpriteCard2,7,10,2,1);
+            Criatura golem2 = new Criatura(DRAGON,FUEGO,textureSpriteGolemManu,textureSpriteSpyroFront,7,10,2,1);
             golem2.setNombre("DragonSp2");
             golem2.setImage(textureCard2);
             golem2.setLastPosition(-1,-1);
