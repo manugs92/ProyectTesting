@@ -34,8 +34,8 @@ public class AvisosPartida {
                     break;
 
                 default:
-                    avisos = null;
                     showed = false;
+                    avisos = null;
                     texttoShow ="";
                     break;
         }

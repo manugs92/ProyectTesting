@@ -159,6 +159,7 @@ public class Casilla {
                     } else {
                         //sin carta selecionada
                         if (tieneCriatura()) {
+                            System.out.println("Acabo de coher una carta.");
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
                             if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
                                 casillasDisponibles(tablero, x2, y2, partida);

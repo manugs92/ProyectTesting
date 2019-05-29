@@ -127,4 +127,8 @@ public class Jugador {
 
     public Vector2 getPosInvocationOrbs() { return posInvocationOrbs; }
 
+    public void addInvocationOrbs(int orbs) {
+        invocationOrbs+=orbs;
+    }
+
 }

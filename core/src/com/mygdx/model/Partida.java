@@ -67,6 +67,7 @@ public class Partida {
             public boolean longPress(Actor actor, float x, float y) {
                 winnerId=1;
                 estadoPartida = estadoPartida.FINALIZADA;
+                jugadores.get(0).setLives(0);
                 return super.longPress(actor, x, y);
             }
         });
@@ -76,16 +77,17 @@ public class Partida {
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
-                    avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
-                }else if(jugadores.get(0).isAvoidToDrawCard()) {
+                if(jugadores.get(0).isAvoidToDrawCard()) {
                     avisosPartida.setAvisos(2,getJugador(0).getMano().getCartasMano().size());
+                } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
+                    avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
                 }else {
                     ownerTurn = 1;
                     numTurn++;
                     getJugador(0).avoidToDrawCard(false);
                     getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
                     avisosPartida.setShowed(false);
+                    jugadores.get(0).addInvocationOrbs(1);
                 }
                 getTablero().setAllSquaresToOff(getTablero());
                 super.clicked(event, x, y);

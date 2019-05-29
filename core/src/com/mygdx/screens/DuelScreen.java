@@ -19,8 +19,6 @@ public class DuelScreen extends MyGdxGameScreen {
 
     /*
     *
-    *  TODO: Vaciar cementerios.
-    *  TODO: Al rendirte, poner vidas restantes a 0.
     *
     *  TODO: Método de atacar monstruo.
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
@@ -29,8 +27,6 @@ public class DuelScreen extends MyGdxGameScreen {
     *  TODO: Sonido al realizar ataque.
     *
     *  TODO: Método de quitar vidas.
-    *
-    *  TODO: Método de al pasar turno ganar un orbe de invocación.
     *
     *  TODO: Todo lo que se haga, mostrarlo en el log.
     *
@@ -95,6 +91,14 @@ public class DuelScreen extends MyGdxGameScreen {
         stage.addActor(partida.getPassTurn());
         stage.addActor(partida.getCardInformation().getLeftArrow());
         stage.addActor(partida.getCardInformation().getRightArrow());
+
+        if(partida.getOwnerTurn()==0) {
+            partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(0).getNombre()+".");
+        }else {
+            partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(1).getNombre()+".");
+        }
+        partida.getDuelLog().setNewMsgTrue();
+        //partida.getDuelLog().getScrollPane().remove();
     }
 
 
@@ -272,6 +276,8 @@ public class DuelScreen extends MyGdxGameScreen {
         }else if(partida.getAvisosPartida().isShowed() && partida.getJugador(0).isAvoidToDrawCard()) {
             font.setColor(255,255,255,255);
             font.draw(batch,partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
+        }else {
+            partida.getAvisosPartida().setShowed(false);
         }
     }
 }

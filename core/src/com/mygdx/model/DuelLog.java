@@ -121,4 +121,5 @@ public class DuelLog {
     public void addMsgToLog(String msg){
         duelLog.add(msg);
     }
+
 }
