@@ -34,7 +34,7 @@ public class IaOne {
                     if (partida.getOwnerTurn() == 1) {
                         state = State.INITIAL;
                     }
-                    System.out.println("1");
+                    System.out.println("WAIT FINISH");
                     break;
 
                 case INITIAL:
@@ -62,7 +62,7 @@ public class IaOne {
                     });
 
                     state = State.MOVE;
-                    System.out.println("2");
+                    System.out.println("INITIAL FINICSH");
 
                     break;
 
@@ -88,7 +88,7 @@ public class IaOne {
                     partida.setOwnerTurn(0);
                     partida.getJugador(0).avoidToDrawCard(true);
                         state = State.WAIT;
-                        System.out.println("3");
+                        System.out.println("MOVE FINISH");
 
                         break;
 
