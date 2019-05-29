@@ -2,7 +2,6 @@ package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -41,25 +40,18 @@ public class MainScreen extends MyGdxGameScreen {
         //Listeners de los botones.
         newGame.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                screenManager.changeScreen(screenManager.DUEL_SCREEN);
-            }
+            public void changed(ChangeEvent event, Actor actor) { screenManager.changeScreen(screenManager.DUEL_SCREEN); }
         });
 
         preferences.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                screenManager.changeScreen(screenManager.SUMMARY_SCREEN);
-            }
+            public void changed(ChangeEvent event, Actor actor) { screenManager.changeScreen(screenManager.PREFERENCES_SCREEN); }
         });
 
 
         exit.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                //screenManager.changeScreen(screenManager.START_GAME);
-                Gdx.app.exit();
-            }
+            public void changed(ChangeEvent event, Actor actor) { Gdx.app.exit(); }
         });
 
         Table table = new Table();

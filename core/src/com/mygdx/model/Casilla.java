@@ -109,8 +109,8 @@ public class Casilla {
                 //Seleccionamos la carta donde hemos hecho click. (Mediante partida, ya que la almacena ella)
                 partida.getCardInformation().updateCardInformation(partida);
 
-                //si la carta seleccionada no es nula, ni mágica ni equipamiento y  donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo)
-                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && Casilla.this.getCriatura() == null && Casilla.this.getState() != State.APAGADA) {
+                //si la carta seleccionada no es nula, ni mágica ni equipamiento y  donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo) y ya hemos robado.
+                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && Casilla.this.getCriatura() == null && Casilla.this.getState() != State.APAGADA && !partida.getJugador(0).isAvoidToDrawCard() ) {
                     //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)y no es trampa
                     if (selectedCard.getLastPosition().x != -1 && selectedCard.getLastPosition().y != -1 && selectedCard.getTipo() != Carta.Tipo.TRAMPA) {
                         //aqui borras el monstruo de la casilla anterior.
@@ -146,7 +146,7 @@ public class Casilla {
                 } else {
                     if (selectedCard != null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
                         tablero.setAllSquaresToOff(tablero);
-                        if (tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed()) {
+                        if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
                             casillasDisponibles(tablero, x2, y2, partida);
                         } else {
                             partida.setSelectedCard(tablero.getCasilla(x2, y2).getCriatura());
@@ -160,7 +160,7 @@ public class Casilla {
                         //sin carta selecionada
                         if (tieneCriatura()) {
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
-                            if (!((Criatura) selectedCard).isMoved() && !partida.getAvisosPartida().isShowed()) {
+                            if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
                                 casillasDisponibles(tablero, x2, y2, partida);
                             }
                             partida.setSelectedCard(selectedCard);

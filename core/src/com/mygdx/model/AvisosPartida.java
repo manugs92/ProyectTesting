@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AvisosPartida {
 
-    private enum avisos {DESCARTAR_CARTAS};
+    private enum avisos {DESCARTAR_CARTAS,ANTES_DEBES_ROBAR};
     private String texttoShow = "";
 
     private final float posXAvisos = 870;
@@ -27,6 +27,12 @@ public class AvisosPartida {
                     texttoShow = "Descarta "+(size - Partida.MAX_CARDS_IN_HAND)+" cartas\ncon click derecho.";
                     break;
 
+                case 2:
+                    showed = true;
+                    avisos = avisos.ANTES_DEBES_ROBAR;
+                    texttoShow = "Antes de pasar turno\ndebes robar\nuna carta.";
+                    break;
+
                 default:
                     avisos = null;
                     showed = false;
@@ -44,5 +50,7 @@ public class AvisosPartida {
     }
 
     public avisos getAvisos() {return avisos;}
+
+    public void setShowed(boolean state) { showed=state;}
 
 }

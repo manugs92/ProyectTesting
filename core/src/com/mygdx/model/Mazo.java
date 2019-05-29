@@ -31,9 +31,9 @@ public class Mazo {
     private Vector2 positionGUI = new Vector2();
 
     public Mazo(MyGdxGameAssetManager assetManager, Jugador jugador) {
-        assetManager.loadImageDeck();
+        assetManager.loadBackCard();
         assetManager.manager.finishLoading();
-        textureMazo = assetManager.manager.get(assetManager.imageSquare, Texture.class);
+        textureMazo = assetManager.manager.get(assetManager.imageBackCard, Texture.class);
         mazoGUI = new Image(textureMazo);
         if(jugador.getId()==0) {
             positionGUI.y= POS_Y_MAZO_J1;

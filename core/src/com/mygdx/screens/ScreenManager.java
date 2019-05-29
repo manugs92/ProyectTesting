@@ -1,6 +1,7 @@
 package com.mygdx.screens;
 
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.model.Partida;
 
 public class ScreenManager {
 
@@ -15,8 +16,8 @@ public class ScreenManager {
 
     public final static int MAIN_SCREEN = 0;
     public final static int LOADING_SCREEN  = 1;
-    public final static int START_GAME = 2;
-    public final static int PREFERENCES = 3;
+    public final static int START_GAME_SCREEN = 2;
+    public final static int PREFERENCES_SCREEN = 3;
     public final static int DUEL_SCREEN = 4;
     public final static int SUMMARY_SCREEN = 5;
 
@@ -28,7 +29,6 @@ public class ScreenManager {
     public void setDefaultScreen() {
         mainScreen = new MainScreen(this);
         parent.setScreen(mainScreen);
-        //parent.setScreen(new DuelScreen(this));
     }
 
     public void changeScreen(int screen){
@@ -43,12 +43,12 @@ public class ScreenManager {
                 parent.setScreen(loadingScreen);
                 break;
 
-            case START_GAME:
+            case START_GAME_SCREEN:
                 startGame = new StartGame(this);
                 parent.setScreen(startGame);
                 break;
 
-            case PREFERENCES:
+            case PREFERENCES_SCREEN:
                 preferencesScreen = new PreferencesScreen(this);
                 parent.setScreen(preferencesScreen);
                 break;
@@ -57,11 +57,11 @@ public class ScreenManager {
                 duelScreen = new DuelScreen(this);
                 parent.setScreen(duelScreen);
                 break;
-
-            case SUMMARY_SCREEN:
-                summaryScreen = new SummaryScreen(this);
-                parent.setScreen(summaryScreen);
-                break;
         }
+    }
+
+    public void changeScreenToResume(int screen, Partida partida) {
+        summaryScreen = new SummaryScreen(this,partida);
+        parent.setScreen(summaryScreen);
     }
 }

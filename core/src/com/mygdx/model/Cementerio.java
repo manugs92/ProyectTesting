@@ -9,8 +9,6 @@ import com.mygdx.game.MyGdxGameAssetManager;
 
 import java.util.ArrayList;
 
-import static com.mygdx.model.Criatura.TipoElemental.FUEGO;
-import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
 
 public class Cementerio {
 
@@ -40,16 +38,6 @@ public class Cementerio {
             graveyardGUI.setPosition(POS_X_GRAVEYARD,POS_Y_GRAVEYARD_J2);
         }
         isSelected=false;
-
-        //Carta de prueba en cementerio.
-        Texture textureCard = new Texture("icons\\handled_card.png");
-        Texture textureSpriteCard= new Texture("icons\\Spritecard.png");
-        Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteCard,7,10,2,1);
-        golem.setNombre("DragonSp1");
-        golem.setImage(textureCard);
-        golem.setLastPosition(-2,-2);
-        golem.setFirstPosition(-2,-2);
-        cardsInGraveyard.add(golem);
     }
 
     public void addListenerToGraveyard(Partida partida, int jugadorId) {
@@ -87,6 +75,8 @@ public class Cementerio {
     public ArrayList<Carta> getCardsInGraveyard() { return cardsInGraveyard; }
 
     public void setCardsInGraveyard(ArrayList<Carta> cardsInGraveyard) { this.cardsInGraveyard = cardsInGraveyard; }
+
+    public Texture getTextureGraveyard() { return textureGraveyard; }
 
     public Image getGraveyardGUI() { return graveyardGUI; }
 

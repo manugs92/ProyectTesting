@@ -18,28 +18,34 @@ public class DuelScreen extends MyGdxGameScreen {
 
 
     /*
-     *  TODO: Botón de rendirse. -> Al hacer click, ir a pantalla "Resumen de partida".
-     *  TODO: Crear Screen de resumen partida. (Poner quien ha ganado, el log, vidas, turno ..etc)
-     *
-     *  TODO: Método de atacar monstruo.
-     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
-     *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance)
-     *  TODO: Si atacas, atacas a su defensa, y él a la tuya. (puede haber victoria, empate, o derrota)
-     *  TODO: Sonido al realizar ataque.
-     *
-     *  TODO: Método de quitar vidas.
-     *
-     *  TODO: Método de al pasar turno ganar un orbe de invocación.
-     *
-     *  TODO: Todo lo que se haga, mostrarlo en el log.
-     *
-     *  TODO: IA que solo invoque un monstruo por turno y lo mueva para adelante (pero no te ataque)
-     *
-     *  TODO: Cementerio, solo aparecer flecha si hay más de una carta. Y al darle click a avanzar o atrasar, mostrar la que toque.
-     *
-     *  TODO: Ocultar todo al hacer click en pasar turno.
-     *
-     * */
+    *
+    *  TODO: Vaciar cementerios.
+    *  TODO: Al rendirte, poner vidas restantes a 0.
+    *
+    *  TODO: Método de atacar monstruo.
+    *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
+    *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance)
+    *  TODO: Si atacas, atacas a su defensa, y él a la tuya. (puede haber victoria, empate, o derrota)
+    *  TODO: Sonido al realizar ataque.
+    *
+    *  TODO: Método de quitar vidas.
+    *
+    *  TODO: Método de al pasar turno ganar un orbe de invocación.
+    *
+    *  TODO: Todo lo que se haga, mostrarlo en el log.
+    *
+    *  TODO: IA que solo invoque un monstruo por turno y lo mueva para adelante (pero no te ataque)
+    *
+    *  TODO: Cementerio, solo aparecer flecha si hay más de una carta. Y al darle click a avanzar o atrasar, mostrar la que toque.
+    *
+    *  TODO: Ocultar todo al hacer click en pasar turno.
+    *
+    *  TODO: Poner música de juego en (main menú,configuración), en duelo, y en resumeScreen.
+    *  TODO: Poner sonidos al invocar, al robar, al atacar..
+    *
+    *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
+    *
+    * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
 
@@ -60,9 +66,7 @@ public class DuelScreen extends MyGdxGameScreen {
     private int yTablero = tablero.getTablero().getCasillas()[0].length;
     private IaOne iA;
 
-    public DuelScreen(ScreenManager screenManagerR) {
-        super(screenManagerR);
-    }
+    public DuelScreen(ScreenManager screenManagerR) { super(screenManagerR); }
 
     @Override
     public void show() {
@@ -89,7 +93,8 @@ public class DuelScreen extends MyGdxGameScreen {
         dibujarBotones();
         iA = new IaOne();
         stage.addActor(partida.getPassTurn());
-
+        stage.addActor(partida.getCardInformation().getLeftArrow());
+        stage.addActor(partida.getCardInformation().getRightArrow());
     }
 
 
@@ -108,33 +113,23 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getJugadores().forEach(j -> {
             dibujarMano(j.getId());
             dibujarMazo(j.getId());
-            dibujarNombreJugador(j.getId());
             dibujarAvatarJugadores(j.getId());
-            drawLivesAndMana(j.getId());
         });
 
         drawArrows();
-        dibujarAvisos();
 
         batch.end();
 
         //Mostramos la informacion de la carta
-        if (partida.getCardInformation().isNewCardInfo()) {
-            dibujarInformacionCarta();
-        }
+        if(partida.getCardInformation().isNewCardInfo()) { dibujarInformacionCarta(); }
 
         //Mostramos botón de pasar turno si es tu turno.
-        if (partida.getOwnerTurn() == 0) {
-            partida.getPassTurn().setVisible(true);
+        if(partida.getOwnerTurn()==0) { partida.getPassTurn().setVisible(true); }
+        else { partida.getPassTurn().setVisible(false); }
 
-        } else {
-            partida.getPassTurn().setVisible(false);
-
-        }
         //maquinna
         iA.iaMove(partida);
         partida.setOwnerTurn(0);
-
 
         stage.draw();
         batch.begin();
@@ -147,14 +142,19 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura));
 
 
-        //Dibujamos cantidad de cartas en mazo.
-        partida.getJugadores().forEach(j -> dibujarCantidadCartasMazo(j.getId()));
+        //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
+        partida.getJugadores().forEach(j -> {
+            dibujarCantidadCartasMazo(j.getId());
+            dibujarNombreJugador(j.getId());
+            drawLivesAndMana(j.getId());
+            dibujarCartaCemenerio(j.getId());
+        });
 
-        //Dibujamos última carta enviada al cementerio.
-        partida.getJugadores().forEach(j -> dibujarCartaCemenerio(j.getId()));
+        dibujarAvisos();
+
         batch.end();
 
-        if(partida.getWinnerId()!=-1) { screenManager.changeScreen(screenManager.MAIN_SCREEN); }
+        if(partida.getWinnerId()!=-1) { screenManager.changeScreenToResume(screenManager.SUMMARY_SCREEN,partida); }
     }
 
     @Override
@@ -190,7 +190,7 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarMazo(int jugadorId){ stage.addActor(partida.getJugador(jugadorId).getMazo().getMazoGUI()); }
 
     private void dibujarCantidadCartasMazo(int jugadorId) {
-        font.setColor(0,0,0,255);
+        font.setColor(255,255,255,255);
         font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getMazo().getCartasMazo().size()), partida.getJugador(jugadorId).getMazo().getPositionGUI().x+15, partida.getJugador(jugadorId).getMazo().getPositionGUI().y+30);
     }
 
@@ -220,19 +220,22 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarCartaCemenerio(int jugadorId) {
         Cementerio cementerio = partida.getJugador(jugadorId).getCementerio();
         if(jugadorId==0) {
-            batch.draw(cementerio.getCardsInGraveyard().get(cementerio.getCardsInGraveyard().size()-1).getImage(),cementerio.POS_X_GRAVEYARD,cementerio.POS_Y_GRAVEYARD_J1);
+            //Si tiene cartas en el cementerio, mostrar la ultima, si no mostrar una casilla vacia.
+            if(cementerio.getCardsInGraveyard().size()>0) { batch.draw(cementerio.getCardsInGraveyard().get(cementerio.getCardsInGraveyard().size()-1).getImage(),cementerio.POS_X_GRAVEYARD,cementerio.POS_Y_GRAVEYARD_J1); }
+            else { batch.draw(cementerio.getTextureGraveyard(),cementerio.POS_X_GRAVEYARD,cementerio.POS_Y_GRAVEYARD_J1); }
         }else {
-            batch.draw(cementerio.getCardsInGraveyard().get(cementerio.getCardsInGraveyard().size()-1).getImage(),cementerio.POS_X_GRAVEYARD,cementerio.POS_Y_GRAVEYARD_J2);
+            if(cementerio.getCardsInGraveyard().size()>0) { batch.draw(cementerio.getCardsInGraveyard().get(cementerio.getCardsInGraveyard().size()-1).getImage(),cementerio.POS_X_GRAVEYARD,cementerio.POS_Y_GRAVEYARD_J2); }
+            else { batch.draw(cementerio.getTextureGraveyard(),cementerio.POS_X_GRAVEYARD,cementerio.POS_Y_GRAVEYARD_J2); }
         }
     }
 
     private void drawArrows() {
         if(partida.getJugador(0).getCementerio().isShowed() || partida.getJugador(1).getCementerio().isShowed() ) {
-            stage.addActor(partida.getCardInformation().getLeftArrow());
-            stage.addActor(partida.getCardInformation().getRightArrow());
+            partida.getCardInformation().getLeftArrow().setVisible(true);
+            partida.getCardInformation().getRightArrow().setVisible(true);
         }else {
-           partida.getCardInformation().removeLeftArrow();
-            partida.getCardInformation().removeRightArrow();
+            partida.getCardInformation().getLeftArrow().setVisible(false);
+            partida.getCardInformation().getRightArrow().setVisible(false);
         }
     }
 
@@ -266,6 +269,9 @@ public class DuelScreen extends MyGdxGameScreen {
         if(partida.getAvisosPartida().isShowed() && partida.getJugador(0).getMano().getCartasMano().size()> Partida.MAX_CARDS_IN_HAND ) {
             font.setColor(255,255,255,255);
             font.draw(batch, partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
+        }else if(partida.getAvisosPartida().isShowed() && partida.getJugador(0).isAvoidToDrawCard()) {
+            font.setColor(255,255,255,255);
+            font.draw(batch,partida.getAvisosPartida().getTexttoShow(),partida.getAvisosPartida().getPositionAviso().x,partida.getAvisosPartida().getPositionAviso().y);
         }
     }
 }

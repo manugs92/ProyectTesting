@@ -85,6 +85,7 @@ public class IaOne {
                         }
                     }
                     partida.setOwnerTurn(0);
+                    partida.getJugador(0).avoidToDrawCard(true);
                         state = State.WAIT;
                         System.out.println("3");
 

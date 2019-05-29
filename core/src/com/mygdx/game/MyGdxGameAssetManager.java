@@ -31,9 +31,7 @@ public class MyGdxGameAssetManager {
 
     }
 
-    public void loadImageDeck() {
-        manager.load(imageSquare, Texture.class);
-    }
+    public void loadImageDeck() { manager.load(imageSquare, Texture.class); }
 
     public void loadBackCard() {manager.load(imageBackCard,Texture.class);}
 

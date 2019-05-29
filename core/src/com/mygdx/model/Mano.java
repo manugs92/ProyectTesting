@@ -71,8 +71,7 @@ public class Mano {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
-                    //Obtenemos todas las casillas de invocación (x = 0-6) e (y = 0) y a cada una de ellas le seteamos la
-                    //disponibilidad de invocación a true.
+
                     Casilla[][] casillas = tablero.getCasillas();
                     tablero.setAllSquaresToOff(tablero);
                     partida.getJugadores().forEach(j -> {
@@ -81,7 +80,7 @@ public class Mano {
                     });
 
 
-                    if((partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) && partida.getOwnerTurn()==0 && !partida.getAvisosPartida().isShowed()) {
+                    if((partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) && partida.getOwnerTurn()==0 && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
                         if(cartasMano.get(finali).getTipo() == Carta.Tipo.CRIATURA && cartasMano.get(finali).getCostInvocation()<=partida.getJugador(0).getInvocationOrbs()) {
                             for(int i=0;i<=casillas.length-1;i++) {
                                 boolean avoidInvoke = true;

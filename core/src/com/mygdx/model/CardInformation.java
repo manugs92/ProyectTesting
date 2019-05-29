@@ -15,6 +15,8 @@ public class CardInformation {
     public CardInformation() {
         leftArrow.setPosition(Tablero.POS_X_TABLERO - (Casilla.MEDIDA_CASILLA*3),Mano.POS_Y_MANO_J1);
         rightArrow.setPosition(Tablero.POS_X_TABLERO - (Casilla.MEDIDA_CASILLA*2),Mano.POS_Y_MANO_J1);
+        leftArrow.setVisible(false);
+        rightArrow.setVisible(false);
     }
 
     public Table writeInfoPane(){

@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.IAs.IaOne;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -74,19 +73,20 @@ public class Partida {
         avisosPartida = new AvisosPartida();
         passTurn = new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
         passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
-        Partida partida=this;
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
                     avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
-
+                }else if(jugadores.get(0).isAvoidToDrawCard()) {
+                    avisosPartida.setAvisos(2,getJugador(0).getMano().getCartasMano().size());
                 }else {
                     ownerTurn = 1;
-
                     numTurn++;
+                    getJugador(0).avoidToDrawCard(false);
+                    getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
+                    avisosPartida.setShowed(false);
                 }
-                getJugador(0).avoidToDrawCard(false);
                 getTablero().setAllSquaresToOff(getTablero());
                 super.clicked(event, x, y);
             }

@@ -60,6 +60,48 @@ public class DuelLog {
         newMsg=false;
         return scrollPane;
     }
+
+    public ScrollPane writeLogSumaryScreen(MyGdxGameAssetManager assetManager, Batch batch) {
+        assetManager.loadScrollLog();
+        assetManager.manager.finishLoading();
+        textureBgScroll = assetManager.manager.get(assetManager.backgroundScroll, Texture .class);
+        textureBgScroll.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        Table scrollTable = new Table();
+        scrollTable.setPosition(0,0);
+        BackgroundScroll backgroundScroll = new BackgroundScroll(batch,textureBgScroll,0,0,0,0, MyGdxGame.SCREEN_WIDTH,MyGdxGame.SCREEN_HEIGHT);
+        scrollTable.setBackground(backgroundScroll);
+
+        this.scrollPane = new ScrollPane(scrollTable,skin);
+        scrollPane.setColor(Color.BLUE);
+        scrollPane.setPosition(400,20);
+        scrollPane.setWidth(430);
+        scrollPane.setHeight(MyGdxGame.SCREEN_HEIGHT/2);
+        scrollPane.setScrollbarsVisible(true);
+        scrollPane.setForceScroll(false,true);
+        scrollPane.setFadeScrollBars(true);
+
+        for(int i=0;i<duelLog.size();i++) {
+            //Mensaje a añadir del log.
+            Label label = new Label(duelLog.get(i),skin);
+            label.getStyle().fontColor.set(Color.WHITE);
+            scrollTable.add(label).expandX().expandY().fillX().pad(5,5,5,5);
+            scrollTable.row();
+        }
+
+        for(int i=0;i<20;i++) {
+            //Mensaje a añadir del log.
+            Label label = new Label("xd",skin);
+            label.getStyle().fontColor.set(Color.WHITE);
+            scrollTable.add(label).expandX().expandY().fillX().pad(5,5,5,5);
+            scrollTable.row();
+        }
+
+        newMsg=false;
+        return scrollPane;
+    }
+
+
     public void setNewMsgTrue() {
         this.newMsg=true;
     }
