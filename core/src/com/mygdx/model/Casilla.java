@@ -25,6 +25,7 @@ public class Casilla {
     private Texture textureCasilla2;
     private Image imageCasilla;
     private State state;
+    private boolean cardInvoked;
 
     public void setCriatura(Criatura criatura) {
         this.criatura = criatura;
@@ -215,5 +216,13 @@ public class Casilla {
 
     public void setCoordinatesMatrix(Vector2 coordinatesMatrix) {
         this.coordinatesMatrix = coordinatesMatrix;
+    }
+
+    public boolean isCardInvoked() {
+        return cardInvoked;
+    }
+
+    public void setCardInvoked(boolean cardInvoked) {
+        this.cardInvoked = cardInvoked;
     }
 }

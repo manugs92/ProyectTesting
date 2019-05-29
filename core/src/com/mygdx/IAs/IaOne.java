@@ -53,9 +53,10 @@ public class IaOne {
                     for (Carta carta : IA.getMano().getCartasMano()) {
                         if (IA.getInvocationOrbs() > carta.getCostInvocation()) {
                             for (int i = 1; i < 7; i++) {
-                                if (casillas[i][8].getCriatura() == null) {
+                                if (casillas[i][8].getCriatura() == null && !casillas[i][8].isCardInvoked()) {
                                     carta.setPosition(i, 8);
                                     carta.setFirstPosition(i,8);
+                                    casillas[i][8].setCardInvoked(true);
                                     partida.addNewInvoquedMonsterJ2((Criatura) carta);
                                     IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) carta).getCostInvocation());
 
@@ -79,11 +80,11 @@ public class IaOne {
                     if (criaturas.size() != 0) {
                         criatura = criaturas.get(0);
                         System.out.println((int) criatura.getPosition().y - 1 + " hola ");
-                        if (casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1] != null) {
+                        if (casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1]== null) {
                             casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y - 1].casillasDisponiblesIA(partida.getTablero(), criatura);
                             if (criatura != null) {
                                 System.out.println( " GAGA ");
-                                criatura.setPosition(casillasMoveIa.get(0).getCoordinatesMatrix().x, (casillasMoveIa.get(0).getCoordinatesMatrix().y));
+                                criatura.setPosition(casillasMoveIa.get(1).getCoordinatesMatrix().x, (casillasMoveIa.get(1).getCoordinatesMatrix().y));
 
 //                } else if (/*es posible moverse*/) {
 //
