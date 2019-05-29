@@ -16,7 +16,6 @@ import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
 
 public class Mazo {
 
-    //
     private final int MAX_CARDS = 40;
     private final int MIN_CARDS = 20;
 

@@ -35,7 +35,6 @@ public class CardInformation {
                     //Actualizamos la carta que se verá en el preview.
                     partida.getCardInformation().setCardDetailInfo(partida.getSelectedCard());
                     partida.getCardInformation().getInfoPane().remove();
-                    System.out.println("Posicion actual: " + positionInCementerio);
                 }
             }
         });
