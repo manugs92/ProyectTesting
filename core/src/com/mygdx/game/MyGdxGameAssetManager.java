@@ -22,6 +22,8 @@ public class MyGdxGameAssetManager {
     public final String rivalAvatar2 = "icons/mugshot_1.png";
     public final String passTurnIcon = "icons/pasarturno_0.png";
     public final String whiteFlagIcon = "icons/whiteflag.png";
+    public final String cartaInfo = "icons/carta_info.png";
+
 
     public void loadImagesDuelScreen() {
         manager.load(imageSquare, Texture.class);
@@ -29,6 +31,7 @@ public class MyGdxGameAssetManager {
         manager.load(passTurnIcon,Texture.class);
         manager.load(whiteFlagIcon,Texture.class);
         manager.load(lives, Texture.class);
+        manager.load(cartaInfo, Texture.class);
     }
 
     public void loadImageDeck() { manager.load(imageSquare, Texture.class); }
