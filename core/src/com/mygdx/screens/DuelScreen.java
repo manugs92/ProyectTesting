@@ -2,10 +2,12 @@ package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Scaling;
 import com.mygdx.IAs.IaOne;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
@@ -87,6 +89,9 @@ public class DuelScreen extends MyGdxGameScreen {
         stage.addActor(partida.getCardInformation().getLeftArrow());
         stage.addActor(partida.getCardInformation().getRightArrow());
 
+
+
+
         if(partida.getOwnerTurn()==0) {
             partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(0).getNombre()+".");
         }else {
@@ -147,6 +152,7 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarCantidadCartasMazo(j.getId());
             dibujarNombreJugador(j.getId());
             drawLivesAndMana(j.getId());
+
             dibujarCartaCemenerio(j.getId());
         });
 
@@ -218,6 +224,9 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarInformacionCarta() {
         stage.addActor(partida.getCardInformation().writeInfoPane());
         partida.getCardInformation().setNewCardInfo(false);
+        Image image=new Image(new Texture(assetManager.cartaInfo));
+        image.setPosition(0,0);
+        stage.addActor(image);
     }
 
     private void dibujarCartasColocadas(Carta carta) {
@@ -294,6 +303,7 @@ public class DuelScreen extends MyGdxGameScreen {
         font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getLives()), partida.getJugador(jugadorId).getPoslives().x, partida.getJugador(jugadorId).getPoslives().y);
         font.draw(batch, String.valueOf(partida.getJugador(jugadorId).getInvocationOrbs()), partida.getJugador(jugadorId).getPosInvocationOrbs().x, partida.getJugador(jugadorId).getPosInvocationOrbs().y);
     }
+
 
     private void dibujarAvisos() {
         if(partida.getAvisosPartida().getAvisos() == AvisosPartida.avisos.DESCARTAR_CARTAS && partida.getJugador(0).getMano().getCartasMano().size()> Partida.MAX_CARDS_IN_HAND ) {
