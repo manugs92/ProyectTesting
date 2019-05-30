@@ -79,10 +79,6 @@ public class Mazo {
 
         MyGdxGameAssetManager assetManager=new MyGdxGameAssetManager();
 
-
-
-
-
         Texture textureCard_Spyro = new Texture("icons\\carta.png");
         Texture textureCardInfo_Spyro = new Texture("icons\\carta_Info.png");
         Texture textureSpriteSpyro= new Texture("icons\\spyro.png");
@@ -98,15 +94,13 @@ public class Mazo {
         Texture textureSpriteRockElementalFront= new Texture("icons\\rock_elemental_front.png");
 
 
-
-
         while (cartasMazo.size()<=MIN_CARDS-1) {
-            Criatura spyro = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront, textureCardInfo_LavaGolem,7,10,2,1);
+            Criatura spyro = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront, textureCardInfo_LavaGolem,7,1,2,1);
             instanceCreatureDetail(spyro,"spyro",textureCard_Spyro,2);
 
-            Criatura lavaGolem = new Criatura(GOLEM,FUEGO,textureSpriteLavaGolem,textureSpriteLavaGolemFront,textureCardInfo_LavaGolem,7,10,2,1);
+            Criatura lavaGolem = new Criatura(GOLEM,FUEGO,textureSpriteLavaGolem,textureSpriteLavaGolemFront,textureCardInfo_LavaGolem,7,1,2,1);
             instanceCreatureDetail(lavaGolem,"GolemManu",textureCard_LavaGolem,3 );
-            Criatura rockElemental = new Criatura(GOLEM,ROCK,textureSpriteRockElemental,textureSpriteRockElementalFront,textureCardInfo_LavaGolem,7,10,2,1);
+            Criatura rockElemental = new Criatura(GOLEM,ROCK,textureSpriteRockElemental,textureSpriteRockElementalFront,textureCardInfo_LavaGolem,7,1,2,1);
             instanceCreatureDetail(rockElemental,"RockElemental",textureCard_RockElemental,3 );
         }
         return cartasMazo;
