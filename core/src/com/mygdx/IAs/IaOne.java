@@ -45,39 +45,8 @@ public class IaOne {
                     IA.getMazo().drawCard(IA);
                     IA.addInvocationOrbs(1);
 
-                    state = State.MOVE;
-                    //System.out.println("INITIAL FINISH");
-
-                    break;
-                case MOVE:
-                    casillas = partida.getTablero().getCasillas();
-                    //criaturas = partida.getCriaturasInvocadasJ2();
-                    criaturas = partida.getJugador(1).getCriaturasInvocadas();
-                    ArrayList<Criatura> temporal = new ArrayList<>();
-                    if (criaturas.size() != 0) {
-                        for (Criatura criatura: criaturas) {
-                            //criatura = criaturas.get(0);
-                            System.out.println((int) criatura.getPosition().y - 1 + " hola ");
-
-                            casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y ].casillasDisponiblesIA(partida.getTablero(), criatura);
-
-                            if (criatura != null) {
-                                moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
-                                System.out.println(" GAGA ->" +moveDestiny);
-                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(null);
-                                criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
-                                criatura.setLastPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
-                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(criatura);
-                                partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha movido a "+criatura.getNombre().toUpperCase()+" a la CASILLA "+(int)criatura.getLastPosition().x+","+(int)criatura.getLastPosition().y);
-                                partida.getDuelLog().setNewMsgTrue();
-                                partida.getDuelLog().getScrollPane().remove();
-                                temporal.add(criatura);
-                            }
-                        }
-                        partida.getJugador(1).addInvoquedMonsters(temporal);
-                    }
                     state = State.INVOCATION;
-                    System.out.println("MOVE FINISH");
+                    //System.out.println("INITIAL FINISH");
 
                     break;
                 case INVOCATION:
@@ -108,16 +77,49 @@ public class IaOne {
                         }
                     }
 
-                    state = State.WAIT;
-                    partida.setOwnerTurn(0);
-                    partida.getJugador(0).avoidToDrawCard(true);
-                    partida.getJugador(0).addInvocationOrbs(1);
-                    System.out.println("INITIAL FINICSH");
+                    state = State.MOVE;
+
 
                     partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(0).getNombre().toUpperCase());
                     partida.getDuelLog().setNewMsgTrue();
                     partida.getDuelLog().getScrollPane().remove();
                     break;
+                case MOVE:
+                    casillas = partida.getTablero().getCasillas();
+                    //criaturas = partida.getCriaturasInvocadasJ2();
+                    criaturas = partida.getJugador(1).getCriaturasInvocadas();
+                    ArrayList<Criatura> temporal = new ArrayList<>();
+                    if (criaturas.size() != 0) {
+                        for (Criatura criatura: criaturas) {
+                            //criatura = criaturas.get(0);
+                            System.out.println((int) criatura.getPosition().y - 1 + " hola ");
+
+                            casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y ].casillasDisponiblesIA(partida.getTablero(), criatura);
+
+                            if (criatura != null) {
+                                moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
+                                System.out.println(" GAGA ->" +moveDestiny);
+                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(null);
+                                criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
+                                criatura.setLastPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
+                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(criatura);
+                                partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha movido a "+criatura.getNombre().toUpperCase()+" a la CASILLA "+(int)criatura.getLastPosition().x+","+(int)criatura.getLastPosition().y);
+                                partida.getDuelLog().setNewMsgTrue();
+                                partida.getDuelLog().getScrollPane().remove();
+                                temporal.add(criatura);
+                            }
+                        }
+                        partida.getJugador(1).addInvoquedMonsters(temporal);
+                    }
+                    state = State.WAIT;
+                    partida.setOwnerTurn(0);
+                    partida.getJugador(0).avoidToDrawCard(true);
+                    partida.getJugador(0).addInvocationOrbs(1);
+                    System.out.println("INITIAL FINICSH");
+                    System.out.println("MOVE FINISH");
+
+                    break;
+
             }
         }
     }

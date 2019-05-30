@@ -219,6 +219,8 @@ public class DuelScreen extends MyGdxGameScreen {
             batch.draw(criatura.getSprite(), positionSquareBoard.x, positionSquareBoard.y);
         }else{
             batch.draw(criatura.getSpriteFront(), positionSquareBoard.x, positionSquareBoard.y);
+            System.out.println("TOTAL MONSTRUOS INVOCADOS: "+partida.getJugador(1).getCriaturasInvocadas().size());
+            System.out.println("TOTAL CARTAS COLOCADAS: "+partida.getJugador(1).getInvoquedCards().size());
         }
     }
 

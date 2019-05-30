@@ -125,7 +125,6 @@ public class Casilla {
                             selectedCard.setFirstPosition(x2, y2);
                             partida.getJugador(0).addNewInvoquedCard(selectedCard);
                             partida.getJugador(0).addNewInvoquedMonster((Criatura) selectedCard);
-                            //partida.addNewInvoquedMonsterJ1((Criatura) selectedCard);
                             partida.getJugador(0).getMano().setCartaJugada(partida.getJugador(0).getMano().getCartasMano().indexOf(selectedCard));
                             partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
                             partida.getJugador(0).removeInvocationOrbs(selectedCard.getCostInvocation());
