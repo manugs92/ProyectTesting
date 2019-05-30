@@ -41,6 +41,7 @@ public class Tablero {
                 casillas[x][y] = new Casilla();
                 casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
                 casillas[x][y].setTextureCasilla2(assetManager.manager.get(assetManager.imageSquare2, Texture.class));
+                casillas[x][y].setTextureCasilla3(assetManager.manager.get(assetManager.imageSquare3, Texture.class));
                 casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
                 casillas[x][y].setState(Casilla.State.APAGADA);
                 casillas[x][y].setCoordinatesMatrix(new Vector2(x,y));

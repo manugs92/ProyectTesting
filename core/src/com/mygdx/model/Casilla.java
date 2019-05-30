@@ -23,6 +23,7 @@ public class Casilla {
     private Vector2 coordinatesMatrix = new Vector2();
     private Texture textureCasilla;
     private Texture textureCasilla2;
+    private Texture textureCasilla3;
     private Image imageCasilla;
     private State state;
     private boolean cardInvoked;
@@ -64,12 +65,20 @@ public class Casilla {
         return textureCasilla2;
     }
 
-    boolean tieneCriatura() {
-        return getCriatura() != null;
-    }
-
     public void setTextureCasilla2(Texture textureCasilla2) {
         this.textureCasilla2 = textureCasilla2;
+    }
+
+    public Texture getTextureCasilla3() {
+        return textureCasilla3;
+    }
+
+    public void setTextureCasilla3(Texture textureCasilla2) {
+        this.textureCasilla3 = textureCasilla2;
+    }
+
+    boolean tieneCriatura() {
+        return getCriatura() != null;
     }
 
     public Image getImageCasilla() {
@@ -268,8 +277,19 @@ public class Casilla {
         partida.getCardInformation().updateCardInformation(partida);
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-                avoidToMove(tablero,x,y);
-                avoitToAtack(partida,x,y);
+                avoidToMove(partida,x,y);
+                avoidToAtack(partida,x,y,criatura);
+               // avoidToDestroyInvoquedCards(partida,x,y,1);
+            }
+        }
+    }
+
+    private void avoidToDestroyInvoquedCards(Partida partida,int x,int y,int playerID) {
+        Carta carta;
+        for(int i=0;i<partida.getJugador(playerID).getInvoquedCards().size();i++) {
+            carta = partida.getJugador(playerID).getInvoquedCards().get(i);
+            if(carta.getFirstPosition().x==x && carta.getFirstPosition().y==y) {
+                partida.getTablero().getCasilla(x, y).setState(State.AVOID_TO_ATACK);
             }
         }
     }
@@ -283,24 +303,44 @@ public class Casilla {
         }
     }
 
-    public void avoidToMove(Tablero tablero,int x, int y) {
-        if (!tablero.getCasilla(x, y).tieneCriatura()) {
-            if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento()) {
-                tablero.getCasilla(x, y).setState(State.ILUMINADA);
+    public void avoidToMove(Partida partida,int x, int y) {
+        if (!partida.getTablero().getCasilla(x, y).tieneCriatura()) {
+            if (x <= criatura.getPosition().x + criatura.getMovimiento()
+                    && x >= criatura.getPosition().x - criatura.getMovimiento()
+                    && y <= criatura.getPosition().y + criatura.getMovimiento()
+                    && y >= criatura.getPosition().y - criatura.getMovimiento()
+                    && isInvocationSquareFree(partida,x,y,1))
+            {
+                partida.getTablero().getCasilla(x, y).setState(State.ILUMINADA);
             } else {
-                tablero.getCasilla(x, y).setState(State.APAGADA);
+                partida.getTablero().getCasilla(x, y).setState(State.APAGADA);
             }
         }
     }
 
-    public void avoitToAtack(Partida partida,int x, int y) {
+    public boolean isInvocationSquareFree(Partida partida,int x,int y,int playerID) {
+        boolean result = true;
+        Carta carta;
+        for(int i=0;i<partida.getJugador(playerID).getInvoquedCards().size();i++) {
+            carta = partida.getJugador(playerID).getInvoquedCards().get(i);
+            if(carta.getFirstPosition().x==x && carta.getFirstPosition().y==y) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public void avoidToAtack(Partida partida, int x, int y,Criatura criatura) {
         Tablero tablero = partida.getTablero();
         if (partida.getOwnerTurn() == 0) {
             if (x <= criatura.getPosition().x + criatura.getMovimiento()
                     && x >= criatura.getPosition().x - criatura.getMovimiento()
                     && y <= criatura.getPosition().y + criatura.getMovimiento()
                     && y >= criatura.getPosition().y - criatura.getMovimiento()
-                    && partida.getJugador(1).getInvoquedCards().contains(partida.getTablero().getCasilla(x, y).getCriatura()))
+                    && partida.getJugador(1).getInvoquedCards().contains(partida.getTablero().getCasilla(x, y).getCriatura())
+                    && isInvocationSquareFree(partida,x,y,1)
+            )
             {
                 tablero.getCasilla(x, y).setState(State.AVOID_TO_ATACK);
             }

@@ -12,6 +12,7 @@ public class MyGdxGameAssetManager {
     public final String lives = "icons/lives.png";
 
     public final String imageSquare2 = "icons/casilla48_2.png";
+    public final String imageSquare3 = "icons/casilla48_3.png";
     public final String imageBackCard = "icons/back_card.png";
     public final String imageBackCardToDraw = "icons/back_card_to_draw.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
@@ -28,6 +29,7 @@ public class MyGdxGameAssetManager {
     public void loadImagesDuelScreen() {
         manager.load(imageSquare, Texture.class);
         manager.load(imageSquare2, Texture.class);
+        manager.load(imageSquare3, Texture.class);
         manager.load(passTurnIcon,Texture.class);
         manager.load(whiteFlagIcon,Texture.class);
         manager.load(lives, Texture.class);

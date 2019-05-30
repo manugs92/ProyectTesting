@@ -102,7 +102,7 @@ public class IaOne {
     private void moveCreature(Partida partida, Criatura criatura) {
         if (criatura != null) {
             moveDestiny=(int)(Math.random()*((casillasMoveIa.size-1)/2));
-            System.out.println(" moveDestiny ->" +moveDestiny+"\n Size casillas disponibles para la IA->"+casillasMoveIa.size);
+            //System.out.println(" moveDestiny ->" +moveDestiny+"\n Size casillas disponibles para la IA->"+casillasMoveIa.size);
 
             updatePosition(partida, criatura, moveDestiny);
             logInfoMove(partida, criatura);

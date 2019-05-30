@@ -141,9 +141,10 @@ public class DuelScreen extends MyGdxGameScreen {
         batch.begin();
 
 
+        partida.getJugador(0).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
+        partida.getJugador(1).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
         //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
         partida.getJugadores().forEach(j -> {
-            j.getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
             j.getCriaturasInvocadas().forEach(criatura -> dibujarCriaturasInvocadas(criatura,j.getId()));
             dibujarCantidadCartasMazo(j.getId());
             dibujarNombreJugador(j.getId());
@@ -220,13 +221,13 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarInformacionCarta() {
         stage.addActor(partida.getCardInformation().writeInfoPane());
         partida.getCardInformation().setNewCardInfo(false);
-
     }
 
     private void dibujarCartasColocadas(Carta carta) {
         Casilla casillaFirstPostitionCard = tablero.getCasilla(carta.getFirstPosition());
         Vector2 positionCardPx = casillaFirstPostitionCard.getCoordinatesPx();
         if(casillaFirstPostitionCard.getState() == Casilla.State.ILUMINADA) { batch.draw(casillaFirstPostitionCard.getTextureCasilla2(),positionCardPx.x, positionCardPx.y); }
+        else if(casillaFirstPostitionCard.getState() == Casilla.State.AVOID_TO_ATACK) { batch.draw(casillaFirstPostitionCard.getTextureCasilla3(),positionCardPx.x, positionCardPx.y); }
         else { batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y); }
     }
 
