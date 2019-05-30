@@ -27,6 +27,7 @@ public class Jugador {
     private Vector2 poslives = new Vector2();
     private Vector2 posInvocationOrbs = new Vector2();
     private ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
+    private ArrayList<Carta> cartasColocadas = new ArrayList<>();
 
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
@@ -133,11 +134,17 @@ public class Jugador {
         invocationOrbs+=orbs;
     }
 
-    public void addNewInvoquedMonster(Criatura criatura) {
-        criaturasInvocadas.add(criatura);
-    }
+    public void addNewInvoquedMonster(Criatura criatura) { criaturasInvocadas.add(criatura); }
+
+    public void addInvoquedMonsters(ArrayList<Criatura> criaturas) {criaturasInvocadas.addAll(criaturas);}
 
     public  ArrayList<Criatura> getCriaturasInvocadas() {
         return criaturasInvocadas;
+    }
+
+    public void addNewInvoquedCard(Carta carta) { cartasColocadas.add(carta); }
+
+    public  ArrayList<Carta> getInvoquedCards() {
+        return cartasColocadas;
     }
 }

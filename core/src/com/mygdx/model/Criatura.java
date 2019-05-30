@@ -108,9 +108,8 @@ public class Criatura extends Carta {
     public Texture getSprite() {
         return spriteCriatura;
     }
-    public Texture getSpriteFront() {
-        return spriteCriaturaFront;
-    }
+
+    public Texture getSpriteFront() { return spriteCriaturaFront; }
 
     public void setSprite(Texture spriteCriatura) {
         this.spriteCriatura = spriteCriatura;

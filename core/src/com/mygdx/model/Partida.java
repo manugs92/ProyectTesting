@@ -28,7 +28,6 @@ public class Partida {
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private Carta selectedCard;
-    private ArrayList<Carta> cartasColocadas;
     private Tablero tablero;
     private DuelLog duelLog;
     private CardInformation cardInformation;
@@ -48,7 +47,7 @@ public class Partida {
         jugadores.add(jugador);
         selectedCard = null;
 
-        cartasColocadas = new ArrayList<>();
+        //cartasColocadas = new ArrayList<>();
         duelLog = new DuelLog(skin);
         tablero=new Tablero(this, assetManager);
         cardInformation=new CardInformation(this);
@@ -105,13 +104,7 @@ public class Partida {
         selectedCard=carta;
     }
 
-    public void addNewInvoquedCard(Carta carta) {
-        cartasColocadas.add(carta);
-    }
 
-    public  ArrayList<Carta> getInvoquedCards() {
-        return cartasColocadas;
-    }
 
     public void addJugador(Jugador jugador) { this.jugadores.add(jugador); }
 

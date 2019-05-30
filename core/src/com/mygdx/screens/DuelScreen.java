@@ -145,16 +145,10 @@ public class DuelScreen extends MyGdxGameScreen {
         stage.draw();
         batch.begin();
 
-        //Dibujamos las cartas invocadas.
-        partida.getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
-
-        //Dibujamos los sprites de las cartas invocadas. (Estos se moverán por el tablero)
-
-        //partida.getCriaturasInvocadasJ1().forEach(criatura -> dibujarCriaturasInvocadas(criatura,0));
-        //partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura,1));
 
         //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
         partida.getJugadores().forEach(j -> {
+            j.getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
             j.getCriaturasInvocadas().forEach(criatura -> dibujarCriaturasInvocadas(criatura,j.getId()));
             dibujarCantidadCartasMazo(j.getId());
             dibujarNombreJugador(j.getId());

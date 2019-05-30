@@ -88,9 +88,9 @@ public class Mano {
                                 //Comprobamos si la casilla no tiene un monstruo invocado.
                                 if(tablero.getCasilla(i,0).getCriatura()==null) {
                                     //Si no hemos invocado ninguna carta, podremos invocar.
-                                    if(partida.getInvoquedCards().size()>0) {
+                                    if(partida.getJugador(0).getInvoquedCards().size()>0) {
                                         //Si hemos invocado alguna carta, hemos de buscar que cartas hemos invocado y donde están.
-                                        for (Carta carta : partida.getInvoquedCards()) {
+                                        for (Carta carta : partida.getJugador(0).getInvoquedCards()) {
                                             //Si la posición de alguna carta invocada coincide, no se podrá invocar.
                                             if(carta.getFirstPosition().x == i && carta.getFirstPosition().y == 0) {
                                                 avoidInvoke = false;

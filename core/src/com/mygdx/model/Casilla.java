@@ -123,7 +123,7 @@ public class Casilla {
                         //Si la carta proviene de la mano, la borraremos de la mano, y la colocaremos en el tablero.
                         if (selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
                             selectedCard.setFirstPosition(x2, y2);
-                            partida.addNewInvoquedCard(selectedCard);
+                            partida.getJugador(0).addNewInvoquedCard(selectedCard);
                             partida.getJugador(0).addNewInvoquedMonster((Criatura) selectedCard);
                             //partida.addNewInvoquedMonsterJ1((Criatura) selectedCard);
                             partida.getJugador(0).getMano().setCartaJugada(partida.getJugador(0).getMano().getCartasMano().indexOf(selectedCard));
@@ -168,9 +168,9 @@ public class Casilla {
                         partida.getJugador(0).getMano().desSelected(partida);
                     } else {
                         //sin carta selecionada
-                        if (tieneCriatura() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
+                        if (tieneCriatura()) {
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
-                            if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
+                            if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                                 casillasDisponibles(tablero, x2, y2, partida);
                             }
                             partida.setSelectedCard(selectedCard);

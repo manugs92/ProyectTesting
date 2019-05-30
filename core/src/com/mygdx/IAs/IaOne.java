@@ -53,6 +53,7 @@ public class IaOne {
                     casillas = partida.getTablero().getCasillas();
                     //criaturas = partida.getCriaturasInvocadasJ2();
                     criaturas = partida.getJugador(1).getCriaturasInvocadas();
+                    ArrayList<Criatura> temporal = new ArrayList<>();
                     if (criaturas.size() != 0) {
                         for (Criatura criatura: criaturas) {
                             //criatura = criaturas.get(0);
@@ -70,8 +71,10 @@ public class IaOne {
                                 partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha movido a "+criatura.getNombre().toUpperCase()+" a la CASILLA "+(int)criatura.getLastPosition().x+","+(int)criatura.getLastPosition().y);
                                 partida.getDuelLog().setNewMsgTrue();
                                 partida.getDuelLog().getScrollPane().remove();
+                                temporal.add(criatura);
                             }
                         }
+                        partida.getJugador(1).addInvoquedMonsters(temporal);
                     }
                     state = State.INVOCATION;
                     System.out.println("MOVE FINISH");
@@ -91,6 +94,7 @@ public class IaOne {
                                     casillas[i][8].setCardInvoked(true);
                                     casillas[i][8].setCriatura((Criatura) cartaMano);
                                     partida.getJugador(1).addNewInvoquedMonster((Criatura) cartaMano);
+                                    partida.getJugador(1).addNewInvoquedCard(cartaMano);
                                     IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) cartaMano).getCostInvocation());
 
                                     partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha invocado a "+cartaMano.getNombre().toUpperCase()+" en la CASILLA "+(int)cartaMano.getLastPosition().x+","+(int)cartaMano.getLastPosition().y);

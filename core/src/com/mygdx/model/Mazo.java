@@ -89,7 +89,7 @@ public class Mazo {
             golem.setFirstPosition(-1,-1);
             golem.setCostInvocation(2);
             cartasMazo.add(golem);
-            Criatura golem2 = new Criatura(DRAGON,FUEGO,textureSpriteGolemManu,textureSpriteSpyroFront,7,10,2,1);
+            Criatura golem2 = new Criatura(DRAGON,FUEGO,textureSpriteGolemManu,textureSpriteGolemManuFront,7,10,2,1);
             golem2.setNombre("DragonSp2");
             golem2.setImage(textureCard2);
             golem2.setLastPosition(-1,-1);
