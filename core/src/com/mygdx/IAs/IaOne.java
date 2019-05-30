@@ -99,13 +99,10 @@ public class IaOne {
                             if (criatura != null) {
                                 moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
                                 System.out.println(" GAGA ->" +moveDestiny);
-                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(null);
-                                criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
-                                criatura.setLastPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
-                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(criatura);
-                                partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha movido a "+criatura.getNombre().toUpperCase()+" a la CASILLA "+(int)criatura.getLastPosition().x+","+(int)criatura.getLastPosition().y);
-                                partida.getDuelLog().setNewMsgTrue();
-                                partida.getDuelLog().getScrollPane().remove();
+
+                                updatePosition(partida, criatura);
+                                logInfoMove(partida, criatura);
+
                                 temporal.add(criatura);
                             }
                         }
@@ -122,5 +119,20 @@ public class IaOne {
 
             }
         }
+    }
+    private void logInfoMove(Partida partida, Criatura criatura) {
+        partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase() + " ha movido a " + criatura.getNombre().toUpperCase() + " a la CASILLA " + (int) criatura.getLastPosition().x + "," + (int) criatura.getLastPosition().y);
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+    private void updatePosition(Partida partida, Criatura criatura) {
+        //borrar casilla anterior
+        partida.getTablero().getCasilla(criatura.getLastPosition().x, criatura.getLastPosition().y).setCriatura(null);
+        criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
+        criatura.setLastPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
+        criatura.setMoved(true);
+        //seteamos la criatura en la casilla
+        partida.getTablero().getCasilla(criatura.getLastPosition().x, criatura.getLastPosition().y).setCriatura(criatura);
     }
 }
