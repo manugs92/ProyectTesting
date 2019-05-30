@@ -83,7 +83,6 @@ public class IaOne {
                     casillas = partida.getTablero().getCasillas();
                     //criaturas = partida.getCriaturasInvocadasJ2();
                     criaturas = partida.getJugador(1).getCriaturasInvocadas();
-                    ArrayList<Criatura> temporal = new ArrayList<>();
                     if (criaturas.size() != 0) {
                         for (Criatura criatura: criaturas) {
                             //criatura = criaturas.get(0);
@@ -97,11 +96,8 @@ public class IaOne {
 
                                 updatePosition(partida, criatura);
                                 logInfoMove(partida, criatura);
-
-                                temporal.add(criatura);
                             }
                         }
-                        partida.getJugador(1).addInvoquedMonsters(temporal);
                     }
                     state = State.WAIT;
                     finalizeTurn(partida);

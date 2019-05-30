@@ -107,11 +107,6 @@ public class Mano {
                                 }
                             }
                             partida.setSelectedCard(cartasMano.get(finali));
-
-
-
-
-
                         }else {
                             partida.setSelectedCard(cartasMano.get(finali));
                             partida.getCardInformation().updateCardInformation(partida);

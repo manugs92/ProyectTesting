@@ -136,8 +136,6 @@ public class Jugador {
 
     public void addNewInvoquedMonster(Criatura criatura) { criaturasInvocadas.add(criatura); }
 
-    public void addInvoquedMonsters(ArrayList<Criatura> criaturas) {criaturasInvocadas.addAll(criaturas);}
-
     public  ArrayList<Criatura> getCriaturasInvocadas() {
         return criaturasInvocadas;
     }

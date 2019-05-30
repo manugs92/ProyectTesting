@@ -61,7 +61,6 @@ public class Mazo {
             jugador.getMano().getCartasMano().add(shuffleMazo.get(0));
             shuffleMazo.remove(0);
             jugador.avoidToDrawCard(false);
-
         }
     }
 
