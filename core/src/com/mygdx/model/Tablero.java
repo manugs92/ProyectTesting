@@ -21,8 +21,8 @@ public class Tablero {
 
 
     //Constantes del tablero. (internas)
-    public final int TOTAL_CASILLAS_X = 7;
-    public final int TOTAL_CASILLAS_Y = 9;
+    public final static int TOTAL_CASILLAS_X = 7;
+    public final static int TOTAL_CASILLAS_Y = 9;
 
     //Variables de tablero (internas)
     private Casilla[][] casillas= new Casilla[TOTAL_CASILLAS_X][TOTAL_CASILLAS_Y];
