@@ -37,7 +37,7 @@ public class DuelScreen extends MyGdxGameScreen {
     *
     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
     *
-    *  FIXME: Resumen de carta, introducirlo en los creados. (Y borrar el creado por isma)
+    *  TODO: Cuando te mueves, puedes atacar si esta a tu alcance aunque no se iluminen las casillas.
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
@@ -182,6 +182,7 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarMano(int jugadorId) {
         //Dibujar manos
         if(!partida.getJugador(jugadorId).getMano().isManoCargada() ) {
+            //fixme size()-1
             for(int i = 0; i<partida.getJugador(jugadorId).getMano().getCartasMano().size(); i++) {
                 partida.getJugador(jugadorId).getMano().drawHand(i, partida, jugadorId);
                 stage.addActor(partida.getJugador(jugadorId).getMano().getCartaManoGUI().get(i));

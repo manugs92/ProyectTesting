@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
+
 
 public class Casilla {
 
@@ -353,11 +355,23 @@ public class Casilla {
         }
     }
 
-    public Array<Casilla> casillasDisponiblesIA(Tablero tablero, Criatura criaturaIa) {
+    public Array<Casilla> casillasDisponiblesIA(Tablero tablero, Criatura criaturaIa,Jugador player) {
+
         Array<Casilla> casillasIa = new Array<>();
+        ArrayList<Casilla> ocupedToCardEnemy = new ArrayList<Casilla>();
+        Casilla actualSquare;
+
+        player.getInvoquedCards().forEach(c -> {
+         ocupedToCardEnemy.add(tablero.getCasilla(c.getPosition().x, c.getPosition().y));
+
+
+        });
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-                if (!tablero.getCasilla(x,y).tieneCriatura()) {
+
+                actualSquare=tablero.getCasilla(x,y);
+
+                if (!actualSquare.tieneCriatura() && !ocupedToCardEnemy.contains(actualSquare)) {
                     if (x <= criaturaIa.getPosition().x + criaturaIa.getMovimiento() && x >= criaturaIa.getPosition().x - criaturaIa.getMovimiento() && y <= criaturaIa.getPosition().y + criaturaIa.getMovimiento() && y >= criaturaIa.getPosition().y - criaturaIa.getMovimiento()) {
                         casillasIa.add(tablero.getCasilla(x, y));
                     }

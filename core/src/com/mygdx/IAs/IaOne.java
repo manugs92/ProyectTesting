@@ -84,8 +84,15 @@ public class IaOne {
                     criaturas = partida.getJugador(1).getCriaturasInvocadas();
                     if (criaturas.size()-1 > 0) {
                         for (Criatura criatura: criaturas) {
-                            casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura);
-                            moveCreature(partida, criatura);
+                            casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura,partida.getJugador(0));
+
+                            if (criatura != null) {
+                                moveDestiny=(int)(Math.random()*((casillasMoveIa.size-1)/2));
+                                System.out.println(" moveDestiny ->" +moveDestiny+"\n Size casillas disponibles para la IA->"+casillasMoveIa.size);
+
+                                updatePosition(partida, criatura, moveDestiny);
+                                logInfoMove(partida, criatura);
+                            }
                         }
                     }
                     state = State.WAIT;
@@ -96,16 +103,6 @@ public class IaOne {
                     break;
 
             }
-        }
-    }
-
-    private void moveCreature(Partida partida, Criatura criatura) {
-        if (criatura != null) {
-            moveDestiny=(int)(Math.random()*((casillasMoveIa.size-1)/2));
-            //System.out.println(" moveDestiny ->" +moveDestiny+"\n Size casillas disponibles para la IA->"+casillasMoveIa.size);
-
-            updatePosition(partida, criatura, moveDestiny);
-            logInfoMove(partida, criatura);
         }
     }
 
@@ -128,7 +125,7 @@ public class IaOne {
     }
 
     private void logInfoInvocation(Partida partida, Carta cartaMano) {
-        partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha invocado a "+cartaMano.getNombre().toUpperCase()+" en la CASILLA "+(int)cartaMano.getLastPosition().x+","+(int)cartaMano.getLastPosition().y);
+        partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase() +" ha invocado a "+cartaMano.getNombre().toUpperCase()+" en la CASILLA "+(int)cartaMano.getLastPosition().x+","+(int)cartaMano.getLastPosition().y);
         partida.getDuelLog().setNewMsgTrue();
         partida.getDuelLog().getScrollPane().remove();
     }
