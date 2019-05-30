@@ -34,6 +34,9 @@ public class IaOne {
                 case WAIT:
                     if (partida.getOwnerTurn() == 1) {
                         state = State.INITIAL;
+                        partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(1).getNombre().toUpperCase());
+                        partida.getDuelLog().setNewMsgTrue();
+                        partida.getDuelLog().getScrollPane().remove();
                     }
                     //System.out.println("WAIT FINISH");
                     break;
@@ -48,7 +51,8 @@ public class IaOne {
                     break;
                 case MOVE:
                     casillas = partida.getTablero().getCasillas();
-                    criaturas = partida.getCriaturasInvocadasJ2();
+                    //criaturas = partida.getCriaturasInvocadasJ2();
+                    criaturas = partida.getJugador(1).getCriaturasInvocadas();
                     if (criaturas.size() != 0) {
                         for (Criatura criatura: criaturas) {
                             //criatura = criaturas.get(0);
@@ -63,7 +67,11 @@ public class IaOne {
                                 moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
                                 System.out.println(" GAGA ->" +moveDestiny);
                                 criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
+                                criatura.setLastPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
 
+                                partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha movido a "+criatura.getNombre().toUpperCase()+" a la CASILLA "+(int)criatura.getLastPosition().x+","+(int)criatura.getLastPosition().y);
+                                partida.getDuelLog().setNewMsgTrue();
+                                partida.getDuelLog().getScrollPane().remove();
                             }
                         }
                     }
@@ -80,10 +88,15 @@ public class IaOne {
                                 if (casillas[i][8].getCriatura() == null && !casillas[i][8].isCardInvoked()) {
                                     cartaMano.setPosition(i, 8);
                                     cartaMano.setFirstPosition(i, 8);
+                                    cartaMano.setLastPosition(i,8);
                                     //Informa de que la casilla ha sido ocupada por una carta
                                     casillas[i][8].setCardInvoked(true);
-                                    partida.addNewInvoquedMonsterJ2((Criatura) cartaMano);
+                                    partida.getJugador(1).addNewInvoquedMonster((Criatura) cartaMano);
                                     IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) cartaMano).getCostInvocation());
+
+                                    partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha invocado a "+cartaMano.getNombre().toUpperCase()+" en la CASILLA "+(int)cartaMano.getLastPosition().x+","+(int)cartaMano.getLastPosition().y);
+                                    partida.getDuelLog().setNewMsgTrue();
+                                    partida.getDuelLog().getScrollPane().remove();
 
                                     break;
                                 }
@@ -97,6 +110,10 @@ public class IaOne {
                     partida.getJugador(0).avoidToDrawCard(true);
                     partida.getJugador(0).addInvocationOrbs(1);
                     System.out.println("INITIAL FINICSH");
+
+                    partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(0).getNombre().toUpperCase());
+                    partida.getDuelLog().setNewMsgTrue();
+                    partida.getDuelLog().getScrollPane().remove();
                     break;
             }
         }

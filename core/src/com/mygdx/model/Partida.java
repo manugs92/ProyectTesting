@@ -28,8 +28,6 @@ public class Partida {
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private Carta selectedCard;
-    private ArrayList<Criatura> criaturasInvocadasJ1;
-    private ArrayList<Criatura> criaturasInvocadasJ2;
     private ArrayList<Carta> cartasColocadas;
     private Tablero tablero;
     private DuelLog duelLog;
@@ -49,8 +47,6 @@ public class Partida {
         estadoPartida = estadoPartida.EMPEZADA;
         jugadores.add(jugador);
         selectedCard = null;
-        criaturasInvocadasJ1 =  new ArrayList<>();
-        criaturasInvocadasJ2 =  new ArrayList<>();
 
         cartasColocadas = new ArrayList<>();
         duelLog = new DuelLog(skin);
@@ -68,15 +64,21 @@ public class Partida {
                 winnerId=1;
                 estadoPartida = estadoPartida.FINALIZADA;
                 jugadores.get(0).setLives(0);
+                getDuelLog().addMsgToLog(getJugador(0).getNombre().toUpperCase()+" se ha rendido.");
+                getDuelLog().addMsgToLog(getJugador(0).getNombre().toUpperCase()+" ha perdido el duelo.");
+                getDuelLog().setNewMsgTrue();
+                getDuelLog().getScrollPane().remove();
                 return super.longPress(actor, x, y);
             }
         });
         avisosPartida = new AvisosPartida();
         passTurn = new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
         passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
+        Partida partida = this;
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                getJugador(0).getMano().desSelected(partida);
                 if(jugadores.get(0).isAvoidToDrawCard()) {
                     avisosPartida.setAvisos(2,getJugador(0).getMano().getCartasMano().size());
                 } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
@@ -85,6 +87,9 @@ public class Partida {
                     getAvisosPartida().setAvisos(0,0);
                     getAvisosPartida().setShowed(false);
                     pasarTurno();
+                    getDuelLog().addMsgToLog(getJugador(0).getNombre().toUpperCase()+" ha finalizado su turno.");
+                    getDuelLog().setNewMsgTrue();
+                    getDuelLog().getScrollPane().remove();
                 }
                 deleteWidgets();
                 super.clicked(event, x, y);
@@ -108,68 +113,29 @@ public class Partida {
         return cartasColocadas;
     }
 
-    public void addNewInvoquedMonsterJ1(Criatura criatura) {
-        criaturasInvocadasJ1.add(criatura);
-    }
+    public void addJugador(Jugador jugador) { this.jugadores.add(jugador); }
 
-    public  ArrayList<Criatura> getCriaturasInvocadasJ1() {
-        return criaturasInvocadasJ1;
-    }
-    public void addNewInvoquedMonsterJ2(Criatura criatura) {
-        criaturasInvocadasJ2.add(criatura);
-    }
-    public  ArrayList<Criatura> getCriaturasInvocadasJ2() {
-        return criaturasInvocadasJ2;
-    }
+    public DuelLog getDuelLog() { return duelLog; }
 
+    public ArrayList<Jugador> getJugadores() { return jugadores; }
 
-    public void addJugador(Jugador jugador) {
-        this.jugadores.add(jugador);
-    }
+    public Jugador getJugador(int jugadorId) { return jugadores.get(jugadorId); }
 
-    public DuelLog getDuelLog() {
-        return duelLog;
-    }
+    public void setDuelLog(DuelLog duelLog) { this.duelLog = duelLog; }
 
-    public ArrayList<Jugador> getJugadores() {
-        return jugadores;
-    }
+    public Tablero getTablero() { return this.tablero; }
 
-    public Jugador getJugador(int jugadorId) {
-        return jugadores.get(jugadorId);
-    }
+    public CardInformation getCardInformation() { return cardInformation; }
 
-    public void setDuelLog(DuelLog duelLog) {
-        this.duelLog = duelLog;
-    }
+    public void addTurn() { numTurn +=1; }
 
-    public Tablero getTablero() {
-        return this.tablero;
-    }
+    public int getNumTurn() { return numTurn; }
 
-    public CardInformation getCardInformation() {
-        return cardInformation;
-    }
+    public void setOwnerTurn(int idPlayer) { ownerTurn=idPlayer; }
 
-    public void addTurn() {
-        numTurn +=1;
-    }
+    public int getOwnerTurn() { return ownerTurn; }
 
-    public int getNumTurn() {
-        return numTurn;
-    }
-
-    public void setOwnerTurn(int idPlayer) {
-        ownerTurn=idPlayer;
-    }
-
-    public int getOwnerTurn() {
-        return ownerTurn;
-    }
-
-    public Image getButtonRendirse() {
-        return buttonRendirse;
-    }
+    public Image getButtonRendirse() { return buttonRendirse; }
 
     public int getWinnerId() { return winnerId;}
 
@@ -177,9 +143,7 @@ public class Partida {
 
     public Image getPassTurn() { return passTurn; }
 
-    public AvisosPartida getAvisosPartida() {
-        return avisosPartida;
-    }
+    public AvisosPartida getAvisosPartida() { return avisosPartida; }
 
     public void deleteWidgets(){
         jugadores.forEach(j -> {
@@ -197,7 +161,8 @@ public class Partida {
         ownerTurn=1;
         numTurn++;
         getJugador(0).avoidToDrawCard(true);
-        getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
+        getJugador(0).getCriaturasInvocadas().forEach(c -> c.setMoved(false));
+        //getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
         jugadores.get(1).addInvocationOrbs(1);
     }
 

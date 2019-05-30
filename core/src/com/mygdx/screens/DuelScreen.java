@@ -18,18 +18,18 @@ import com.mygdx.model.*;
  * */
 public class DuelScreen extends MyGdxGameScreen {
 
-
     /*
     *
     *  TODO: Método de atacar monstruo.
     *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
-    *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance)
+    *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance y de color ROJO.)
     *  TODO: Si atacas, atacas a su defensa, y él a la tuya. (puede haber victoria, empate, o derrota)
     *  TODO: Sonido al realizar ataque.
     *
     *  TODO: Método de quitar vidas.
     *
     *  TODO: Todo lo que se haga, mostrarlo en el log.
+    *  TODO: Queda por indicar cuando atacas a un monstruo, y el resultado del ataque, cuando el rival te ataque, cuando el rival pierde vidas, cuando tú pierdes vidas.
     *
     *  TODO: IA que solo invoque un monstruo por turno y lo mueva para adelante (pero no te ataque)
     *
@@ -38,6 +38,9 @@ public class DuelScreen extends MyGdxGameScreen {
     *
     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
     *
+    *  FIXME: Casillas disponibles para invocar, ponerlas en VERDE.
+    *  FIXME: Añadir a jugador la lista de Cartas Invocadas. (Para poder petarselas)
+    *  FIXME: Resumen de carta, introducirlo en los creados.
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
@@ -93,9 +96,9 @@ public class DuelScreen extends MyGdxGameScreen {
 
 
         if(partida.getOwnerTurn()==0) {
-            partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(0).getNombre()+".");
+            partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(0).getNombre().toUpperCase());
         }else {
-            partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(1).getNombre()+".");
+            partida.getDuelLog().addMsgToLog("Turno de "+partida.getJugador(1).getNombre());
         }
         partida.getDuelLog().setNewMsgTrue();
         //partida.getDuelLog().getScrollPane().remove();
@@ -144,11 +147,13 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
 
         //Dibujamos los sprites de las cartas invocadas. (Estos se moverán por el tablero)
-        partida.getCriaturasInvocadasJ1().forEach(criatura -> dibujarCriaturasInvocadas(criatura,0));
-        partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura,1));
+
+        //partida.getCriaturasInvocadasJ1().forEach(criatura -> dibujarCriaturasInvocadas(criatura,0));
+        //partida.getCriaturasInvocadasJ2().forEach(criatura -> dibujarCriaturasInvocadas(criatura,1));
 
         //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
         partida.getJugadores().forEach(j -> {
+            j.getCriaturasInvocadas().forEach(criatura -> dibujarCriaturasInvocadas(criatura,j.getId()));
             dibujarCantidadCartasMazo(j.getId());
             dibujarNombreJugador(j.getId());
             drawLivesAndMana(j.getId());

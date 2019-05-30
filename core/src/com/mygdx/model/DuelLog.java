@@ -24,7 +24,7 @@ public class DuelLog {
     public DuelLog(Skin skin) {
         this.skin=skin;
         newMsg=true;
-        duelLog.add("Duelo empezado.");
+        duelLog.add("Duelo empezado");
     }
 
 
@@ -43,11 +43,11 @@ public class DuelLog {
         scrollPane.setColor(Color.BLUE);
         scrollPane.setPosition(0,MyGdxGame.SCREEN_HEIGHT-(MyGdxGame.SCREEN_HEIGHT/2));
         scrollPane.setWidth(400);
-        scrollPane.setHeight(MyGdxGame.SCREEN_HEIGHT);
         scrollPane.setHeight(MyGdxGame.SCREEN_HEIGHT/2);
         scrollPane.setScrollbarsVisible(true);
         scrollPane.setForceScroll(false,true);
         scrollPane.setFadeScrollBars(true);
+        scrollPane.layout ();
 
         for(int i=0;i<duelLog.size();i++) {
             //Mensaje a añadir del log.
@@ -56,6 +56,9 @@ public class DuelLog {
             scrollTable.add(label).expandX().expandY().fillX().pad(5,5,5,5);
             scrollTable.row();
         }
+
+        scrollPane.layout ();
+        scrollPane.setScrollPercentY (100);
 
         newMsg=false;
         return scrollPane;
@@ -84,14 +87,6 @@ public class DuelLog {
         for(int i=0;i<duelLog.size();i++) {
             //Mensaje a añadir del log.
             Label label = new Label(duelLog.get(i),skin);
-            label.getStyle().fontColor.set(Color.WHITE);
-            scrollTable.add(label).expandX().expandY().fillX().pad(5,5,5,5);
-            scrollTable.row();
-        }
-
-        for(int i=0;i<20;i++) {
-            //Mensaje a añadir del log.
-            Label label = new Label("xd",skin);
             label.getStyle().fontColor.set(Color.WHITE);
             scrollTable.add(label).expandX().expandY().fillX().pad(5,5,5,5);
             scrollTable.row();

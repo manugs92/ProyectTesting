@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
+import java.util.ArrayList;
+
 public class Jugador {
 
     private String nombre;
@@ -24,6 +26,7 @@ public class Jugador {
     private Image livesGUI, manaOrbGUI;
     private Vector2 poslives = new Vector2();
     private Vector2 posInvocationOrbs = new Vector2();
+    private ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
 
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
@@ -130,4 +133,11 @@ public class Jugador {
         invocationOrbs+=orbs;
     }
 
+    public void addNewInvoquedMonster(Criatura criatura) {
+        criaturasInvocadas.add(criatura);
+    }
+
+    public  ArrayList<Criatura> getCriaturasInvocadas() {
+        return criaturasInvocadas;
+    }
 }

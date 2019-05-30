@@ -72,7 +72,6 @@ public class Mano {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
-
                     Casilla[][] casillas = tablero.getCasillas();
                     tablero.setAllSquaresToOff(tablero);
                     partida.getJugadores().forEach(j -> {
@@ -80,9 +79,9 @@ public class Mano {
                         j.getCementerio().setShowed(false);
                     });
 
-
                     if((partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) && partida.getOwnerTurn()==0 && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
-                        desSelected(partida, finali);
+                        desSelected(partida);
+                        partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(0,255,255,255);
                         if(cartasMano.get(finali).getTipo() == Carta.Tipo.CRIATURA && cartasMano.get(finali).getCostInvocation()<=partida.getJugador(0).getInvocationOrbs()) {
                             for(int i=0;i<=casillas.length-1;i++) {
                                 boolean avoidInvoke = true;
@@ -157,16 +156,11 @@ public class Mano {
         }
     }
 
-    private void desSelected(Partida partida, int finali) {
+    public void desSelected(Partida partida) {
         for (int j = 0; j < cartasMano.size(); j++) {
         partida.getJugador(0).getMano().getCartaManoGUI().get(j).setColor(255,255,255,1f);
 
         }
-        partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(0,255,255,255);
-
-//        if(partida.getSelectedCard().equals(cartasMano.get(finali))){
-//            partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(255,255,255,1f);
-//        }
     }
 
     public ArrayList<Carta> getCartasMano() {
