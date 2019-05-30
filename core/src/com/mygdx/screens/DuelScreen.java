@@ -25,13 +25,14 @@ public class DuelScreen extends MyGdxGameScreen {
     *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance y de color ROJO.)
     *  TODO: Si atacas, atacas a su defensa, y él a la tuya. (puede haber victoria, empate, o derrota)
     *  TODO: Sonido al realizar ataque.
-    *
     *  TODO: Método de quitar vidas.
     *
     *  TODO: Todo lo que se haga, mostrarlo en el log.
     *  TODO: Queda por indicar cuando atacas a un monstruo, y el resultado del ataque, cuando el rival te ataque, cuando el rival pierde vidas, cuando tú pierdes vidas.
     *
-    *  TODO: IA que solo invoque un monstruo por turno y lo mueva para adelante (pero no te ataque)
+    *  TODO: IA que no pueda moverse donde hay una carta invocada tuya.
+    *  TODO: IA que te pueda atacar si estás a su alcance.
+    *  TODO: Descartar una carta al finalizar turno, si tienes >6
     *
     *  TODO: Poner música de juego en (main menú,configuración), en duelo, y en resumeScreen.
     *  TODO: Poner sonidos al invocar, al robar, al atacar..
@@ -219,8 +220,6 @@ public class DuelScreen extends MyGdxGameScreen {
             batch.draw(criatura.getSprite(), positionSquareBoard.x, positionSquareBoard.y);
         }else{
             batch.draw(criatura.getSpriteFront(), positionSquareBoard.x, positionSquareBoard.y);
-            System.out.println("TOTAL MONSTRUOS INVOCADOS: "+partida.getJugador(1).getCriaturasInvocadas().size());
-            System.out.println("TOTAL CARTAS COLOCADAS: "+partida.getJugador(1).getInvoquedCards().size());
         }
     }
 

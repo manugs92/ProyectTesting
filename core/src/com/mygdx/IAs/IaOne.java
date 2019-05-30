@@ -60,7 +60,7 @@ public class IaOne {
 
                     for (Carta cartaMano : IA.getMano().getCartasMano()) {
                         if (IA.getInvocationOrbs() > cartaMano.getCostInvocation()) {
-                            for (int i = 0; i < 6; i++) {
+                            for (int i = 0; i < 7; i++) {
                                 if (casillas[i][8].getCriatura() == null && !casillas[i][8].isCardInvoked()) {
 
                                     invocationCreature(partida, cartaMano, i);

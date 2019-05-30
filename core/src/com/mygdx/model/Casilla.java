@@ -86,7 +86,7 @@ public class Casilla {
 
     public void setState(State state) {
         if (state == State.ILUMINADA) {
-            getImageCasilla().setColor(255, 0, 255, 255);
+            getImageCasilla().setColor(0, 255, 255, 255);
         } else if (state == State.APAGADA) {
             getImageCasilla().setColor(255, 255, 255, 255);
         }
@@ -105,7 +105,6 @@ public class Casilla {
                     j.getCementerio().setSelected(false);
                     j.getCementerio().setShowed(false);
                 });
-
 
                 //Seleccionamos la carta donde hemos hecho click. (Mediante partida, ya que la almacena ella)
                 partida.getCardInformation().updateCardInformation(partida);
@@ -155,6 +154,7 @@ public class Casilla {
                         if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                             partida.getJugador(0).getMano().desSelected(partida);
                             casillasDisponibles(tablero, x2, y2, partida);
+                            casillasAvoidToAtack(tablero,x2,y2,partida);
                         } else {
                             partida.getJugador(0).getMano().desSelected(partida);
                             partida.setSelectedCard(tablero.getCasilla(x2, y2).getCriatura());
@@ -190,6 +190,25 @@ public class Casilla {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
                 if (!tablero.getCasilla(x, y).tieneCriatura()) {
                     if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento()) {
+                        tablero.getCasilla(x, y).setState(State.ILUMINADA);
+                    }
+                } else {
+                    tablero.getCasilla(x, y).setState(State.APAGADA);
+                }
+            }
+        }
+    }
+
+    private void casillasAvoidToAtack(Tablero tablero, int x2, int y2, Partida partida) {
+        Criatura selectedCard;
+        selectedCard = tablero.getCasilla(x2, y2).getCriatura();
+        partida.setSelectedCard(selectedCard);
+        partida.getCardInformation().updateCardInformation(partida);
+        for (int x = 0; x < tablero.getCasillas().length; x++) {
+            for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
+                if (tablero.getCasilla(x, y).tieneCriatura()) {
+                    //TODO: iluminar en rojo, para atacar.
+                    if (x <= criatura.getPosition().x + criatura.getAlcance() && x >= criatura.getPosition().x - criatura.getAlcance() && y <= criatura.getPosition().y + criatura.getAlcance() && y >= criatura.getPosition().y - criatura.getAlcance()) {
                         tablero.getCasilla(x, y).setState(State.ILUMINADA);
                     }
                 } else {
