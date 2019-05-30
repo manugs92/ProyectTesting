@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 public class Casilla {
 
     public enum State {
-        APAGADA, ILUMINADA
+        APAGADA, ILUMINADA,AVOID_TO_ATACK
     }
 
     public static final int MEDIDA_CASILLA = 48;
@@ -87,7 +87,9 @@ public class Casilla {
     public void setState(State state) {
         if (state == State.ILUMINADA) {
             getImageCasilla().setColor(0, 255, 255, 255);
-        } else if (state == State.APAGADA) {
+        }else if(state == State.AVOID_TO_ATACK) {
+            getImageCasilla().setColor(255, 0, 255, 255);
+        }else if (state == State.APAGADA) {
             getImageCasilla().setColor(255, 255, 255, 255);
         }
         this.state = state;
@@ -154,7 +156,6 @@ public class Casilla {
                         if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                             partida.getJugador(0).getMano().desSelected(partida);
                             casillasDisponibles(tablero, x2, y2, partida);
-                            casillasAvoidToAtack(tablero,x2,y2,partida);
                         } else {
                             partida.getJugador(0).getMano().desSelected(partida);
                             partida.setSelectedCard(tablero.getCasilla(x2, y2).getCriatura());
@@ -171,6 +172,7 @@ public class Casilla {
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
                             if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                                 casillasDisponibles(tablero, x2, y2, partida);
+                                System.out.println("Entro aqui.");
                             }
                             partida.setSelectedCard(selectedCard);
                             partida.getCardInformation().updateCardInformation(partida);
@@ -188,38 +190,39 @@ public class Casilla {
         partida.getCardInformation().updateCardInformation(partida);
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-                if (!tablero.getCasilla(x, y).tieneCriatura()) {
-                    if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento()) {
-                        tablero.getCasilla(x, y).setState(State.ILUMINADA);
-                    }
-                } else {
-                    tablero.getCasilla(x, y).setState(State.APAGADA);
+                avoidToMove(tablero,x,y);
+                avoitToAtack(partida,x,y);
+            }
+        }
+    }
+
+    public void avoidToMove(Tablero tablero,int x, int y) {
+        if (!tablero.getCasilla(x, y).tieneCriatura()) {
+            if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento()) {
+                tablero.getCasilla(x, y).setState(State.ILUMINADA);
+            } else {
+                tablero.getCasilla(x, y).setState(State.APAGADA);
+            }
+        }
+    }
+
+    public void avoitToAtack(Partida partida,int x, int y) {
+        Tablero tablero = partida.getTablero();
+        if (partida.getOwnerTurn() == 0) {
+            if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento() && partida.getJugador(1).getInvoquedCards().contains(partida.getTablero().getCasilla(x, y).getCriatura())) {
+                tablero.getCasilla(x, y).setState(State.AVOID_TO_ATACK);
+            }
+        } else {
+            if (partida.getOwnerTurn() == 1) {
+                if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento() && partida.getJugador(0).getInvoquedCards().contains(partida.getTablero().getCasilla(x, y).getCriatura())) {
+                    tablero.getCasilla(x, y).setState(State.AVOID_TO_ATACK);
                 }
             }
         }
     }
 
-    private void casillasAvoidToAtack(Tablero tablero, int x2, int y2, Partida partida) {
-        Criatura selectedCard;
-        selectedCard = tablero.getCasilla(x2, y2).getCriatura();
-        partida.setSelectedCard(selectedCard);
-        partida.getCardInformation().updateCardInformation(partida);
-        for (int x = 0; x < tablero.getCasillas().length; x++) {
-            for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-                if (tablero.getCasilla(x, y).tieneCriatura()) {
-                    //TODO: iluminar en rojo, para atacar.
-                    if (x <= criatura.getPosition().x + criatura.getAlcance() && x >= criatura.getPosition().x - criatura.getAlcance() && y <= criatura.getPosition().y + criatura.getAlcance() && y >= criatura.getPosition().y - criatura.getAlcance()) {
-                        tablero.getCasilla(x, y).setState(State.ILUMINADA);
-                    }
-                } else {
-                    tablero.getCasilla(x, y).setState(State.APAGADA);
-                }
-            }
-        }
-    }
 
     public Array<Casilla> casillasDisponiblesIA(Tablero tablero, Criatura criaturaIa) {
-
         Array<Casilla> casillasIa = new Array<>();
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
