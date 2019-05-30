@@ -152,8 +152,28 @@ public class Casilla {
                     }
                 } else {
                     if (selectedCard != null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
+
                         tablero.setAllSquaresToOff(tablero);
-                        if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
+
+                        if(partida.getJugador(1).getCriaturasInvocadas().contains(tablero.getCasilla(x2,y2).getCriatura())) {
+                            //MakeSound of atack.
+                            Carta myCard = selectedCard;
+                            Carta herCard = tablero.getCasilla(x2,y2).getCriatura();
+
+                            int resultadoAtaque = ((Criatura)herCard).getDefensa() - ((Criatura) myCard).getAtaque();
+                            int resultadoDefensa = ((Criatura)myCard).getDefensa() - ((Criatura) herCard).getAtaque();
+
+                            if (resultadoAtaque<=0) {
+                                    tablero.getCasilla(herCard.getPosition().x,herCard.getPosition().y).setCriatura(null);
+                                    partida.getJugador(1).getInvoquedCards().remove(herCard);
+                                    partida.getJugador(1).getCriaturasInvocadas().remove(herCard);
+                            }
+                            if(resultadoDefensa<=0) {
+                                tablero.getCasilla(myCard.getPosition().x,myCard.getPosition().y).setCriatura(null);
+                                partida.getJugador(0).getInvoquedCards().remove(herCard);
+                                partida.getJugador(0).getCriaturasInvocadas().remove(herCard);
+                            }
+                        } else if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                             partida.getJugador(0).getMano().desSelected(partida);
                             casillasDisponibles(tablero, x2, y2, partida);
                         } else {
@@ -172,7 +192,6 @@ public class Casilla {
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
                             if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                                 casillasDisponibles(tablero, x2, y2, partida);
-                                System.out.println("Entro aqui.");
                             }
                             partida.setSelectedCard(selectedCard);
                             partida.getCardInformation().updateCardInformation(partida);
@@ -221,7 +240,6 @@ public class Casilla {
         }
     }
 
-
     public Array<Casilla> casillasDisponiblesIA(Tablero tablero, Criatura criaturaIa) {
         Array<Casilla> casillasIa = new Array<>();
         for (int x = 0; x < tablero.getCasillas().length; x++) {
@@ -236,20 +254,11 @@ public class Casilla {
         return casillasIa;
     }
 
+    public Vector2 getCoordinatesMatrix() { return coordinatesMatrix; }
 
-    public Vector2 getCoordinatesMatrix() {
-        return coordinatesMatrix;
-    }
+    public void setCoordinatesMatrix(Vector2 coordinatesMatrix) { this.coordinatesMatrix = coordinatesMatrix; }
 
-    public void setCoordinatesMatrix(Vector2 coordinatesMatrix) {
-        this.coordinatesMatrix = coordinatesMatrix;
-    }
+    public boolean isCardInvoked() { return cardInvoked; }
 
-    public boolean isCardInvoked() {
-        return cardInvoked;
-    }
-
-    public void setCardInvoked(boolean cardInvoked) {
-        this.cardInvoked = cardInvoked;
-    }
+    public void setCardInvoked(boolean cardInvoked) { this.cardInvoked = cardInvoked; }
 }
