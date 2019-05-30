@@ -20,15 +20,11 @@ public class DuelScreen extends MyGdxGameScreen {
 
     /*
     *
-    *  TODO: Método de atacar monstruo.
-    *  TODO: Método para detectar el alcance de un monstruo. (si puede atacar o no).
-    *  TODO: Solo un ataque de monstruo por turno. (iluminar casilla donde este dicho monstruo, verificando alcance y de color ROJO.)
-    *  TODO: Si atacas, atacas a su defensa, y él a la tuya. (puede haber victoria, empate, o derrota)
     *  TODO: Sonido al realizar ataque.
     *  TODO: Método de quitar vidas.
     *
     *  TODO: Todo lo que se haga, mostrarlo en el log.
-    *  TODO: Queda por indicar cuando atacas a un monstruo, y el resultado del ataque, cuando el rival te ataque, cuando el rival pierde vidas, cuando tú pierdes vidas.
+    *  TODO:  cuando el rival te ataque, cuando el rival pierde vidas, cuando tú pierdes vidas.
     *
     *  TODO: IA que no pueda moverse donde hay una carta invocada tuya.
     *  TODO: IA que te pueda atacar si estás a su alcance.
@@ -41,8 +37,6 @@ public class DuelScreen extends MyGdxGameScreen {
     *
     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
     *
-    *  FIXME: Casillas disponibles para invocar, ponerlas en VERDE.
-    *  FIXME: Añadir a jugador la lista de Cartas Invocadas. (Para poder petarselas)
     *  FIXME: Resumen de carta, introducirlo en los creados. (Y borrar el creado por isma)
     * */
 

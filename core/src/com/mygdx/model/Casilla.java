@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class Casilla {
 
-    //Test
     public enum State {
         APAGADA, ILUMINADA,AVOID_TO_ATACK
     }
@@ -101,10 +100,11 @@ public class Casilla {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
 
+                //Indicamos que la carta seleccionada es la de la partida.
                 Carta selectedCard = partida.getSelectedCard();
 
+                //Indicamos que no estamos seleccionando ningun cementerio.
                 partida.getJugadores().forEach(j -> {
-                    partida.setSelectedCard(null);
                     j.getCementerio().setSelected(false);
                     j.getCementerio().setShowed(false);
                 });
@@ -113,9 +113,18 @@ public class Casilla {
                 partida.getCardInformation().updateCardInformation(partida);
 
                 //si la carta seleccionada no es nula, ni mágica ni equipamiento y  donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo) y ya hemos robado.
-                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && getCriatura() == null && getState() != State.APAGADA && !partida.getJugador(0).isAvoidToDrawCard()) {
+                if (selectedCard != null
+                        && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO
+                        && selectedCard.getTipo() != Carta.Tipo.MAGICA
+                        && getCriatura() == null
+                        && getState() != State.APAGADA
+                        && !partida.getJugador(0).isAvoidToDrawCard())
+                {
                     //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)y no es trampa
-                    if (selectedCard.getLastPosition().x != -1 && selectedCard.getLastPosition().y != -1 && selectedCard.getTipo() != Carta.Tipo.TRAMPA) {
+                    if (selectedCard.getLastPosition().x != -1
+                            && selectedCard.getLastPosition().y != -1
+                            && selectedCard.getTipo() != Carta.Tipo.TRAMPA)
+                    {
                         //aqui borras el monstruo de la casilla anterior.
                         tablero.getCasilla((int) selectedCard.getPosition().x, (int) selectedCard.getPosition().y).setCriatura(null);
                     }
@@ -124,74 +133,103 @@ public class Casilla {
                     if (selectedCard.getTipo() == Carta.Tipo.CRIATURA || selectedCard.getLastPosition().x == -1) {
                         //Si la carta proviene de la mano, la borraremos de la mano, y la colocaremos en el tablero.
                         if (selectedCard.getFirstPosition().x == -1 && selectedCard.getFirstPosition().y == -1) {
-                            selectedCard.setFirstPosition(x2, y2);
-                            partida.getJugador(0).addNewInvoquedCard(selectedCard);
-                            partida.getJugador(0).addNewInvoquedMonster((Criatura) selectedCard);
-                            partida.getJugador(0).getMano().setCartaJugada(partida.getJugador(0).getMano().getCartasMano().indexOf(selectedCard));
-                            partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
-                            partida.getJugador(0).removeInvocationOrbs(selectedCard.getCostInvocation());
-                            for (int i = 0; i < tablero.getCasillas().length; i++) {
-                                tablero.getCasilla(i, 0).setState(State.APAGADA);
-                            }
-                            selectedCard.setPosition(x2, y2);
-                            selectedCard.setLastPosition(x2, y2);
-                            partida.getDuelLog().addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha invocado a "+selectedCard.getNombre().toUpperCase()+" en la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
-                            partida.getDuelLog().setNewMsgTrue();
-                            partida.getDuelLog().getScrollPane().remove();
-                        } else {
-                            tablero.setAllSquaresToOff(tablero);
-                            selectedCard.setPosition(x2, y2);
-                            selectedCard.setLastPosition(x2, y2);
-                            partida.getDuelLog().addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha movido a "+selectedCard.getNombre().toUpperCase()+" a la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
-                            partida.getDuelLog().setNewMsgTrue();
-                            partida.getDuelLog().getScrollPane().remove();
+                            invoqueFromHand(partida,selectedCard,x2,y2);
+                            announceCardInvoqued(partida,selectedCard);
                         }
+                        //Si no, solamente la moveremos.
+                        else {
+                            selectedCard.setPosition(x2, y2);
+                            selectedCard.setLastPosition(x2, y2);
+                            announceCardMoved(partida,selectedCard);
+                        }
+                        tablero.setAllSquaresToOff(tablero);
                         ((Criatura) selectedCard).setMoved(true);
                         setCriatura((Criatura) selectedCard);
                         partida.getCardInformation().updateCardInformation(partida);
                         partida.setSelectedCard(null);
                     }
                 } else {
+                    //Si la carta seleccionada no es nula, ni es igual a la criatura que está en la casilla donde hemos clickado.
                     if (selectedCard != null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
 
                         tablero.setAllSquaresToOff(tablero);
 
-                        if(partida.getJugador(1).getCriaturasInvocadas().contains(tablero.getCasilla(x2,y2).getCriatura())) {
-                            //MakeSound of atack.
+                        //Si la carta donde hemos hecho click pertenece a nuestro rival... PELEAREMOS CONTRA ELLA.
+                        if(partida.getJugador(1).getCriaturasInvocadas().contains(tablero.getCasilla(x2,y2).getCriatura())
+                                && isAvoidToInteract(selectedCard))
+                        {
+
+                            //Seleccionamos mi carta y la suya para hacerlas pelear.
                             Carta myCard = selectedCard;
                             Carta herCard = tablero.getCasilla(x2,y2).getCriatura();
 
+                            //Obtenemos el resultado de nuestro ataque y su ataque.
                             int resultadoAtaque = ((Criatura)herCard).getDefensa() - ((Criatura) myCard).getAtaque();
                             int resultadoDefensa = ((Criatura)myCard).getDefensa() - ((Criatura) herCard).getAtaque();
 
+                           announcePlayerAtackToMonster(partida,myCard,herCard);
+                           announceResultOfAttack(partida,myCard,herCard);
+
                             if (resultadoAtaque<=0) {
-                                    tablero.getCasilla(herCard.getPosition().x,herCard.getPosition().y).setCriatura(null);
-                                    partida.getJugador(1).getInvoquedCards().remove(herCard);
-                                    partida.getJugador(1).getCriaturasInvocadas().remove(herCard);
+                                removeHerCard(partida,herCard);
+                                announceCardDead(partida,herCard);
                             }
+
                             if(resultadoDefensa<=0) {
-                                tablero.getCasilla(myCard.getPosition().x,myCard.getPosition().y).setCriatura(null);
-                                partida.getJugador(0).getInvoquedCards().remove(herCard);
-                                partida.getJugador(0).getCriaturasInvocadas().remove(herCard);
+                                removeMyCard(partida,myCard);
+                                announceCardDead(partida,myCard);
                             }
-                        } else if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
+
+                            ((Criatura) selectedCard).setMoved(true);
+                        }
+                        //Si la casilla seleccionada tiene criatura
+                        //Y si no se ha movido
+                        //Y si no hay avisos
+                        //Y si hemos robado ya
+                        //Y si la carta seleccionada NO pertenece al otro jugador.
+                        else if(tablero.getCasilla(x2, y2).tieneCriatura()
+                                && !tablero.getCasilla(x2, y2).getCriatura().isMoved()
+                                && !partida.getAvisosPartida().isShowed()
+                                && !partida.getJugador(0).isAvoidToDrawCard()
+                                && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura()))
+                        {
+                            //Deseleccionamos la carta de la mano, e indicamos donde nos podemos mover.
                             partida.getJugador(0).getMano().desSelected(partida);
                             casillasDisponibles(tablero, x2, y2, partida);
-                        } else {
+                        }
+                        //Si no es ninguno de los casos anteriores.
+                        else {
+                            //Deseleccionamos la carta de nuestra mano, indicamos a partida que carta hemos seleccionado
+                            //Y actualizamos el visor de la carta.
                             partida.getJugador(0).getMano().desSelected(partida);
                             partida.setSelectedCard(tablero.getCasilla(x2, y2).getCriatura());
                             partida.getCardInformation().updateCardInformation(partida);
                         }
-                    } else if (selectedCard != null && selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
+                    }
+                    //Si la carta seleccionada y donde hemos hecho click son igualess..
+                    else if (selectedCard != null && selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
+                        //Deseleccionaremos t0do, para empezar de "0".
                         tablero.setAllSquaresToOff(tablero);
                         partida.setSelectedCard(null);
                         partida.getCardInformation().updateCardInformation(partida);
                         partida.getJugador(0).getMano().desSelected(partida);
-                    } else {
-                        //sin carta selecionada
+                    }
+                    //Si no se cumple ninguna de esas condiciones, es que no tenemos carta, y podremos seleccionar una.
+                    else {
+                        //Si donde hemos hecho click, hay una criatura..
                         if (tieneCriatura()) {
+                            //Seleccionamos dicha carta.
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
-                            if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
+
+                            //Si la carta seleccionada no se ha movido
+                            //Si no hay avisos mostrandose
+                            //Si el jugador ya ha robado
+                            //Si la carta que hemos seleccionado no es de nuestro rival.
+                            if(!((Criatura)selectedCard).isMoved()
+                                    && !partida.getAvisosPartida().isShowed()
+                                    && !partida.getJugador(0).isAvoidToDrawCard()
+                                    && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura()))
+                            {
                                 casillasDisponibles(tablero, x2, y2, partida);
                             }
                             partida.setSelectedCard(selectedCard);
@@ -203,6 +241,26 @@ public class Casilla {
         });
     }
 
+    private void announcePlayerAtackToMonster(Partida partida,Carta myCard, Carta herCard) {
+        partida.getDuelLog().addMsgToLog(myCard.getNombre().toUpperCase()+" ha LUCHADO contra "+herCard.getNombre().toUpperCase());
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+    private void announceResultOfAttack(Partida partida,Carta myCard,Carta herCard) {
+        partida.getDuelLog().addMsgToLog(myCard.getNombre().toUpperCase()+" ha PERDIDO "+ ((Criatura) herCard).getAtaque()+ " HP");
+        partida.getDuelLog().addMsgToLog(herCard.getNombre().toUpperCase()+" ha PERDIDO "+ ((Criatura) myCard).getAtaque()+ "HP");
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+    private void announceCardDead(Partida partida, Carta card) {
+        partida.getDuelLog().addMsgToLog(card.getNombre().toUpperCase()+" ha MUERTO y se ha ido al CEMENTERIO");
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+
     private void casillasDisponibles(Tablero tablero, int x2, int y2, Partida partida) {
         Criatura selectedCard;
         selectedCard = tablero.getCasilla(x2, y2).getCriatura();
@@ -213,6 +271,15 @@ public class Casilla {
                 avoidToMove(tablero,x,y);
                 avoitToAtack(partida,x,y);
             }
+        }
+    }
+
+    //Función que nos dice, si está dentro de nuestro alcance de interacción. (movimiento)
+    public boolean isAvoidToInteract(Carta selectedCard) {
+        if(criatura.getPosition().x <= selectedCard.getPosition().x + ((Criatura)selectedCard).getMovimiento() && criatura.getPosition().x >= selectedCard.getPosition().x - ((Criatura)selectedCard).getMovimiento() && criatura.getPosition().y <= selectedCard.getPosition().y + ((Criatura)selectedCard).getMovimiento() && criatura.getPosition().y >= selectedCard.getPosition().y - ((Criatura)selectedCard).getMovimiento()) {
+            return true;
+        }else {
+            return false;
         }
     }
 
@@ -229,7 +296,12 @@ public class Casilla {
     public void avoitToAtack(Partida partida,int x, int y) {
         Tablero tablero = partida.getTablero();
         if (partida.getOwnerTurn() == 0) {
-            if (x <= criatura.getPosition().x + criatura.getMovimiento() && x >= criatura.getPosition().x - criatura.getMovimiento() && y <= criatura.getPosition().y + criatura.getMovimiento() && y >= criatura.getPosition().y - criatura.getMovimiento() && partida.getJugador(1).getInvoquedCards().contains(partida.getTablero().getCasilla(x, y).getCriatura())) {
+            if (x <= criatura.getPosition().x + criatura.getMovimiento()
+                    && x >= criatura.getPosition().x - criatura.getMovimiento()
+                    && y <= criatura.getPosition().y + criatura.getMovimiento()
+                    && y >= criatura.getPosition().y - criatura.getMovimiento()
+                    && partida.getJugador(1).getInvoquedCards().contains(partida.getTablero().getCasilla(x, y).getCriatura()))
+            {
                 tablero.getCasilla(x, y).setState(State.AVOID_TO_ATACK);
             }
         } else {
@@ -262,4 +334,41 @@ public class Casilla {
     public boolean isCardInvoked() { return cardInvoked; }
 
     public void setCardInvoked(boolean cardInvoked) { this.cardInvoked = cardInvoked; }
+
+    public void announceCardInvoqued(Partida partida, Carta selectedCard) {
+        partida.getDuelLog().addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha invocado a "+selectedCard.getNombre().toUpperCase()+" en la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+    private void announceCardMoved(Partida partida, Carta selectedCard) {
+        partida.getDuelLog().addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha movido a "+selectedCard.getNombre().toUpperCase()+" a la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+    public void invoqueFromHand(Partida partida,Carta selectedCard,int x2, int y2) {
+        selectedCard.setFirstPosition(x2, y2);
+        partida.getJugador(0).addNewInvoquedCard(selectedCard);
+        partida.getJugador(0).addNewInvoquedMonster((Criatura) selectedCard);
+        partida.getJugador(0).getMano().setCartaJugada(partida.getJugador(0).getMano().getCartasMano().indexOf(selectedCard));
+        partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
+        partida.getJugador(0).removeInvocationOrbs(selectedCard.getCostInvocation());
+        selectedCard.setPosition(x2, y2);
+        selectedCard.setLastPosition(x2, y2);
+    }
+
+    public void removeMyCard(Partida partida,Carta myCard) {
+        partida.getTablero().getCasilla(myCard.getPosition().x,myCard.getPosition().y).setCriatura(null);
+        partida.getJugador(0).getInvoquedCards().remove(myCard);
+        partida.getJugador(0).getCriaturasInvocadas().remove(myCard);
+        partida.getJugador(0).getCementerio().setCardInGraveyard(myCard);
+    }
+
+    public void removeHerCard(Partida partida,Carta herCard) {
+        partida.getTablero().getCasilla(herCard.getPosition().x,herCard.getPosition().y).setCriatura(null);
+        partida.getJugador(1).getInvoquedCards().remove(herCard);
+        partida.getJugador(1).getCriaturasInvocadas().remove(herCard);
+        partida.getJugador(1).getCementerio().setCardInGraveyard(herCard);
+    }
 }

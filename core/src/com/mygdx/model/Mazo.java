@@ -95,12 +95,12 @@ public class Mazo {
 
 
         while (cartasMazo.size()<=MIN_CARDS-1) {
-            Criatura spyro = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront, textureCardInfo_LavaGolem,7,1,2,1);
+            Criatura spyro = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront, textureCardInfo_LavaGolem,7,7,7,1);
             instanceCreatureDetail(spyro,"spyro",textureCard_Spyro,2);
 
-            Criatura lavaGolem = new Criatura(GOLEM,FUEGO,textureSpriteLavaGolem,textureSpriteLavaGolemFront,textureCardInfo_LavaGolem,7,1,2,1);
+            Criatura lavaGolem = new Criatura(GOLEM,FUEGO,textureSpriteLavaGolem,textureSpriteLavaGolemFront,textureCardInfo_LavaGolem,1,1,2,1);
             instanceCreatureDetail(lavaGolem,"GolemManu",textureCard_LavaGolem,3 );
-            Criatura rockElemental = new Criatura(GOLEM,ROCK,textureSpriteRockElemental,textureSpriteRockElementalFront,textureCardInfo_LavaGolem,7,1,2,1);
+            Criatura rockElemental = new Criatura(GOLEM,ROCK,textureSpriteRockElemental,textureSpriteRockElementalFront,textureCardInfo_LavaGolem,1,1,2,1);
             instanceCreatureDetail(rockElemental,"RockElemental",textureCard_RockElemental,3 );
         }
         return cartasMazo;
