@@ -60,9 +60,6 @@ public class IaOne {
 
                             casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y ].casillasDisponiblesIA(partida.getTablero(), criatura);
 
-                            for (Casilla casilla:casillasMoveIa ) {
-                                System.out.println(casilla.getCoordinatesMatrix());
-                            }
                             if (criatura != null) {
                                 moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
                                 System.out.println(" GAGA ->" +moveDestiny);

@@ -153,7 +153,7 @@ public class Casilla {
                 } else {
                     if (selectedCard != null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
                         tablero.setAllSquaresToOff(tablero);
-                        if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
+                        if(tablero.getCasilla(x2, y2).tieneCriatura() && !tablero.getCasilla(x2, y2).getCriatura().isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                             partida.getJugador(0).getMano().desSelected(partida);
                             casillasDisponibles(tablero, x2, y2, partida);
                         } else {
@@ -205,13 +205,11 @@ public class Casilla {
         Array<Casilla> casillasIa = new Array<>();
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-
+                if (!tablero.getCasilla(x, y).tieneCriatura()) {
                     if (x <= criaturaIa.getPosition().x + criaturaIa.getMovimiento() && x >= criaturaIa.getPosition().x - criaturaIa.getMovimiento() && y <= criaturaIa.getPosition().y + criaturaIa.getMovimiento() && y >= criaturaIa.getPosition().y - criaturaIa.getMovimiento()) {
-
                         casillasIa.add(tablero.getCasilla(x, y));
                     }
-
-
+                }
             }
         }
         return casillasIa;
