@@ -226,9 +226,7 @@ public class DuelScreen extends MyGdxGameScreen {
     private void dibujarInformacionCarta() {
         stage.addActor(partida.getCardInformation().writeInfoPane());
         partida.getCardInformation().setNewCardInfo(false);
-        Image image=new Image(new Texture(assetManager.cartaInfo));
-        image.setPosition(0,0);
-        stage.addActor(image);
+
     }
 
     private void dibujarCartasColocadas(Carta carta) {

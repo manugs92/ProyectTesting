@@ -1,5 +1,6 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,7 +13,9 @@ import com.mygdx.game.MyGdxGameAssetManager;
 import java.util.*;
 
 import static com.mygdx.model.Criatura.TipoElemental.FUEGO;
+import static com.mygdx.model.Criatura.TipoElemental.ROCK;
 import static com.mygdx.model.Criatura.TipoEspecie.DRAGON;
+import static com.mygdx.model.Criatura.TipoEspecie.GOLEM;
 
 public class Mazo {
 
@@ -73,30 +76,49 @@ public class Mazo {
     }
 
     public ArrayList<Carta> DefaultDeck() {
-        Texture textureCard = new Texture("icons\\carta.png");
+
+        MyGdxGameAssetManager assetManager=new MyGdxGameAssetManager();
+
+
+
+
+
+        Texture textureCard_Spyro = new Texture("icons\\carta.png");
+        Texture textureCardInfo_Spyro = new Texture("icons\\carta_Info.png");
         Texture textureSpriteSpyro= new Texture("icons\\spyro.png");
         Texture textureSpriteSpyroFront= new Texture("icons\\spyro_front.png");
 
-        Texture textureCard2 = new Texture("icons\\manu_golem_card.png");
-        Texture textureSpriteGolemManu= new Texture("icons\\manu.png");
-        Texture textureSpriteGolemManuFront= new Texture("icons\\manu_front.png");
+        Texture textureCard_LavaGolem = new Texture("icons\\lava_golem_card.png");
+        Texture textureCardInfo_LavaGolem = new Texture( assetManager.cartaInfo);
+        Texture textureSpriteLavaGolem= new Texture("icons\\lava_golem.png");
+        Texture textureSpriteLavaGolemFront= new Texture("icons\\lava_golem_front.png");
+
+        Texture textureCard_RockElemental = new Texture("icons\\rock_elemental_card.png");
+        Texture textureSpriteRockElemental= new Texture("icons\\rock_elemental.png");
+        Texture textureSpriteRockElementalFront= new Texture("icons\\rock_elemental_front.png");
+
+
+
+
         while (cartasMazo.size()<=MIN_CARDS-1) {
-            Criatura golem = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront,7,10,2,1);
-            golem.setNombre("DragonSp1");
-            golem.setImage(textureCard);
-            golem.setLastPosition(-1,-1);
-            golem.setFirstPosition(-1,-1);
-            golem.setCostInvocation(2);
-            cartasMazo.add(golem);
-            Criatura golem2 = new Criatura(DRAGON,FUEGO,textureSpriteGolemManu,textureSpriteGolemManuFront,7,10,2,1);
-            golem2.setNombre("DragonSp2");
-            golem2.setImage(textureCard2);
-            golem2.setLastPosition(-1,-1);
-            golem2.setFirstPosition(-1,-1);
-            golem2.setCostInvocation(4);
-            cartasMazo.add(golem2);
+            Criatura spyro = new Criatura(DRAGON,FUEGO,textureSpriteSpyro,textureSpriteSpyroFront, textureCardInfo_LavaGolem,7,10,2,1);
+            instanceCreatureDetail(spyro,"spyro",textureCard_Spyro,2);
+
+            Criatura lavaGolem = new Criatura(GOLEM,FUEGO,textureSpriteLavaGolem,textureSpriteLavaGolemFront,textureCardInfo_LavaGolem,7,10,2,1);
+            instanceCreatureDetail(lavaGolem,"GolemManu",textureCard_LavaGolem,3 );
+            Criatura rockElemental = new Criatura(GOLEM,ROCK,textureSpriteRockElemental,textureSpriteRockElementalFront,textureCardInfo_LavaGolem,7,10,2,1);
+            instanceCreatureDetail(rockElemental,"RockElemental",textureCard_RockElemental,3 );
         }
         return cartasMazo;
+    }
+
+    private void instanceCreatureDetail(Criatura creature ,String name,Texture texture,int costInvocation) {
+        creature.setNombre(name);
+        creature.setImage(texture);
+        creature.setLastPosition(-1,-1);
+        creature.setFirstPosition(-1,-1);
+        creature.setCostInvocation(costInvocation);
+        cartasMazo.add(creature);
     }
 
     public Image getMazoDefaultGUI() { return mazoDefaultGUI; }

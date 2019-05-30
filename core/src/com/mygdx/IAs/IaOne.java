@@ -5,6 +5,8 @@ import com.mygdx.model.*;
 
 import java.util.ArrayList;
 
+/* TODO que las criaturas IA no puedan pisar las cartas enemigas*/
+
 public class IaOne {
 
     private int moveDestiny;
@@ -73,10 +75,7 @@ public class IaOne {
                         }
                     }
                     IA.getMano().getCartasMano().removeAll(cardsToRemove);
-
                     state = State.MOVE;
-
-
 
                     break;
                 case MOVE:
