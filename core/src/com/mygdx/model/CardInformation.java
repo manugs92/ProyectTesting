@@ -70,8 +70,9 @@ public class CardInformation {
 
     public Table writeInfoPane(){
         this.tableInfo = new Table();
-        this.tableInfo.setPosition(0,222);
+        this.tableInfo.setPosition(20,20);
         if(cardDetailInfo!=null) {
+
             this.tableInfo.addActor(cardDetailInfo);
         }
         return tableInfo;
