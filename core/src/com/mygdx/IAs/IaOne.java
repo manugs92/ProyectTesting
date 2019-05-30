@@ -82,20 +82,10 @@ public class IaOne {
                     casillas = partida.getTablero().getCasillas();
                     //criaturas = partida.getCriaturasInvocadasJ2();
                     criaturas = partida.getJugador(1).getCriaturasInvocadas();
-                    if (criaturas.size() != 0) {
+                    if (criaturas.size()-1 > 0) {
                         for (Criatura criatura: criaturas) {
-                            //criatura = criaturas.get(0);
-                            System.out.println((int) criatura.getPosition().y - 1 + " hola ");
-
-                            casillasMoveIa = casillas[(int) criatura.getPosition().x][(int) criatura.getPosition().y ].casillasDisponiblesIA(partida.getTablero(), criatura);
-
-                            if (criatura != null) {
-                                moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
-                                System.out.println(" GAGA ->" +moveDestiny);
-
-                                updatePosition(partida, criatura);
-                                logInfoMove(partida, criatura);
-                            }
+                            casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura);
+                            moveCreature(partida, criatura);
                         }
                     }
                     state = State.WAIT;
@@ -106,6 +96,16 @@ public class IaOne {
                     break;
 
             }
+        }
+    }
+
+    private void moveCreature(Partida partida, Criatura criatura) {
+        if (criatura != null) {
+            moveDestiny=(int)(Math.random()*((casillasMoveIa.size-1)/2));
+            System.out.println(" moveDestiny ->" +moveDestiny+"\n Size casillas disponibles para la IA->"+casillasMoveIa.size);
+
+            updatePosition(partida, criatura, moveDestiny);
+            logInfoMove(partida, criatura);
         }
     }
 
@@ -153,7 +153,7 @@ public class IaOne {
 
     }
 
-    private void updatePosition(Partida partida, Criatura criatura) {
+    private void updatePosition(Partida partida, Criatura criatura, int moveDestiny) {
         //borrar casilla anterior
         partida.getTablero().getCasilla(criatura.getLastPosition().x, criatura.getLastPosition().y).setCriatura(null);
         criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
