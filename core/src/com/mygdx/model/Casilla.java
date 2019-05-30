@@ -111,7 +111,7 @@ public class Casilla {
                 partida.getCardInformation().updateCardInformation(partida);
 
                 //si la carta seleccionada no es nula, ni mágica ni equipamiento y  donde intento colocarla esta vacia y si es interactuable(a nuestro alcance y no esta ocupada por un monstruo) y ya hemos robado.
-                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && getCriatura() == null && getState() != State.APAGADA && !partida.getJugador(0).isAvoidToDrawCard() ) {
+                if (selectedCard != null && selectedCard.getTipo() != Carta.Tipo.EQUIPAMIENTO && selectedCard.getTipo() != Carta.Tipo.MAGICA && getCriatura() == null && getState() != State.APAGADA && !partida.getJugador(0).isAvoidToDrawCard()) {
                     //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)y no es trampa
                     if (selectedCard.getLastPosition().x != -1 && selectedCard.getLastPosition().y != -1 && selectedCard.getTipo() != Carta.Tipo.TRAMPA) {
                         //aqui borras el monstruo de la casilla anterior.
@@ -204,7 +204,7 @@ public class Casilla {
         Array<Casilla> casillasIa = new Array<>();
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-                if (!tablero.getCasilla(x, y).tieneCriatura()) {
+                if (!tablero.getCasilla(x,y).tieneCriatura()) {
                     if (x <= criaturaIa.getPosition().x + criaturaIa.getMovimiento() && x >= criaturaIa.getPosition().x - criaturaIa.getMovimiento() && y <= criaturaIa.getPosition().y + criaturaIa.getMovimiento() && y >= criaturaIa.getPosition().y - criaturaIa.getMovimiento()) {
                         casillasIa.add(tablero.getCasilla(x, y));
                     }
