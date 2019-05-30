@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Casilla {
 
+    //Test
     public enum State {
         APAGADA, ILUMINADA,AVOID_TO_ATACK
     }
