@@ -66,9 +66,10 @@ public class IaOne {
                             if (criatura != null) {
                                 moveDestiny=(int)Math.random()*(casillasMoveIa.size*1000);
                                 System.out.println(" GAGA ->" +moveDestiny);
+                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(null);
                                 criatura.setPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
                                 criatura.setLastPosition(casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().x, (casillasMoveIa.get(moveDestiny).getCoordinatesMatrix().y));
-
+                                partida.getTablero().getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).setCriatura(criatura);
                                 partida.getDuelLog().addMsgToLog(partida.getJugador(1).getNombre().toUpperCase()+" ha movido a "+criatura.getNombre().toUpperCase()+" a la CASILLA "+(int)criatura.getLastPosition().x+","+(int)criatura.getLastPosition().y);
                                 partida.getDuelLog().setNewMsgTrue();
                                 partida.getDuelLog().getScrollPane().remove();
@@ -91,6 +92,7 @@ public class IaOne {
                                     cartaMano.setLastPosition(i,8);
                                     //Informa de que la casilla ha sido ocupada por una carta
                                     casillas[i][8].setCardInvoked(true);
+                                    casillas[i][8].setCriatura((Criatura) cartaMano);
                                     partida.getJugador(1).addNewInvoquedMonster((Criatura) cartaMano);
                                     IA.setInvocationOrbs(IA.getInvocationOrbs() - ((Criatura) cartaMano).getCostInvocation());
 

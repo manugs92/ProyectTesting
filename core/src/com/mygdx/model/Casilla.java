@@ -168,7 +168,7 @@ public class Casilla {
                         partida.getJugador(0).getMano().desSelected(partida);
                     } else {
                         //sin carta selecionada
-                        if (tieneCriatura()) {
+                        if (tieneCriatura() && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())) {
                             selectedCard = tablero.getCasilla(x2, y2).getCriatura();
                             if(!((Criatura)selectedCard).isMoved() && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
                                 casillasDisponibles(tablero, x2, y2, partida);

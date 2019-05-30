@@ -36,11 +36,13 @@ public class DuelScreen extends MyGdxGameScreen {
     *  TODO: Poner música de juego en (main menú,configuración), en duelo, y en resumeScreen.
     *  TODO: Poner sonidos al invocar, al robar, al atacar..
     *
+    *  TODO: HUD donde sale el turno, volumen (mas y menos)
+    *
     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
     *
     *  FIXME: Casillas disponibles para invocar, ponerlas en VERDE.
     *  FIXME: Añadir a jugador la lista de Cartas Invocadas. (Para poder petarselas)
-    *  FIXME: Resumen de carta, introducirlo en los creados.
+    *  FIXME: Resumen de carta, introducirlo en los creados. (Y borrar el creado por isma)
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
