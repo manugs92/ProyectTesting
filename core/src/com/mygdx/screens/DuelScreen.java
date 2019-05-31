@@ -37,7 +37,6 @@ public class DuelScreen extends MyGdxGameScreen {
     *
     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
     *
-    *  TODO: Cuando te mueves, puedes atacar si esta a tu alcance aunque no se iluminen las casillas.
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
@@ -279,9 +278,15 @@ public class DuelScreen extends MyGdxGameScreen {
         if(partida.getOwnerTurn()==jugadorId) {
             stage.addActor(partida.getJugador(jugadorId).getAvatar());
             partida.getJugador(jugadorId).getAvatar2().remove();
+            if(partida.getJugador(1).isAvoidToDamage()) {
+                stage.addActor(partida.getJugador(1).getAvatar3());
+            }
         }else {
-            stage.addActor(partida.getJugador(jugadorId).getAvatar2());
-            partida.getJugador(jugadorId).getAvatar().remove();
+            if(!partida.getJugador(1).isAvoidToDamage()) {
+                stage.addActor(partida.getJugador(jugadorId).getAvatar2());
+                partida.getJugador(jugadorId).getAvatar().remove();
+                partida.getJugador(1).getAvatar3().remove();
+            }
         }
     }
 

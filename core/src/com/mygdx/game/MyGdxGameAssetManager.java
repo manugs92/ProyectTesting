@@ -21,6 +21,7 @@ public class MyGdxGameAssetManager {
     public final String rivalAvatar = "icons/mugshot.png";
     public final String myAvatar2 = "icons/mugshot2_1.png";
     public final String rivalAvatar2 = "icons/mugshot_1.png";
+    public final String rivalAvatar3 = "icons/mugshot_2.png";
     public final String passTurnIcon = "icons/pasarturno_0.png";
     public final String whiteFlagIcon = "icons/whiteflag.png";
     public final String lavaGolemCartaInfo = "icons/lava_golem_carta_info.png";
@@ -57,6 +58,7 @@ public class MyGdxGameAssetManager {
     public void loadOtherAvatars() {
         manager.load(myAvatar2,Texture.class);
         manager.load(rivalAvatar2,Texture.class);
+        manager.load(rivalAvatar3,Texture.class);
     }
 
 }

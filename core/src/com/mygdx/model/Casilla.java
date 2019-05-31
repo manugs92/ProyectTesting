@@ -120,6 +120,10 @@ public class Casilla {
                     j.getCementerio().setShowed(false);
                 });
 
+                //Desactivamos el daño al otro jugador.
+                partida.getJugador(1).setAvoidToDamage(false);
+                System.out.println(  partida.getJugador(1).isAvoidToDamage());
+
                 //Seleccionamos la carta donde hemos hecho click. (Mediante partida, ya que la almacena ella)
                 partida.getCardInformation().updateCardInformation(partida);
 
@@ -184,7 +188,9 @@ public class Casilla {
 
                         //Si la carta donde hemos hecho click pertenece a nuestro rival... PELEAREMOS CONTRA ELLA.
                         if(partida.getJugador(1).getCriaturasInvocadas().contains(tablero.getCasilla(x2,y2).getCriatura())
-                                && isAvoidToInteract(selectedCard))
+                                && isAvoidToInteract(selectedCard)
+                                && !((Criatura)selectedCard).isMoved()
+                        )
                         {
 
                             //Seleccionamos mi carta y la suya para hacerlas pelear.
@@ -224,6 +230,10 @@ public class Casilla {
                             //Deseleccionamos la carta de la mano, e indicamos donde nos podemos mover.
                             partida.getJugador(0).getMano().desSelected(partida);
                             casillasDisponibles(tablero, x2, y2, partida);
+                            if(selectedCard.getPosition().y==8) {
+                                System.out.println(selectedCard.getPosition().y);
+                                partida.getJugador(1).setAvoidToDamage(true);
+                            }
                         }
                         //Si no es ninguno de los casos anteriores.
                         else {
@@ -259,6 +269,10 @@ public class Casilla {
                                     && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura()))
                             {
                                 casillasDisponibles(tablero, x2, y2, partida);
+                                if(selectedCard.getPosition().y==8) {
+                                    System.out.println(selectedCard.getPosition().y);
+                                    partida.getJugador(1).setAvoidToDamage(true);
+                                }
                             }
                             partida.setSelectedCard(selectedCard);
                             partida.getCardInformation().updateCardInformation(partida);

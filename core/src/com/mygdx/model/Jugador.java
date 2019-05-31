@@ -19,6 +19,7 @@ public class Jugador {
     private boolean avoidToDrawCard;
     private Image avatar;
     private Image avatar2;
+    private Image avatar3;
     private Vector2 posAvatar = new Vector2();
     private Vector2 posName = new Vector2();
     private int lives = Partida.INITIAL_LIVES;
@@ -28,6 +29,7 @@ public class Jugador {
     private Vector2 posInvocationOrbs = new Vector2();
     private ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
     private ArrayList<Carta> cartasColocadas = new ArrayList<>();
+    private boolean avoidToDamage = false;
 
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
@@ -44,12 +46,14 @@ public class Jugador {
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));
             avatar2 = new Image(assetManager.manager.get(assetManager.myAvatar2,Texture.class));
+            avatar3 = new Image(assetManager.manager.get(assetManager.rivalAvatar3,Texture.class));
             posAvatar.y = 80;
             posName.y= 60;
             poslives.y = 160;
         }else {
             avatar = new Image(assetManager.manager.get(assetManager.rivalAvatar,Texture.class));
             avatar2 = new Image(assetManager.manager.get(assetManager.rivalAvatar2,Texture.class));
+            avatar3 = new Image(assetManager.manager.get(assetManager.rivalAvatar3,Texture.class));
             posAvatar.y = MyGdxGame.SCREEN_HEIGHT-208;
             posName.y=MyGdxGame.SCREEN_HEIGHT-228;
             poslives.y = MyGdxGame.SCREEN_HEIGHT-125;
@@ -62,6 +66,7 @@ public class Jugador {
 
         avatar.setPosition(posAvatar.x,posAvatar.y);
         avatar2.setPosition(posAvatar.x,posAvatar.y);
+        avatar3.setPosition(posAvatar.x,posAvatar.y);
         livesGUI.setPosition(poslives.x,poslives.y);
         manaOrbGUI.setPosition(posInvocationOrbs.x,posInvocationOrbs.y);
     }
@@ -106,6 +111,8 @@ public class Jugador {
 
     public Image getAvatar2() {return avatar2;}
 
+    public Image getAvatar3() {return avatar3;}
+
     public Vector2 getPosName() { return posName; }
 
     public Image getLivesGUI() {
@@ -145,4 +152,8 @@ public class Jugador {
     public  ArrayList<Carta> getInvoquedCards() {
         return cartasColocadas;
     }
+
+    public boolean isAvoidToDamage() { return avoidToDamage; }
+
+    public void setAvoidToDamage(boolean avoidToDamage) { this.avoidToDamage = avoidToDamage; }
 }
