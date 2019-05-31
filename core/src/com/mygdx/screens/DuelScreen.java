@@ -183,7 +183,7 @@ public class DuelScreen extends MyGdxGameScreen {
         //Dibujar manos
         if(!partida.getJugador(jugadorId).getMano().isManoCargada() ) {
             //fixme size()-1
-            for(int i = 0; i<partida.getJugador(jugadorId).getMano().getCartasMano().size(); i++) {
+            for(int i = 0; i< partida.getJugador(jugadorId).getMano().getCartasMano().size(); i++) {
                 partida.getJugador(jugadorId).getMano().drawHand(i, partida, jugadorId);
                 stage.addActor(partida.getJugador(jugadorId).getMano().getCartaManoGUI().get(i));
             }

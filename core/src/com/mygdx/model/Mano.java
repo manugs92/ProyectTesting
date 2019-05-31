@@ -34,6 +34,7 @@ public class Mano {
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
         ArrayList<Carta> cartasToRemove = new ArrayList<>();
+        //TODO error de los, arreglado
         for(int i=0;i<5;i++) {
             cartasMano.add(mazo.getShuffleMazo().get(i));
             cartasToRemove.add(mazo.getShuffleMazo().get(i));
@@ -60,6 +61,7 @@ public class Mano {
             cartasManoGUI.add(i,new Image(cartasMano.get(i).getImage()));
             cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
         }else {
+           //TODO error de los
             cartasManoGUI.add(i,defaultImage.get(i));
             cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J2);
         }
@@ -208,5 +210,15 @@ public class Mano {
             cartasManoGUI.removeAll(cardsToRemove);
             manoCargada=false;
         }
+    }
+
+
+    public ArrayList<Image> getDefaultImage() {
+        return defaultImage;
+    }
+
+    public void addDefaultImage() {
+        defaultImage.add( new Image(assetManager.manager.get(assetManager.imageBackCard, Texture.class)));
+
     }
 }

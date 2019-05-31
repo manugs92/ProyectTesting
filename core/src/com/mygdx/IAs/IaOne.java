@@ -50,7 +50,8 @@ public class IaOne {
 
                     //robar carta
                     IA.getMazo().drawCard(IA);
-                    IA.addInvocationOrbs(1);
+                    IA.getMano().addDefaultImage();
+                    //IA.addInvocationOrbs(1);
 
                     state = State.INVOCATION;
                     //System.out.println("INITIAL FINICSH");
@@ -95,6 +96,8 @@ public class IaOne {
                             }
                         }
                     }
+
+                    checkAndDescardCard();
                     state = State.WAIT;
                     finalizeTurn(partida);
                     logInfoTourn(partida,0);
@@ -103,6 +106,15 @@ public class IaOne {
                     break;
 
             }
+        }
+    }
+
+    private void checkAndDescardCard() {
+        if(IA.getMano().getCartasMano().size()>6){
+            int cardToRemove=(int)(Math.random()*7);
+            IA.getCementerio().setCardInGraveyard( IA.getMano().getCartasMano().get(cardToRemove));
+            IA.getMano().getCartasMano().remove(cardToRemove);
+
         }
     }
 
