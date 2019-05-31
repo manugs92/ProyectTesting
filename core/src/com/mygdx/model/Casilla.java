@@ -131,15 +131,6 @@ public class Casilla {
                         && getState() != State.APAGADA
                         && !partida.getJugador(0).isAvoidToDrawCard())
                 {
-                    //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)y no es trampa
-                    if (selectedCard.getLastPosition().x != -1
-                            && selectedCard.getLastPosition().y != -1
-                            && selectedCard.getTipo() != Carta.Tipo.TRAMPA)
-                    {
-                        //aqui borras el monstruo de la casilla anterior.
-                        tablero.getCasilla((int) selectedCard.getPosition().x, (int) selectedCard.getPosition().y).setCriatura(null);
-                    }
-
                     //Si la carta seleccionada es una criatura o proviene de la mano..
                     if (selectedCard.getTipo() == Carta.Tipo.CRIATURA || selectedCard.getLastPosition().x == -1) {
                         //Si la carta proviene de la mano, la borraremos de la mano, y la colocaremos en el tablero.
@@ -163,11 +154,17 @@ public class Casilla {
                                 removeHerCard(partida,herCard);
                                 announceInvoquedCardDead(partida,selectedCard,herCard);
                                 ((Criatura) selectedCard).setMoved(true);
-                                System.out.println(selectedCard.getNombre());
-                                System.out.println(selectedCard.getPosition().x+" "+selectedCard.getPosition().y);
                             }
                             //Si no, solamente la moveremos.
                             else {
+                                //si la ultima posicion x e y son distintas a -1(nunca se ha movido de la mano)y no es trampa
+                                if (selectedCard.getLastPosition().x != -1
+                                        && selectedCard.getLastPosition().y != -1
+                                        && selectedCard.getTipo() != Carta.Tipo.TRAMPA)
+                                {
+                                    //aqui borras el monstruo de la casilla anterior.
+                                    tablero.getCasilla((int) selectedCard.getPosition().x, (int) selectedCard.getPosition().y).setCriatura(null);
+                                }
                                 selectedCard.setPosition(x2, y2);
                                 selectedCard.setLastPosition(x2, y2);
                                 announceCardMoved(partida,selectedCard);
@@ -178,10 +175,6 @@ public class Casilla {
                         tablero.setAllSquaresToOff(tablero);
                         partida.getCardInformation().updateCardInformation(partida);
                         partida.setSelectedCard(null);
-                        System.out.println(partida.getJugador(0).getCriaturasInvocadas().size());
-                        partida.getJugador(0).getCriaturasInvocadas().forEach(c -> {
-                            System.out.println(c.getNombre()+" "+c.getPosition().x+" "+c.getPosition().y);
-                        });
                     }
                 } else {
                     //Si la carta seleccionada no es nula, ni es igual a la criatura que está en la casilla donde hemos clickado.
