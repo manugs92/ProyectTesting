@@ -88,7 +88,9 @@ public class IaOne {
                             casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura,partida.getJugador(0));
 
                             if (criatura != null) {
+                                //FIXME: A veces falla
                                 moveDestiny=(int)(Math.random()*((casillasMoveIa.size-1)/2));
+                                if(moveDestiny==0) {moveDestiny=1;}
                                 System.out.println(" moveDestiny ->" +moveDestiny+"\n Size casillas disponibles para la IA->"+casillasMoveIa.size);
 
                                 updatePosition(partida, criatura, moveDestiny);

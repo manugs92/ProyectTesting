@@ -99,7 +99,7 @@ public class Mazo {
             Criatura spyro = new Criatura(DRAGON,FUEGO,
                     textureSpriteSpyro,textureSpriteSpyroFront,
                     textureCardInfo_Spyro,
-                    3,2,2,0);
+                    3,2,7,0);
             instanceCreatureDetail(spyro,"spyro",
                     textureCard_Spyro,2);
 
