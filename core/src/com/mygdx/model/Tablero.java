@@ -2,7 +2,9 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -82,6 +84,20 @@ public class Tablero {
             casillaMagicaJ2[i].addListenerToMagicSquare(i);
             casillaMagicaJ2[i].setState(0);
         }
+        listenerToDamageUser(partida);
+        listenerToDraw(partida);
+    }
+
+    private void listenerToDraw(Partida partida) {
+        partida.getJugador(0).getMazo().getMazoAvoidToDrawGUI().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float cx, float cy) {
+                partida.getJugador(0).getMazo().drawCard(partida.getJugador(0));
+                partida.setSelectedCard(null);
+                partida.getCardInformation().updateCardInformation(partida);
+
+            }
+        });
     }
 
     public Tablero getTablero() {
@@ -138,9 +154,37 @@ public class Tablero {
         }
     }
 
+    private void listenerToDamageUser(Partida partida) {
+        Jugador jugador2 = partida.getJugador(1);
+        partida.getJugador(1).getAvatar3().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (jugador2.isAvoidToDamage()) {
+                    jugador2.setLives(jugador2.getLives() - ((Criatura) partida.getSelectedCard()).getAtaque());
+                    jugador2.setAvoidToDamage(false);
+                    ((Criatura) partida.getSelectedCard()).setMoved(true);
+                    setAllSquaresToOff(Tablero.this);
+                    announceDamageToUser(partida,jugador2);
+                    if(jugador2.getLives()<=0) {
+                        announceUserFainted(partida,jugador2);
+                        partida.setWinnerId(0);
+                    }
+                }
+            }
+        });
+    }
 
-    public void AtacarCriatura(Criatura criaturaAtacante,int xOrigen, int yOrigen, Criatura criaturaAtacada, int xDestino, int yDestino) {
-        //Comprobar ataques y defensas (para saber cual eliminar)
-        //Borrar criatura de casilla.
+    private void announceDamageToUser(Partida partida,Jugador jugador2) {
+        Carta selectedCard = partida.getSelectedCard();
+        partida.getDuelLog().addMsgToLog(partida.getSelectedCard().getNombre().toUpperCase()+" ha ATACADO a "+jugador2.getNombre().toUpperCase());
+        partida.getDuelLog().addMsgToLog(jugador2.getNombre().toUpperCase()+" ha PERDIDO "+((Criatura)selectedCard).getAtaque()+" HP");
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
+    }
+
+    private void announceUserFainted(Partida partida,Jugador jugador2) {
+        partida.getDuelLog().addMsgToLog(jugador2.getNombre().toUpperCase()+" ha PERDIDO");
+        partida.getDuelLog().setNewMsgTrue();
+        partida.getDuelLog().getScrollPane().remove();
     }
 }

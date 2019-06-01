@@ -40,6 +40,7 @@ public class Cementerio {
         isSelected=false;
     }
 
+    //Añadimos el listener al cementerio, para poder interactuar con él.
     public void addListenerToGraveyard(Partida partida, int jugadorId) {
         graveyardGUI.addListener(new ClickListener() {
             @Override

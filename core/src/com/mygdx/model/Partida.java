@@ -1,5 +1,6 @@
 package com.mygdx.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.IAs.IaOne;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -38,6 +40,12 @@ public class Partida {
     private estadoPartida estadoPartida;
     private AvisosPartida avisosPartida;
     private Image passTurn;
+    private IaOne iA;
+
+    //Temporal para añadir jugador a partida,
+    private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
+    private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
+    private Jugador jugador2 = new Jugador("Skynet", 1, assetManager, skin);
 
 
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
@@ -45,6 +53,7 @@ public class Partida {
         assetManager.manager.finishLoading();
         estadoPartida = estadoPartida.EMPEZADA;
         jugadores.add(jugador);
+        jugadores.add(jugador2);
         selectedCard = null;
 
         //cartasColocadas = new ArrayList<>();
@@ -94,6 +103,7 @@ public class Partida {
                 super.clicked(event, x, y);
             }
         });
+        iA = new IaOne();
     }
 
     public Carta getSelectedCard() {
@@ -160,4 +170,5 @@ public class Partida {
         getJugador(1).avoidToDrawCard(true);
     }
 
+    public IaOne getiA() { return iA; }
 }

@@ -107,12 +107,16 @@ public class Casilla {
     }
 
     public void addListenerToBoard(Tablero tablero, Partida partida, int x2, int y2) {
+
+
         imageCasilla.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
 
                 //Indicamos que la carta seleccionada es la de la partida.
                 Carta selectedCard = partida.getSelectedCard();
+
+                //listenerToDamageUser(partida,selectedCard);
 
                 //Indicamos que no estamos seleccionando ningun cementerio.
                 partida.getJugadores().forEach(j -> {
@@ -122,7 +126,7 @@ public class Casilla {
 
                 //Desactivamos el daño al otro jugador.
                 partida.getJugador(1).setAvoidToDamage(false);
-                System.out.println(  partida.getJugador(1).isAvoidToDamage());
+                partida.getJugador(1).setDamageToLose(0);
 
                 //Seleccionamos la carta donde hemos hecho click. (Mediante partida, ya que la almacena ella)
                 partida.getCardInformation().updateCardInformation(partida);
@@ -229,10 +233,12 @@ public class Casilla {
                         {
                             //Deseleccionamos la carta de la mano, e indicamos donde nos podemos mover.
                             partida.getJugador(0).getMano().desSelected(partida);
+                            selectedCard=tablero.getCasilla(x2, y2).getCriatura();
+                            partida.setSelectedCard(selectedCard);
                             casillasDisponibles(tablero, x2, y2, partida);
                             if(selectedCard.getPosition().y==8) {
-                                System.out.println(selectedCard.getPosition().y);
                                 partida.getJugador(1).setAvoidToDamage(true);
+                                partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
                             }
                         }
                         //Si no es ninguno de los casos anteriores.
@@ -270,8 +276,8 @@ public class Casilla {
                             {
                                 casillasDisponibles(tablero, x2, y2, partida);
                                 if(selectedCard.getPosition().y==8) {
-                                    System.out.println(selectedCard.getPosition().y);
                                     partida.getJugador(1).setAvoidToDamage(true);
+                                    partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
                                 }
                             }
                             partida.setSelectedCard(selectedCard);
@@ -459,6 +465,7 @@ public class Casilla {
 
     public void removeHerCard(Partida partida,Carta herCard) {
         partida.getTablero().getCasilla(herCard.getPosition().x,herCard.getPosition().y).setCriatura(null);
+        partida.getTablero().getCasilla(herCard.getPosition().x,herCard.getPosition().y).setCardInvoked(false);
         partida.getJugador(1).getInvoquedCards().remove(herCard);
         partida.getJugador(1).getCriaturasInvocadas().remove(herCard);
         partida.getJugador(1).getCementerio().setCardInGraveyard(herCard);

@@ -2,8 +2,10 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -30,6 +32,8 @@ public class Jugador {
     private ArrayList<Criatura> criaturasInvocadas = new ArrayList<>();
     private ArrayList<Carta> cartasColocadas = new ArrayList<>();
     private boolean avoidToDamage = false;
+
+    private int damageToLose;
 
     public Jugador(String nombre, int id, MyGdxGameAssetManager assetManager, Skin skin) {
         this.nombre=nombre;
@@ -156,4 +160,8 @@ public class Jugador {
     public boolean isAvoidToDamage() { return avoidToDamage; }
 
     public void setAvoidToDamage(boolean avoidToDamage) { this.avoidToDamage = avoidToDamage; }
+
+    public int getDamageToLose() { return damageToLose; }
+
+    public void setDamageToLose(int damageToLose) { this.damageToLose = damageToLose; }
 }

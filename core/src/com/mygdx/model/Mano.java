@@ -61,7 +61,6 @@ public class Mano {
             cartasManoGUI.add(i,new Image(cartasMano.get(i).getImage()));
             cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
         }else {
-           //TODO error de los
             cartasManoGUI.add(i,defaultImage.get(i));
             cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J2);
         }
@@ -188,16 +187,14 @@ public class Mano {
         this.numberCardsInHand=number;
     }
 
-    public void updateHand() {
+    public void updateHand(int jugadorId) {
 
         manoCargada=true;
         ArrayList<Image> cardsToRemove = new ArrayList<>();
 
         if(numberCardsInHand > cartasMano.size()) {
+            for(int i=0;i<numberCardsInHand;i++) { cartasManoGUI.get(i).remove(); }
             numberCardsInHand = cartasMano.size();
-            cartasManoGUI.get(cartaJugada).remove();
-            cartasManoGUI.get(cartasMano.size()).remove();
-            for(int i=0;i<cartasMano.size();i++) { cartasManoGUI.get(i).remove(); }
             cardsToRemove=cartasManoGUI;
             cartasManoGUI.removeAll(cardsToRemove);
             manoCargada=false;

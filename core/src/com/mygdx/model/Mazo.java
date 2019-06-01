@@ -49,13 +49,6 @@ public class Mazo {
         mazoAvoidToDrawGUI.setPosition(positionGUI.x,positionGUI.y);
 
         DefaultDeck();
-
-        mazoAvoidToDrawGUI.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float cx, float cy) {
-                drawCard(jugador);
-            }
-        });
         ShuffleMazo();
     }
 
@@ -99,7 +92,7 @@ public class Mazo {
             Criatura spyro = new Criatura(DRAGON,FUEGO,
                     textureSpriteSpyro,textureSpriteSpyroFront,
                     textureCardInfo_Spyro,
-                    3,2,7,0);
+                    3,2,2,0);
             instanceCreatureDetail(spyro,"spyro",
                     textureCard_Spyro,2);
 
