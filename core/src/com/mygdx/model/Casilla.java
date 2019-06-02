@@ -227,11 +227,17 @@ public class Casilla {
                     }
                     //Si la carta seleccionada y donde hemos hecho click son igualess..
                     else if (selectedCard != null && selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
-                        //Deseleccionaremos t0do, para empezar de "0".
-                        tablero.setAllSquaresToOff(tablero);
-                        partida.setSelectedCard(null);
-                        partida.getCardInformation().updateCardInformation(partida);
-                        partida.getJugador(0).getMano().desSelected(partida);
+                        if(getState() == State.ILUMINADA && !((Criatura)selectedCard).isMoved()) {
+                            tablero.setAllSquaresToOff(tablero);
+                            casillasDisponibles(tablero,x2,y2,partida);
+                        }else {
+                            //Deseleccionaremos t0do, para empezar de "0".
+                            tablero.setAllSquaresToOff(tablero);
+                            partida.setSelectedCard(null);
+                            partida.getCardInformation().updateCardInformation(partida);
+                            partida.getJugador(0).getMano().desSelected(partida);
+                        }
+
                     }
                     //Si no se cumple ninguna de esas condiciones, es que no tenemos carta, y podremos seleccionar una.
                     else {
@@ -285,12 +291,7 @@ public class Casilla {
                                 else {
                                     partida.setSelectedCard(j.getInvoquedCards().get(i));
                                     partida.getCardInformation().updateCardInformation(partida);
-                                    if(partida.getJugador(0).getInvoquedCards().contains(partida.getSelectedCard())
-                                            && !((Criatura)partida.getSelectedCard()).isMoved()
-                                            && !partida.getAvisosPartida().isShowed()
-                                            && !partida.getJugador(0).isAvoidToDrawCard()) {
-                                        casillasDisponibles2(partida.getTablero(),x2,y2,partida);
-                                    }
+                                    partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
                                 }
                                 founded[0] = true;
                             }
@@ -316,20 +317,13 @@ public class Casilla {
                                 && j.getInvoquedCards().get(i).getFirstPosition().y == y2) {
                             partida.setSelectedCard(j.getInvoquedCards().get(i));
                             partida.getCardInformation().updateCardInformation(partida);
+                            partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+
                             founded[0] = true;
                             i = j.getInvoquedCards().size();
                         }
                     }
                 });
-
-            if(founded[0]
-                    &&partida.getJugador(0).getInvoquedCards().contains(partida.getSelectedCard())
-                    && !((Criatura)partida.getSelectedCard()).isMoved()
-                    && !partida.getAvisosPartida().isShowed()
-                    && !partida.getJugador(0).isAvoidToDrawCard())
-            {
-                casillasDisponibles2(partida.getTablero(),x2,y2,partida);
-            }
         }
     }
 

@@ -113,8 +113,8 @@ public class DuelLog {
         return scrollPane;
     }
 
-    public void addMsgToLog(String msg){
-        duelLog.add(msg);
-    }
+    public void addMsgToLog(String msg){ duelLog.add(msg); }
+
+
 
 }
