@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 public class Cementerio {
-
+//.
 
     public static final float POS_X_GRAVEYARD = Tablero.POS_X_TABLERO - Casilla.MEDIDA_CASILLA;
     public static final float POS_Y_GRAVEYARD_J1 = 87;
