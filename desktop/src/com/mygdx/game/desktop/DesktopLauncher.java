@@ -26,9 +26,9 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width= MyGdxGame.SCREEN_WIDTH;
 		config.height= MyGdxGame.SCREEN_HEIGHT;
-		config.title = "xD";
+		config.title = "The Cave";
 		config.y = -2;
-		config.addIcon("icons\\xd.png", Files.FileType.Internal);
+		config.addIcon("icons\\the_cave.png", Files.FileType.Internal);
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }

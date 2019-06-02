@@ -12,7 +12,7 @@ public class IaOne {
     private int moveDestiny;
 
     public enum State {
-        WAIT, INITIAL, MOVE, INVOCATION
+        WAIT, INITIAL, MOVE, INVOCATION, FINAL
     }
 
     State state;
@@ -37,60 +37,71 @@ public class IaOne {
     public void play(Partida partida, float delta) {
 
         IA = partida.getJugador(1);
-            switch (state) {
-                case WAIT:
-                    state = State.INITIAL;
-                    break;
+        switch (state) {
+            case WAIT:
+                state = State.INITIAL;
+                break;
 
-                case INITIAL:
-                    logInfoTourn(partida,1);
-                    //robar carta
-                    IA.getMazo().drawCard(IA);
-                    IA.getMano().addDefaultImage();
-                    IA.getMano().updateHand(1);
-                    state = State.INVOCATION;
-                    break;
+            case INITIAL:
+                logInfoTourn(partida,1);
+                //robar carta
+                IA.getMazo().drawCard(IA);
+                IA.getMano().addDefaultImage();
+                IA.getMano().updateHand(1);
+                state = State.INVOCATION;
+                break;
 
-                case INVOCATION:
-                    casillas = partida.getTablero().getCasillas();
-                    for (Carta cartaMano : IA.getMano().getCartasMano()) {
-                        if (IA.getInvocationOrbs() > cartaMano.getCostInvocation()) {
-                            for (int i = 0; i < 7; i++) {
-                                if (casillas[i][8].getCriatura() == null && !casillas[i][8].isCardInvoked()) {
-                                    invocationCreature(partida, cartaMano, i);
-                                    logInfoInvocation(partida, cartaMano);
-                                    i=6;
-                                }
+            case INVOCATION:
+                casillas = partida.getTablero().getCasillas();
+                for (Carta cartaMano : IA.getMano().getCartasMano()) {
+                    if (IA.getInvocationOrbs() > cartaMano.getCostInvocation()) {
+                        for (int i = 0; i < 7; i++) {
+                            if (casillas[i][8].getCriatura() == null && !casillas[i][8].isCardInvoked()) {
+                                invocationCreature(partida, cartaMano, i);
+                                logInfoInvocation(partida, cartaMano);
+                                i=6;
                             }
                         }
                     }
-                    IA.getMano().getCartasMano().removeAll(cardsToRemove);
-                    IA.getMano().updateHand(1);
-                    state = State.MOVE;
-                    break;
+                }
+                IA.getMano().getCartasMano().removeAll(cardsToRemove);
+                IA.getMano().updateHand(1);
+                state = State.MOVE;
+                break;
 
-                case MOVE:
-                    casillas = partida.getTablero().getCasillas();
-                    criaturas = partida.getJugador(1).getCriaturasInvocadas();
-                    if (criaturas.size()-1 > 0) {
-                        for (Criatura criatura: criaturas) {
-                            casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura,partida.getJugador(0));
-                            if (criatura != null && !criatura.isMoved()) {
-                                moveDestiny = calcMoveToDestinity(casillasMoveIa);
-                                updatePosition(partida, criatura, moveDestiny);
-                                logInfoMove(partida, criatura);
-                            }
+            case MOVE:
+                casillas = partida.getTablero().getCasillas();
+                criaturas = partida.getJugador(1).getCriaturasInvocadas();
+                if (criaturas.size()-1 > 0) {
+                    for (Criatura criatura: criaturas) {
+                        casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura,partida.getJugador(0));
+                        if (criatura != null && !criatura.isMoved()) {
+                            moveDestiny = calcMoveToDestinity(casillasMoveIa);
+                            updatePosition(partida, criatura, moveDestiny);
+                            logInfoMove(partida, criatura);
                         }
                     }
-                    checkAndDescardCard();
-                    finalizeTurn(partida);
-                    logInfoTourn(partida,0);
-                    cardsToRemove = new ArrayList<>();
-                    IA.getMano().updateHand(1);
-                    state = State.WAIT;
-                    partida.getJugador(1).getInvoquedCards().forEach(c -> ((Criatura)c).setMoved(false));
-                    break;
-            }
+                }
+                state = State.FINAL;
+                break;
+
+            case FINAL:
+
+                    //Comprobamos si hemos perido via por alguna trampa, si estamos muertos no
+                    if (IA.getLives()<0){
+                        partida.setWinnerId(1);
+
+                    }
+
+                checkAndDescardCard();
+                finalizeTurn(partida);
+                logInfoTourn(partida,0);
+                cardsToRemove = new ArrayList<>();
+                IA.getMano().updateHand(1);
+                state = State.WAIT;
+                partida.getJugador(1).getInvoquedCards().forEach(c -> ((Criatura)c).setMoved(false));
+                break;
+        }
     }
 
     public void iaIsThinking(long timer) {
@@ -99,6 +110,11 @@ public class IaOne {
     }
 
     private int calcMoveToDestinity(Array<Casilla> casillasMoveIa) {
+        /*Con el size al cuadrado, sabremos el numero de casillas dispoibles por fila y por columna (en caso de poder movernos en 9 filas, son 3 por columna)
+         *con el modulo de size, nos aseguraremos de que llege del 0 al 2, de esta manera al multiplicarlo por 3 (size)
+         * siempre se obtendra las posiziones inferiores (0,3,6)  */
+        //moveDestiny=(((int)(Math.random()*( Math.sqrt(size+1)))%size)*size  );
+
         int moveDestiny = (int)(Math.random()*((casillasMoveIa.size-1)/2));
         if(moveDestiny>casillasMoveIa.size) {
             moveDestiny = calcMoveToDestinity(casillasMoveIa);

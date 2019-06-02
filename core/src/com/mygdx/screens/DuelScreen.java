@@ -27,7 +27,7 @@ public class DuelScreen extends MyGdxGameScreen {
     *
     *  TODO: Que el rival te ataque, y tú pierdes vidas.
     *
-    *  TODO: IA que no pueda moverse donde hay una carta invocada tuya.
+
     *  TODO: IA que te pueda atacar si estás a su alcance.
     *  TODO: IA que te pueda atacar a ti si está en tus casillas de invocación.
     *

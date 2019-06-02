@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -15,6 +16,7 @@ public class MyGdxGameScreen implements Screen {
     public FitViewport fitViewport;
     public Stage stage;
     public Texture textureBgScreen;
+    SpriteBatch spriteBatch=new SpriteBatch();
 
     public MyGdxGameScreen(ScreenManager screenManager){
         this.screenManager = screenManager;

@@ -165,6 +165,7 @@ public class Casilla {
                                 && partida.getJugador(0).getCriaturasInvocadas().contains(selectedCard)
                                 && isAvoidToInteract(selectedCard)
                                 && !((Criatura)selectedCard).isMoved()
+                                && !partida.getJugador( 0).isAvoidToDrawCard()
                         )
                         {
                             //Seleccionamos mi carta y la suya para hacerlas pelear.
@@ -271,6 +272,8 @@ public class Casilla {
             }
         });
     }
+
+
 
     private void checkIfSomePlayerContainsSelectedCardAndUpdate(Partida partida,int x2,int y2) {
         final boolean[] founded = {false};
@@ -483,12 +486,14 @@ public class Casilla {
     public Array<Casilla> casillasDisponiblesIA(Tablero tablero, Criatura criaturaIa,Jugador player) {
 
         Array<Casilla> casillasIa = new Array<>();
-        ArrayList<Casilla> ocupedToCardEnemy = new ArrayList<Casilla>();
+        ArrayList<Casilla> ocupedToCardEnemy = new ArrayList<>();
         Casilla actualSquare;
+        Casilla actualSquareEnemy;
 
-        player.getInvoquedCards().forEach(c -> {
-         ocupedToCardEnemy.add(tablero.getCasilla(c.getPosition().x, c.getPosition().y));
-        });
+
+        for (Carta c : player.getInvoquedCards()) {
+            ocupedToCardEnemy.add(tablero.getCasilla(c.getFirstPosition().x, c.getFirstPosition().y));
+        }
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
 
@@ -503,14 +508,6 @@ public class Casilla {
         }
         return casillasIa;
     }
-
-    public Vector2 getCoordinatesMatrix() { return coordinatesMatrix; }
-
-    public void setCoordinatesMatrix(Vector2 coordinatesMatrix) { this.coordinatesMatrix = coordinatesMatrix; }
-
-    public boolean isCardInvoked() { return cardInvoked; }
-
-    public void setCardInvoked(boolean cardInvoked) { this.cardInvoked = cardInvoked; }
 
     public void announceCardInvoqued(Partida partida, Carta selectedCard) {
         partida.getDuelLog().addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha invocado a "+selectedCard.getNombre().toUpperCase()+" en la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
@@ -549,4 +546,12 @@ public class Casilla {
         partida.getJugador(1).getCriaturasInvocadas().remove(herCard);
         partida.getJugador(1).getCementerio().setCardInGraveyard(herCard);
     }
+
+    public Vector2 getCoordinatesMatrix() { return coordinatesMatrix; }
+
+    public void setCoordinatesMatrix(Vector2 coordinatesMatrix) { this.coordinatesMatrix = coordinatesMatrix; }
+
+    public boolean isCardInvoked() { return cardInvoked; }
+
+    public void setCardInvoked(boolean cardInvoked) { this.cardInvoked = cardInvoked; }
 }
