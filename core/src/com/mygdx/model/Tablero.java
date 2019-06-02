@@ -95,6 +95,7 @@ public class Tablero {
                 partida.getJugador(0).getMazo().drawCard(partida.getJugador(0));
                 partida.setSelectedCard(null);
                 partida.getCardInformation().updateCardInformation(partida);
+                partida.getJugadores().forEach(p -> p.getCementerio().setShowed(false));
 
             }
         });

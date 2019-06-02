@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import java.net.InetAddress;
-
 public abstract class Carta {
     public enum Tipo {
         CRIATURA,
@@ -24,7 +22,8 @@ public abstract class Carta {
     private Vector2 position = new Vector2(); //Posicion actual dentro del tablero
     private Vector2 lastPosition = new Vector2(); //Ultima posicion dentro del tablero
     private Vector2 firstPosition = new Vector2(); //Primera posicion dentro del tablero.
-    private InetAddress idPlayer;
+    private int ownerId;
+    private boolean clicked;
 
 
     public Vector2 getFirstPosition() {
@@ -92,4 +91,12 @@ public abstract class Carta {
     public void setCardDetailInfo(Image cardDetailInfo) {
         this.cardDetailInfo = cardDetailInfo;
     }
+
+    public int getOwnerId() { return ownerId; }
+
+    public void setOwnerId(int ownerId) { this.ownerId = ownerId; }
+
+    public boolean isClicked() { return clicked; }
+
+    public void setClicked(boolean clicked) { this.clicked = clicked; }
 }

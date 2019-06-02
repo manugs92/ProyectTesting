@@ -40,6 +40,7 @@ public class IaOne {
         IA = partida.getJugador(1);
             switch (state) {
                 case WAIT:
+                    state = State.INITIAL;
                     break;
 
                 case INITIAL:
@@ -48,6 +49,7 @@ public class IaOne {
                     IA.getMazo().drawCard(IA);
                     IA.getMano().addDefaultImage();
                     IA.getMano().updateHand(1);
+                    state = State.INVOCATION;
                     break;
 
                 case INVOCATION:
@@ -65,6 +67,7 @@ public class IaOne {
                     }
                     IA.getMano().getCartasMano().removeAll(cardsToRemove);
                     IA.getMano().updateHand(1);
+                    state = State.MOVE;
                     break;
 
                 case MOVE:
@@ -73,7 +76,7 @@ public class IaOne {
                     if (criaturas.size()-1 > 0) {
                         for (Criatura criatura: criaturas) {
                             casillasMoveIa = casillas[0][0].casillasDisponiblesIA(partida.getTablero(), criatura,partida.getJugador(0));
-                            if (criatura != null) {
+                            if (criatura != null && !criatura.isMoved()) {
                                 moveDestiny = calcMoveToDestinity(casillasMoveIa);
                                 updatePosition(partida, criatura, moveDestiny);
                                 logInfoMove(partida, criatura);
@@ -85,6 +88,8 @@ public class IaOne {
                     logInfoTourn(partida,0);
                     cardsToRemove = new ArrayList<>();
                     IA.getMano().updateHand(1);
+                    state = State.WAIT;
+                    partida.getJugador(1).getInvoquedCards().forEach(c -> ((Criatura)c).setMoved(false));
                     break;
             }
     }
@@ -122,6 +127,9 @@ public class IaOne {
         cartaMano.setPosition(i, 8);
         cartaMano.setFirstPosition(i, 8);
         cartaMano.setLastPosition(i,8);
+        if(cartaMano.getTipo() == Carta.Tipo.CRIATURA) {
+            ((Criatura) cartaMano).setMoved(true);
+        }
 
         cardsToRemove.add(cartaMano);
 

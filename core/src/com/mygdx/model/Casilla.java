@@ -30,70 +30,40 @@ public class Casilla {
     private State state;
     private boolean cardInvoked;
 
-    public void setCriatura(Criatura criatura) {
-        this.criatura = criatura;
-    }
+    public void setCriatura(Criatura criatura) { this.criatura = criatura; }
 
-    public void setTrampa(Trampa trampa) {
-        this.trampa = trampa;
-    }
+    public void setTrampa(Trampa trampa) { this.trampa = trampa; }
 
-    public Criatura getCriatura() {
-        return this.criatura;
-    }
+    public Criatura getCriatura() { return this.criatura; }
 
-    public Trampa getTrampa() {
-        return this.trampa;
-    }
+    public Trampa getTrampa() { return this.trampa; }
 
-    public Vector2 getCoordinatesPx() {
-        return coordinatesPx;
-    }
+    public Vector2 getCoordinatesPx() { return coordinatesPx; }
 
     public void setPositionGUI(float x, float y) {
         this.coordinatesPx.x = x;
         this.coordinatesPx.y = y;
     }
 
-    public Texture getTextureCasilla() {
-        return textureCasilla;
-    }
+    public Texture getTextureCasilla() { return textureCasilla; }
 
-    public void setTextureCasilla(Texture textureCasilla) {
-        this.textureCasilla = textureCasilla;
-    }
+    public void setTextureCasilla(Texture textureCasilla) { this.textureCasilla = textureCasilla; }
 
-    public Texture getTextureCasilla2() {
-        return textureCasilla2;
-    }
+    public Texture getTextureCasilla2() { return textureCasilla2; }
 
-    public void setTextureCasilla2(Texture textureCasilla2) {
-        this.textureCasilla2 = textureCasilla2;
-    }
+    public void setTextureCasilla2(Texture textureCasilla2) { this.textureCasilla2 = textureCasilla2; }
 
-    public Texture getTextureCasilla3() {
-        return textureCasilla3;
-    }
+    public Texture getTextureCasilla3() { return textureCasilla3; }
 
-    public void setTextureCasilla3(Texture textureCasilla2) {
-        this.textureCasilla3 = textureCasilla2;
-    }
+    public void setTextureCasilla3(Texture textureCasilla2) { this.textureCasilla3 = textureCasilla2; }
 
-    boolean tieneCriatura() {
-        return getCriatura() != null;
-    }
+    boolean tieneCriatura() { return getCriatura() != null; }
 
-    public Image getImageCasilla() {
-        return imageCasilla;
-    }
+    public Image getImageCasilla() { return imageCasilla; }
 
-    public void setImageCasilla(Image imageCasilla) {
-        this.imageCasilla = imageCasilla;
-    }
+    public void setImageCasilla(Image imageCasilla) { this.imageCasilla = imageCasilla; }
 
-    public State getState() {
-        return state;
-    }
+    public State getState() { return state; }
 
     public void setState(State state) {
         if (state == State.ILUMINADA) {
@@ -107,8 +77,6 @@ public class Casilla {
     }
 
     public void addListenerToBoard(Tablero tablero, Partida partida, int x2, int y2) {
-
-
         imageCasilla.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
@@ -147,6 +115,8 @@ public class Casilla {
                             announceCardInvoqued(partida,selectedCard);
                             ((Criatura) selectedCard).setMoved(true);
                             setCriatura((Criatura) selectedCard);
+                            partida.setSelectedCard(null);
+                            partida.getCardInformation().updateCardInformation(partida);
                         }
                         else {
                             //Si nos movemos donde hay una carta invocada (Casillas principales), la mataremos.
@@ -178,6 +148,8 @@ public class Casilla {
                                 announceCardMoved(partida,selectedCard);
                                 ((Criatura) selectedCard).setMoved(true);
                                 setCriatura((Criatura) selectedCard);
+                                partida.setSelectedCard(null);
+                                partida.getCardInformation().updateCardInformation(partida);
                             }
                         }
                         tablero.setAllSquaresToOff(tablero);
@@ -192,11 +164,11 @@ public class Casilla {
 
                         //Si la carta donde hemos hecho click pertenece a nuestro rival... PELEAREMOS CONTRA ELLA.
                         if(partida.getJugador(1).getCriaturasInvocadas().contains(tablero.getCasilla(x2,y2).getCriatura())
+                                && partida.getJugador(0).getCriaturasInvocadas().contains(selectedCard)
                                 && isAvoidToInteract(selectedCard)
                                 && !((Criatura)selectedCard).isMoved()
                         )
                         {
-
                             //Seleccionamos mi carta y la suya para hacerlas pelear.
                             Carta myCard = selectedCard;
                             Carta herCard = tablero.getCasilla(x2,y2).getCriatura();
@@ -241,13 +213,18 @@ public class Casilla {
                                 partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
                             }
                         }
-                        //Si no es ninguno de los casos anteriores.
-                        else {
+                        //Si tiene criatura enemiga..
+                        else if(tieneCriatura()
+                                && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())){
                             //Deseleccionamos la carta de nuestra mano, indicamos a partida que carta hemos seleccionado
                             //Y actualizamos el visor de la carta.
                             partida.getJugador(0).getMano().desSelected(partida);
                             partida.setSelectedCard(tablero.getCasilla(x2, y2).getCriatura());
                             partida.getCardInformation().updateCardInformation(partida);
+                        }
+                        //Si no es ninguno de los casos anteriores.
+                        else {
+                            checkIfSomePlayerContainsSelectedCardAndUpdate(partida,x2,y2);
                         }
                     }
                     //Si la carta seleccionada y donde hemos hecho click son igualess..
@@ -282,11 +259,81 @@ public class Casilla {
                             }
                             partida.setSelectedCard(selectedCard);
                             partida.getCardInformation().updateCardInformation(partida);
+                        }else {
+                            checkIfSomePlayerContainsSelectedCardAndUpdate(partida,x2,y2);
                         }
                     }
                 }
             }
         });
+    }
+
+    private void checkIfSomePlayerContainsSelectedCardAndUpdate(Partida partida,int x2,int y2) {
+        final boolean[] founded = {false};
+
+        //Si hacemos click en una casilla mientras tenemos una carta seleccionada.
+        if(partida.getSelectedCard()!=null) {
+                partida.getJugadores().forEach(j -> {
+                    if(!founded[0]) {
+                        for (int i = 0; i < j.getInvoquedCards().size(); i++) {
+                            if (j.getInvoquedCards().get(i).getFirstPosition().x == x2
+                                    && j.getInvoquedCards().get(i).getFirstPosition().y == y2) {
+                                //Comprobamos si es la misma carta, y de ser así la deseleccionamos,
+                                if(partida.getSelectedCard().equals(j.getInvoquedCards().get(i))) {
+                                    partida.setSelectedCard(null);
+                                    partida.getCardInformation().updateCardInformation(partida);
+                                }
+                                //Si no, la seleccionamos para mostrarla.
+                                else {
+                                    partida.setSelectedCard(j.getInvoquedCards().get(i));
+                                    partida.getCardInformation().updateCardInformation(partida);
+                                    if(partida.getJugador(0).getInvoquedCards().contains(partida.getSelectedCard())
+                                            && !((Criatura)partida.getSelectedCard()).isMoved()
+                                            && !partida.getAvisosPartida().isShowed()
+                                            && !partida.getJugador(0).isAvoidToDrawCard()) {
+                                        casillasDisponibles2(partida.getTablero(),x2,y2,partida);
+                                    }
+                                }
+                                founded[0] = true;
+                            }
+                            if (founded[0]) {
+                                i = j.getInvoquedCards().size();
+                            }
+                        }
+                    }
+                });
+
+            //Si no se ha encontrado nada, no mostraremos nada.
+            if(!founded[0]) {
+                partida.setSelectedCard(null);
+                partida.getCardInformation().updateCardInformation(partida);
+                partida.getJugador(0).getMano().desSelected(partida);
+            }
+        }
+        //Si hacemos click en una casilla que tiene una carta invocada sin una carta seleccionada
+        else  {
+            if(!founded[0]) {
+                partida.getJugadores().forEach(j -> {
+                    for (int i = 0; i < j.getInvoquedCards().size(); i++) {
+                        if (j.getInvoquedCards().get(i).getFirstPosition().x == x2
+                                && j.getInvoquedCards().get(i).getFirstPosition().y == y2) {
+                            partida.setSelectedCard(j.getInvoquedCards().get(i));
+                            partida.getCardInformation().updateCardInformation(partida);
+                            founded[0] = true;
+                            i = j.getInvoquedCards().size();
+                        }
+                    }
+                });
+            }
+            if(founded[0]
+                    &&partida.getJugador(0).getInvoquedCards().contains(partida.getSelectedCard())
+                    && !((Criatura)partida.getSelectedCard()).isMoved()
+                    && !partida.getAvisosPartida().isShowed()
+                    && !partida.getJugador(0).isAvoidToDrawCard())
+            {
+                casillasDisponibles2(partida.getTablero(),x2,y2,partida);
+            }
+        }
     }
 
     private void announcePlayerAtackToMonster(Partida partida,Carta myCard, Carta herCard) {
@@ -309,7 +356,7 @@ public class Casilla {
     }
 
     private void announceInvoquedCardDead(Partida partida, Carta myCard, Carta herCard) {
-        partida.getDuelLog().addMsgToLog(myCard.getNombre().toUpperCase()+" ha DESTRUIDO la CARTA "+myCard.getNombre().toUpperCase());
+        partida.getDuelLog().addMsgToLog(myCard.getNombre().toUpperCase()+" ha DESTRUIDO la CARTA "+herCard.getNombre().toUpperCase());
         partida.getDuelLog().setNewMsgTrue();
         partida.getDuelLog().getScrollPane().remove();
     }
@@ -328,7 +375,33 @@ public class Casilla {
         }
     }
 
+    private void casillasDisponibles2(Tablero tablero, int x2, int y2, Partida partida) {
+        Criatura selectedCard;
+        selectedCard = (Criatura) partida.getSelectedCard();
+        for (int x = 0; x < tablero.getCasillas().length; x++) {
+            for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
+                avoidToMove(partida,x,y,selectedCard);
+                avoidToAtack(partida,x,y,selectedCard);
+                avoidToDestroyInvoquedCards(partida,x,y,1,selectedCard);
+            }
+        }
+    }
+
     private void avoidToDestroyInvoquedCards(Partida partida,int x,int y,int playerID) {
+        Carta carta;
+        for(int i=0;i<partida.getJugador(playerID).getInvoquedCards().size();i++) {
+            carta = partida.getJugador(playerID).getInvoquedCards().get(i);
+            if(carta.getFirstPosition().x==x && carta.getFirstPosition().y==y
+                    && x <= criatura.getPosition().x + criatura.getMovimiento()
+                    && x >= criatura.getPosition().x - criatura.getMovimiento()
+                    && y <= criatura.getPosition().y + criatura.getMovimiento()
+                    && y >= criatura.getPosition().y - criatura.getMovimiento()) {
+                partida.getTablero().getCasilla(x, y).setState(State.AVOID_TO_ATACK);
+            }
+        }
+    }
+
+    private void avoidToDestroyInvoquedCards(Partida partida,int x,int y,int playerID,Criatura criatura) {
         Carta carta;
         for(int i=0;i<partida.getJugador(playerID).getInvoquedCards().size();i++) {
             carta = partida.getJugador(playerID).getInvoquedCards().get(i);
@@ -352,6 +425,21 @@ public class Casilla {
     }
 
     public void avoidToMove(Partida partida,int x, int y) {
+        if (!partida.getTablero().getCasilla(x, y).tieneCriatura()) {
+            if (x <= criatura.getPosition().x + criatura.getMovimiento()
+                    && x >= criatura.getPosition().x - criatura.getMovimiento()
+                    && y <= criatura.getPosition().y + criatura.getMovimiento()
+                    && y >= criatura.getPosition().y - criatura.getMovimiento()
+                    && isInvocationSquareFree(partida,x,y,1))
+            {
+                partida.getTablero().getCasilla(x, y).setState(State.ILUMINADA);
+            } else {
+                partida.getTablero().getCasilla(x, y).setState(State.APAGADA);
+            }
+        }
+    }
+
+    public void avoidToMove(Partida partida,int x, int y,Criatura criatura) {
         if (!partida.getTablero().getCasilla(x, y).tieneCriatura()) {
             if (x <= criatura.getPosition().x + criatura.getMovimiento()
                     && x >= criatura.getPosition().x - criatura.getMovimiento()
@@ -447,13 +535,13 @@ public class Casilla {
 
     public void invoqueFromHand(Partida partida,Carta selectedCard,int x2, int y2) {
         selectedCard.setFirstPosition(x2, y2);
+        selectedCard.setLastPosition(x2, y2);
+        selectedCard.setPosition(x2, y2);
         partida.getJugador(0).addNewInvoquedCard(selectedCard);
         partida.getJugador(0).addNewInvoquedMonster((Criatura) selectedCard);
         partida.getJugador(0).getMano().setCartaJugada(partida.getJugador(0).getMano().getCartasMano().indexOf(selectedCard));
         partida.getJugador(0).getMano().getCartasMano().remove(selectedCard);
         partida.getJugador(0).removeInvocationOrbs(selectedCard.getCostInvocation());
-        selectedCard.setPosition(x2, y2);
-        selectedCard.setLastPosition(x2, y2);
     }
 
     public void removeMyCard(Partida partida,Carta myCard) {

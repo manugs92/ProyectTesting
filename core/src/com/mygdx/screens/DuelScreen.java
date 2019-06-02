@@ -30,9 +30,6 @@ public class DuelScreen extends MyGdxGameScreen {
     *  TODO: IA que no pueda moverse donde hay una carta invocada tuya.
     *  TODO: IA que te pueda atacar si estás a su alcance.
     *  TODO: IA que te pueda atacar a ti si está en tus casillas de invocación.
-    *  TOOD: IA no pueda invocar y moverse en el mismo turno.
-    *
-    *  TODO: Información al darle a la carta invocada.
     *
     *  TODO: Buffer de vida de criatura, para que puedas atacarle dos veces y matarla con dos criaturas debiles.
     *  TODO: Al pasar turno, el buffer ponerlo normal.
@@ -44,7 +41,7 @@ public class DuelScreen extends MyGdxGameScreen {
     *
     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
     *
-    *  TODO: Desactivar las flechitas al robar.
+    *  TODO: Optimizar código de Casilla.
     * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
@@ -333,15 +330,6 @@ public class DuelScreen extends MyGdxGameScreen {
     private void executeIA() {
         if(partida.getOwnerTurn()==1) {
             timer = System.nanoTime() /1000;
-            if(iA.getState() == IaOne.State.WAIT) {
-                iA.setState(IaOne.State.INITIAL);
-            }else if(iA.getState()== IaOne.State.INITIAL) {
-                iA.setState(IaOne.State.INVOCATION);
-            }else if(iA.getState()== IaOne.State.INVOCATION) {
-                iA.setState(IaOne.State.MOVE);
-            }else if(iA.getState()== IaOne.State.MOVE) {
-                iA.setState(IaOne.State.WAIT);
-            }
             if(iA.getState() != IaOne.State.WAIT && iA.getState() != IaOne.State.INITIAL ) {
                 iA.iaIsThinking(timer);
             }
