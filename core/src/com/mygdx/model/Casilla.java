@@ -84,8 +84,6 @@ public class Casilla {
                 //Indicamos que la carta seleccionada es la de la partida.
                 Carta selectedCard = partida.getSelectedCard();
 
-                //listenerToDamageUser(partida,selectedCard);
-
                 //Indicamos que no estamos seleccionando ningun cementerio.
                 partida.getJugadores().forEach(j -> {
                     j.getCementerio().setSelected(false);
@@ -312,7 +310,6 @@ public class Casilla {
         }
         //Si hacemos click en una casilla que tiene una carta invocada sin una carta seleccionada
         else  {
-            if(!founded[0]) {
                 partida.getJugadores().forEach(j -> {
                     for (int i = 0; i < j.getInvoquedCards().size(); i++) {
                         if (j.getInvoquedCards().get(i).getFirstPosition().x == x2
@@ -324,7 +321,7 @@ public class Casilla {
                         }
                     }
                 });
-            }
+
             if(founded[0]
                     &&partida.getJugador(0).getInvoquedCards().contains(partida.getSelectedCard())
                     && !((Criatura)partida.getSelectedCard()).isMoved()
