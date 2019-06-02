@@ -12,10 +12,6 @@ import java.util.ArrayList;
 
 public class Cementerio {
 
-    /*
-    * TODO:  Mostrar flechas debajo del visor, para ir viendo todas las cartas del cementerio.
-    * TODO:  A medida que se hace click en uno u otro, se ve la siguiente o la anterior. (Si llegas al final no se ve siguiente y viceversa).
-    * */
 
     public static final float POS_X_GRAVEYARD = Tablero.POS_X_TABLERO - Casilla.MEDIDA_CASILLA;
     public static final float POS_Y_GRAVEYARD_J1 = 87;
@@ -47,6 +43,7 @@ public class Cementerio {
             public void clicked(InputEvent event, float cx, float cy) {
 
                 partida.getJugador(0).getMano().desSelected(partida);
+                partida.getTablero().setAllSquaresToOff(partida.getTablero());
                 if(!partida.getJugador(jugadorId).getCementerio().isSelected() && cardsInGraveyard.size()>0) {
                     /*Test de criatura en el cementerio*/
                     partida.setSelectedCard(cardsInGraveyard.get(cardsInGraveyard.size()-1));

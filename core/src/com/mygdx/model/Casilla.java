@@ -165,31 +165,43 @@ public class Casilla {
                                 && partida.getJugador(0).getCriaturasInvocadas().contains(selectedCard)
                                 && isAvoidToInteract(selectedCard)
                                 && !((Criatura)selectedCard).isMoved()
-                                && !partida.getJugador( 0).isAvoidToDrawCard()
+                                && !partida.getJugador(0).isAvoidToDrawCard()
                         )
                         {
-                            //Seleccionamos mi carta y la suya para hacerlas pelear.
-                            Carta myCard = selectedCard;
-                            Carta herCard = tablero.getCasilla(x2,y2).getCriatura();
+                            Casilla casilla = tablero.getCasilla(selectedCard.getPosition().x,selectedCard.getPosition().y);
+                            if(casilla.getState()!= State.ILUMINADA) {
+                                //Seleccionamos mi carta y la suya para hacerlas pelear.
+                                Carta myCard = selectedCard;
+                                Carta herCard = tablero.getCasilla(x2,y2).getCriatura();
 
-                            //Obtenemos el resultado de nuestro ataque y su ataque.
-                            int resultadoAtaque = ((Criatura)herCard).getDefensa() - ((Criatura) myCard).getAtaque();
-                            int resultadoDefensa = ((Criatura)myCard).getDefensa() - ((Criatura) herCard).getAtaque();
+                                //Obtenemos el resultado de nuestro ataque y su ataque.
+                                int resultadoAtaque = ((Criatura)herCard).getDefensa() - ((Criatura) myCard).getAtaque();
+                                int resultadoDefensa = ((Criatura)myCard).getDefensa() - ((Criatura) herCard).getAtaque();
 
-                           announcePlayerAtackToMonster(partida,myCard,herCard);
-                           announceResultOfAttack(partida,myCard,herCard);
+                                announcePlayerAtackToMonster(partida,myCard,herCard);
+                                announceResultOfAttack(partida,myCard,herCard);
 
-                            if (resultadoAtaque<=0) {
-                                removeHerCard(partida,herCard);
-                                announceCardDead(partida,herCard);
+                                if (resultadoAtaque<=0) {
+                                    removeHerCard(partida,herCard);
+                                    announceCardDead(partida,herCard);
+                                }
+
+                                if(resultadoDefensa<=0) {
+                                    removeMyCard(partida,myCard);
+                                    announceCardDead(partida,myCard);
+                                }
+
+                                ((Criatura) selectedCard).setMoved(true);
+                            }else {
+                                if(tieneCriatura()) {
+                                    partida.setSelectedCard(getCriatura());
+                                    partida.getCardInformation().updateCardInformation(partida);
+                                }else {
+                                    partida.setSelectedCard(null);
+                                    partida.getCardInformation().updateCardInformation(partida);
+                                }
                             }
-
-                            if(resultadoDefensa<=0) {
-                                removeMyCard(partida,myCard);
-                                announceCardDead(partida,myCard);
-                            }
-
-                            ((Criatura) selectedCard).setMoved(true);
+                            tablero.setAllSquaresToOff(tablero);
                         }
                         //Si la casilla seleccionada tiene criatura
                         //Y si no se ha movido
@@ -202,6 +214,7 @@ public class Casilla {
                                 && !partida.getJugador(0).isAvoidToDrawCard()
                                 && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura()))
                         {
+                            tablero.setAllSquaresToOff(tablero);
                             //Deseleccionamos la carta de la mano, e indicamos donde nos podemos mover.
                             partida.getJugador(0).getMano().desSelected(partida);
                             selectedCard=tablero.getCasilla(x2, y2).getCriatura();
@@ -214,7 +227,9 @@ public class Casilla {
                         }
                         //Si tiene criatura enemiga..
                         else if(tieneCriatura()
-                                && !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())){
+                                //&& !partida.getJugador(1).getCriaturasInvocadas().contains(getCriatura())
+                        ){
+                            tablero.setAllSquaresToOff(tablero);
                             //Deseleccionamos la carta de nuestra mano, indicamos a partida que carta hemos seleccionado
                             //Y actualizamos el visor de la carta.
                             partida.getJugador(0).getMano().desSelected(partida);
@@ -223,6 +238,7 @@ public class Casilla {
                         }
                         //Si no es ninguno de los casos anteriores.
                         else {
+                            tablero.setAllSquaresToOff(tablero);
                             checkIfSomePlayerContainsSelectedCardAndUpdate(partida,x2,y2);
                         }
                     }
@@ -272,8 +288,6 @@ public class Casilla {
             }
         });
     }
-
-
 
     private void checkIfSomePlayerContainsSelectedCardAndUpdate(Partida partida,int x2,int y2) {
         final boolean[] founded = {false};
@@ -369,17 +383,6 @@ public class Casilla {
         }
     }
 
-    private void casillasDisponibles2(Tablero tablero, int x2, int y2, Partida partida) {
-        Criatura selectedCard;
-        selectedCard = (Criatura) partida.getSelectedCard();
-        for (int x = 0; x < tablero.getCasillas().length; x++) {
-            for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
-                avoidToMove(partida,x,y,selectedCard);
-                avoidToAtack(partida,x,y,selectedCard);
-                avoidToDestroyInvoquedCards(partida,x,y,1,selectedCard);
-            }
-        }
-    }
 
     private void avoidToDestroyInvoquedCards(Partida partida,int x,int y,int playerID) {
         Carta carta;
@@ -395,19 +398,6 @@ public class Casilla {
         }
     }
 
-    private void avoidToDestroyInvoquedCards(Partida partida,int x,int y,int playerID,Criatura criatura) {
-        Carta carta;
-        for(int i=0;i<partida.getJugador(playerID).getInvoquedCards().size();i++) {
-            carta = partida.getJugador(playerID).getInvoquedCards().get(i);
-            if(carta.getFirstPosition().x==x && carta.getFirstPosition().y==y
-                    && x <= criatura.getPosition().x + criatura.getMovimiento()
-                    && x >= criatura.getPosition().x - criatura.getMovimiento()
-                    && y <= criatura.getPosition().y + criatura.getMovimiento()
-                    && y >= criatura.getPosition().y - criatura.getMovimiento()) {
-                partida.getTablero().getCasilla(x, y).setState(State.AVOID_TO_ATACK);
-            }
-        }
-    }
 
     //Función que nos dice, si está dentro de nuestro alcance de interacción. (movimiento)
     public boolean isAvoidToInteract(Carta selectedCard) {
@@ -419,21 +409,6 @@ public class Casilla {
     }
 
     public void avoidToMove(Partida partida,int x, int y) {
-        if (!partida.getTablero().getCasilla(x, y).tieneCriatura()) {
-            if (x <= criatura.getPosition().x + criatura.getMovimiento()
-                    && x >= criatura.getPosition().x - criatura.getMovimiento()
-                    && y <= criatura.getPosition().y + criatura.getMovimiento()
-                    && y >= criatura.getPosition().y - criatura.getMovimiento()
-                    && isInvocationSquareFree(partida,x,y,1))
-            {
-                partida.getTablero().getCasilla(x, y).setState(State.ILUMINADA);
-            } else {
-                partida.getTablero().getCasilla(x, y).setState(State.APAGADA);
-            }
-        }
-    }
-
-    public void avoidToMove(Partida partida,int x, int y,Criatura criatura) {
         if (!partida.getTablero().getCasilla(x, y).tieneCriatura()) {
             if (x <= criatura.getPosition().x + criatura.getMovimiento()
                     && x >= criatura.getPosition().x - criatura.getMovimiento()
@@ -488,12 +463,10 @@ public class Casilla {
         Array<Casilla> casillasIa = new Array<>();
         ArrayList<Casilla> ocupedToCardEnemy = new ArrayList<>();
         Casilla actualSquare;
-        Casilla actualSquareEnemy;
 
-
-        for (Carta c : player.getInvoquedCards()) {
-            ocupedToCardEnemy.add(tablero.getCasilla(c.getFirstPosition().x, c.getFirstPosition().y));
-        }
+        player.getInvoquedCards().forEach(c -> {
+         ocupedToCardEnemy.add(tablero.getCasilla(c.getFirstPosition().x, c.getFirstPosition().y));
+        });
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
 
@@ -508,6 +481,14 @@ public class Casilla {
         }
         return casillasIa;
     }
+
+    public Vector2 getCoordinatesMatrix() { return coordinatesMatrix; }
+
+    public void setCoordinatesMatrix(Vector2 coordinatesMatrix) { this.coordinatesMatrix = coordinatesMatrix; }
+
+    public boolean isCardInvoked() { return cardInvoked; }
+
+    public void setCardInvoked(boolean cardInvoked) { this.cardInvoked = cardInvoked; }
 
     public void announceCardInvoqued(Partida partida, Carta selectedCard) {
         partida.getDuelLog().addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha invocado a "+selectedCard.getNombre().toUpperCase()+" en la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
@@ -546,12 +527,4 @@ public class Casilla {
         partida.getJugador(1).getCriaturasInvocadas().remove(herCard);
         partida.getJugador(1).getCementerio().setCardInGraveyard(herCard);
     }
-
-    public Vector2 getCoordinatesMatrix() { return coordinatesMatrix; }
-
-    public void setCoordinatesMatrix(Vector2 coordinatesMatrix) { this.coordinatesMatrix = coordinatesMatrix; }
-
-    public boolean isCardInvoked() { return cardInvoked; }
-
-    public void setCardInvoked(boolean cardInvoked) { this.cardInvoked = cardInvoked; }
 }
