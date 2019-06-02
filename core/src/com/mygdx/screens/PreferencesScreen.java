@@ -15,12 +15,7 @@ public class PreferencesScreen extends MyGdxGameScreen {
 
     private Stage stage;
 
-    public PreferencesScreen(ScreenManager screenManagerR) {
-        super(screenManagerR);
-
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-    }
+    public PreferencesScreen(ScreenManager screenManagerR) { super(screenManagerR); }
 
     @Override
      public void show() {
