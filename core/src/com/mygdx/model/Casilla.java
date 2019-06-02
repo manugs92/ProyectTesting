@@ -158,8 +158,6 @@ public class Casilla {
                     //Si la carta seleccionada no es nula, ni es igual a la criatura que está en la casilla donde hemos clickado.
                     if (selectedCard != null && !selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
 
-                        tablero.setAllSquaresToOff(tablero);
-
                         //Si la carta donde hemos hecho click pertenece a nuestro rival... PELEAREMOS CONTRA ELLA.
                         if(partida.getJugador(1).getCriaturasInvocadas().contains(tablero.getCasilla(x2,y2).getCriatura())
                                 && partida.getJugador(0).getCriaturasInvocadas().contains(selectedCard)
@@ -192,15 +190,9 @@ public class Casilla {
                                 }
 
                                 ((Criatura) selectedCard).setMoved(true);
-                            }else {
-                                if(tieneCriatura()) {
-                                    partida.setSelectedCard(getCriatura());
-                                    partida.getCardInformation().updateCardInformation(partida);
-                                }else {
-                                    partida.setSelectedCard(null);
-                                    partida.getCardInformation().updateCardInformation(partida);
-                                }
                             }
+                            partida.setSelectedCard(null);
+                            partida.getCardInformation().updateCardInformation(partida);
                             tablero.setAllSquaresToOff(tablero);
                         }
                         //Si la casilla seleccionada tiene criatura
@@ -244,7 +236,12 @@ public class Casilla {
                     }
                     //Si la carta seleccionada y donde hemos hecho click son igualess..
                     else if (selectedCard != null && selectedCard.equals(tablero.getCasilla(x2, y2).getCriatura())) {
-                        if(getState() == State.ILUMINADA && !((Criatura)selectedCard).isMoved()) {
+                        if(getState() == State.ILUMINADA
+                                && !((Criatura)selectedCard).isMoved()
+                                && partida.getJugador(0).getInvoquedCards().contains(selectedCard)
+                                && !partida.getJugador(0).isAvoidToDrawCard()
+                                && !partida.getAvisosPartida().isShowed()
+                        ) {
                             tablero.setAllSquaresToOff(tablero);
                             casillasDisponibles(tablero,x2,y2,partida);
                         }else {
@@ -323,8 +320,8 @@ public class Casilla {
             if(!founded[0]) {
                 partida.setSelectedCard(null);
                 partida.getCardInformation().updateCardInformation(partida);
-                partida.getJugador(0).getMano().desSelected(partida);
             }
+            partida.getJugador(0).getMano().desSelected(partida);
         }
         //Si hacemos click en una casilla que tiene una carta invocada sin una carta seleccionada
         else  {
@@ -461,7 +458,7 @@ public class Casilla {
     public Array<Casilla> casillasDisponiblesIA(Tablero tablero, Criatura criaturaIa,Jugador player) {
 
         Array<Casilla> casillasIa = new Array<>();
-        ArrayList<Casilla> ocupedToCardEnemy = new ArrayList<>();
+        ArrayList<Casilla> ocupedToCardEnemy = new ArrayList<Casilla>();
         Casilla actualSquare;
 
         player.getInvoquedCards().forEach(c -> {
