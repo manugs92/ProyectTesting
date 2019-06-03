@@ -16,7 +16,7 @@ public class Casilla {
     public enum State {
         APAGADA, ILUMINADA,AVOID_TO_ATACK
     }
-
+error pal manu
     public static final int MEDIDA_CASILLA = 48;
 
     private Criatura criatura;

@@ -163,8 +163,8 @@ public class PreferencesScreen extends MyGdxGameScreen {
         Label volumeValue = new Label("Volumen musica: ",skin);
 
 //        textFieldPlayerName = new TextField("",skin);
-//        if(soundsConfiguration.getPlayerName()!=null) {
-//            textFieldPlayerName.setText(soundsConfiguration.getPlayerName());
+//        if(.getPlayerName()!=null) {
+//            textFieldPlayerName.setText(.getPlayerName());
 //        }
 
         Label activeMusic = new Label("Musica activa: ",skin);
