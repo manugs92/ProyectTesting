@@ -3,11 +3,9 @@ package com.mygdx.configuration;
 public class SoundsConfiguration {
 
     float GLOBAL_SOUND = 1f;
-    float volumeAlienShoot = GLOBAL_SOUND;
-    float volumeAlienDie = GLOBAL_SOUND;
-    float volumeShipShoot = GLOBAL_SOUND;
-    float volumeShipDamage = GLOBAL_SOUND;
-    float getVolumeShipMegaShoot = GLOBAL_SOUND;
+    float music = GLOBAL_SOUND;
+    float efects = GLOBAL_SOUND;
+
 
 
     public SoundsConfiguration() {
@@ -23,22 +21,18 @@ public class SoundsConfiguration {
 
         if (Controls.isMinusPressed()) {
 
-            this.volumeAlienShoot = (volumeAlienShoot <= 0) ? 0 : volumeAlienShoot - 0.002f;
-            this.volumeAlienDie = (volumeAlienDie <= 0) ? 0 : volumeAlienDie - 0.002f;
-            this.volumeShipShoot = (volumeShipShoot <= 0) ? 0 : volumeShipShoot - 0.002f;
-            this.volumeShipDamage = (volumeShipDamage <= 0) ? 0 : volumeShipDamage - 0.002f;
-            this.getVolumeShipMegaShoot = (getVolumeShipMegaShoot < 0) ? 0 : getVolumeShipMegaShoot - 0.002f;
+            this.music = (music <= 0) ? 0 : music - 0.002f;
+            this.efects = (efects <= 0) ? 0 : efects - 0.002f;
+
 
         } else if (Controls.isPluslePressed()) {
-            this.volumeAlienShoot = (volumeAlienShoot >= 1) ? 1 : volumeAlienShoot + 0.002f;
-            this.volumeAlienDie = (volumeAlienDie >= 1) ? 1 : volumeAlienDie + 0.002f;
-            this.volumeShipShoot = (volumeShipShoot >= 1) ? 1 : volumeShipShoot + 0.002f;
-            this.volumeShipDamage = (volumeShipDamage >= 1) ? 1 : volumeShipDamage + 0.002f;
-            this.getVolumeShipMegaShoot = (getVolumeShipMegaShoot > 1) ? 1 : getVolumeShipMegaShoot + 0.002f;
+            this.music = (music >= 1) ? 1 : music + 0.002f;
+            this.efects = (efects >= 1) ? 1 : efects + 0.002f;
+
         }
 
 
-        //System.out.println(volumeAlienShoot + "aa");
+        //System.out.println(music + "aa");
 
 
     }
@@ -54,11 +48,9 @@ public class SoundsConfiguration {
     }
 
     public void setVolume(float volume) {
-        volumeAlienShoot = volume;
-        volumeAlienDie = volume;
-        volumeShipShoot = volume;
-        volumeShipDamage = volume;
-        getVolumeShipMegaShoot = volume;
+        music = volume;
+        efects = volume;
+
     }
 
 
@@ -70,45 +62,23 @@ public class SoundsConfiguration {
         this.GLOBAL_SOUND = GLOBAL_SOUND;
     }
 
-    public float getVolumeAlienShoot() {
-        return volumeAlienShoot;
+    public float getMusic() {
+        return music;
     }
 
-    public void setVolumeAlienShoot(float volumeAlienShoot) {
-        this.volumeAlienShoot = volumeAlienShoot;
+    public void setMusic(float music) {
+        this.music = music;
     }
 
-    public float getVolumeShipShoot() {
-        return volumeShipShoot;
+    public float getEfects() {
+        return efects;
     }
 
-    public void setVolumeShipShoot(float volumeShipShoot) {
-        this.volumeShipShoot = volumeShipShoot;
+    public void setEfects(float efects) {
+        this.efects = efects;
     }
 
-    public float getVolumeAlienDie() {
-        return volumeAlienDie;
-    }
 
-    public void setVolumeAlienDie(float volumeAlienDie) {
-        this.volumeAlienDie = volumeAlienDie;
-    }
-
-    public float getVolumeShipDamage() {
-        return volumeShipDamage;
-    }
-
-    public void setVolumeShipDamage(float volumeShipDamage) {
-        this.volumeShipDamage = volumeShipDamage;
-    }
-
-    public float getGetVolumeShipMegaShoot() {
-        return getVolumeShipMegaShoot;
-    }
-
-    public void setGetVolumeShipMegaShoot(float getVolumeShipMegaShoot) {
-        this.getVolumeShipMegaShoot = getVolumeShipMegaShoot;
-    }
 
 
 }
