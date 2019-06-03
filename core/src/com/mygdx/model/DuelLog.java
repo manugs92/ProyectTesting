@@ -115,6 +115,40 @@ public class DuelLog {
 
     public void addMsgToLog(String msg){ duelLog.add(msg); }
 
+    public void announceCardInvoqued(Partida partida, Carta selectedCard) {
+        addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha invocado a "+selectedCard.getNombre().toUpperCase()+" en la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
 
+    public void announcePlayerAtackToMonster(Partida partida,Carta myCard, Carta herCard) {
+        addMsgToLog(myCard.getNombre().toUpperCase()+" ha LUCHADO contra "+herCard.getNombre().toUpperCase());
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
 
+    public void announceResultOfAttack(Partida partida,Carta myCard,Carta herCard) {
+        addMsgToLog(myCard.getNombre().toUpperCase()+" ha PERDIDO "+ ((Criatura) herCard).getAtaque()+ " HP");
+        addMsgToLog(herCard.getNombre().toUpperCase()+" ha PERDIDO "+ ((Criatura) myCard).getAtaque()+ "HP");
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
+
+    public void announceCardDead(Partida partida, Carta card) {
+        addMsgToLog(card.getNombre().toUpperCase()+" ha MUERTO y se ha ido al CEMENTERIO");
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
+
+    public void announceInvoquedCardDead(Partida partida, Carta myCard, Carta herCard) {
+        addMsgToLog(myCard.getNombre().toUpperCase()+" ha DESTRUIDO la CARTA "+herCard.getNombre().toUpperCase());
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
+
+    public void announceCardMoved(Partida partida, Carta selectedCard) {
+        addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha movido a "+selectedCard.getNombre().toUpperCase()+" a la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
 }
