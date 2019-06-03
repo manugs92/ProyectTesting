@@ -21,6 +21,7 @@ public class MainScreen extends MyGdxGameScreen {
 
     @Override
     public void show() {
+        stage.setViewport(screenManager.fitViewport);
 
         /*GUI de la vista*/
         Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));

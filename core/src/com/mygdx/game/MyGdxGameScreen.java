@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.configuration.SoundsConfiguration;
 import com.mygdx.screens.ScreenManager;
 
 public class MyGdxGameScreen implements Screen {
@@ -17,6 +18,8 @@ public class MyGdxGameScreen implements Screen {
     public Stage stage;
     public Texture textureBgScreen;
     SpriteBatch spriteBatch=new SpriteBatch();
+    MyGdxGameAssetManager assetManager;
+    SoundsConfiguration sounds;
 
     public MyGdxGameScreen(ScreenManager screenManager){
         this.screenManager = screenManager;
@@ -24,6 +27,9 @@ public class MyGdxGameScreen implements Screen {
         this.fitViewport = screenManager.parent.fitViewport;
         this.stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
+        assetManager=screenManager.asset;
+        sounds=screenManager.sounds;
+
 
         textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);

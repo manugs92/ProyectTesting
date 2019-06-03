@@ -1,6 +1,11 @@
 package com.mygdx.screens;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.configuration.SoundsConfiguration;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.model.Partida;
 
 public class ScreenManager {
@@ -13,6 +18,10 @@ public class ScreenManager {
     private StartGame startGame;
     private DuelScreen duelScreen;
     private SummaryScreen summaryScreen;
+    public MyGdxGameAssetManager asset;
+    public SoundsConfiguration sounds;
+    public Skin skin;
+    public FitViewport fitViewport;
 
     public final static int MAIN_SCREEN = 0;
     public final static int LOADING_SCREEN  = 1;
@@ -24,6 +33,10 @@ public class ScreenManager {
 
     public ScreenManager(MyGdxGame myGdxGame) {
         this.parent=myGdxGame;
+        this.asset=myGdxGame.assets;
+        this.sounds=myGdxGame.sounds;
+        this.skin=myGdxGame.skin;
+        this.fitViewport=myGdxGame.fitViewport;
     }
 
     public void setDefaultScreen() {

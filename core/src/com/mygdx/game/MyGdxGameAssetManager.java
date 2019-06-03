@@ -9,6 +9,7 @@ public class MyGdxGameAssetManager {
 
     public final String imageSquare = "icons/casilla48.png";
     public final String manaOrb= "icons/mana_orb.png";
+    public final String back_arrow= "icons/arrow_back.png";
     public final String lives = "icons/lives.png";
 
     public final String imageSquare2 = "icons/casilla48_2.png";
@@ -16,6 +17,7 @@ public class MyGdxGameAssetManager {
     public final String imageBackCard = "icons/back_card.png";
     public final String imageBackCardToDraw = "icons/back_card_to_draw.png";
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
+    public final String backgroundBlue = "backgrounds/bg_blue.png";
 
     public final String myAvatar = "icons/mugshot2.png";
     public final String rivalAvatar = "icons/mugshot.png";

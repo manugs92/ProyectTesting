@@ -1,22 +1,22 @@
 package com.mygdx.configuration;
 
-import com.mygdx.configuration.Controls;
-
 public class SoundsConfiguration {
 
-    float GLOBAL_SOUND=1f;
+    float GLOBAL_SOUND = 1f;
     float volumeAlienShoot = GLOBAL_SOUND;
     float volumeAlienDie = GLOBAL_SOUND;
     float volumeShipShoot = GLOBAL_SOUND;
     float volumeShipDamage = GLOBAL_SOUND;
-    float getVolumeShipMegaShoot=GLOBAL_SOUND;
+    float getVolumeShipMegaShoot = GLOBAL_SOUND;
 
 
-    public SoundsConfiguration() {}
+    public SoundsConfiguration() {
+    }
 
 
     public void update() {
         controlVolume();
+
     }
 
     private void controlVolume() {
@@ -29,7 +29,7 @@ public class SoundsConfiguration {
             this.volumeShipDamage = (volumeShipDamage <= 0) ? 0 : volumeShipDamage - 0.002f;
             this.getVolumeShipMegaShoot = (getVolumeShipMegaShoot < 0) ? 0 : getVolumeShipMegaShoot - 0.002f;
 
-        } else if (Controls.isPluslePressed() ) {
+        } else if (Controls.isPluslePressed()) {
             this.volumeAlienShoot = (volumeAlienShoot >= 1) ? 1 : volumeAlienShoot + 0.002f;
             this.volumeAlienDie = (volumeAlienDie >= 1) ? 1 : volumeAlienDie + 0.002f;
             this.volumeShipShoot = (volumeShipShoot >= 1) ? 1 : volumeShipShoot + 0.002f;
@@ -43,6 +43,32 @@ public class SoundsConfiguration {
 
     }
 
+    public void mute(boolean mute) {
+
+        if (mute) {
+            this.GLOBAL_SOUND = 0;
+            setVolume(GLOBAL_SOUND);
+        } else {
+            this.GLOBAL_SOUND = 1;
+        }
+    }
+
+    public void setVolume(float volume) {
+        volumeAlienShoot = volume;
+        volumeAlienDie = volume;
+        volumeShipShoot = volume;
+        volumeShipDamage = volume;
+        getVolumeShipMegaShoot = volume;
+    }
+
+
+    public float getGLOBAL_SOUND() {
+        return GLOBAL_SOUND;
+    }
+
+    public void setGLOBAL_SOUND(float GLOBAL_SOUND) {
+        this.GLOBAL_SOUND = GLOBAL_SOUND;
+    }
 
     public float getVolumeAlienShoot() {
         return volumeAlienShoot;
@@ -83,4 +109,6 @@ public class SoundsConfiguration {
     public void setGetVolumeShipMegaShoot(float getVolumeShipMegaShoot) {
         this.getVolumeShipMegaShoot = getVolumeShipMegaShoot;
     }
+
+
 }
