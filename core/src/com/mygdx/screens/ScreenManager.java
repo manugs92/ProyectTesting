@@ -1,6 +1,7 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.configuration.SoundsConfiguration;
@@ -22,6 +23,8 @@ public class ScreenManager {
     public SoundsConfiguration sounds;
     public Skin skin;
     public FitViewport fitViewport;
+    public BitmapFont font;
+
 
     public final static int MAIN_SCREEN = 0;
     public final static int LOADING_SCREEN  = 1;
@@ -37,6 +40,7 @@ public class ScreenManager {
         this.sounds=myGdxGame.sounds;
         this.skin=myGdxGame.skin;
         this.fitViewport=myGdxGame.fitViewport;
+       this.font=myGdxGame.font;
     }
 
     public void setDefaultScreen() {

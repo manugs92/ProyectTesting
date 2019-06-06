@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,19 +18,19 @@ public class MyGdxGameScreen implements Screen {
     public FitViewport fitViewport;
     public Stage stage;
     public Texture textureBgScreen;
-    SpriteBatch spriteBatch=new SpriteBatch();
-    MyGdxGameAssetManager assetManager;
-    SoundsConfiguration sounds;
+    public MyGdxGameAssetManager assetManager;
+    public SoundsConfiguration sounds;
+    public BitmapFont font;
 
     public MyGdxGameScreen(ScreenManager screenManager){
         this.screenManager = screenManager;
+        this.assetManager=screenManager.asset;
+        this.sounds=screenManager.sounds;
+        this.font=screenManager.font;
         this.cam = screenManager.parent.camera;
         this.fitViewport = screenManager.parent.fitViewport;
         this.stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
-        assetManager=screenManager.asset;
-        sounds=screenManager.sounds;
-
 
         textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);

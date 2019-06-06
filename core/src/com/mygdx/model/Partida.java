@@ -1,6 +1,6 @@
 package com.mygdx.model;
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -23,8 +23,8 @@ public class Partida {
     public static final int INITIAL_LIVES = 20;
     public static final int INITIAL_INVOCATION_ORBS = 6;
 
-    private final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
-    private final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;
+    public final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
+    public final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;
     private final float posXButtonPassTurn = 900;
     private final float posYButtonPassTurn = 200;
 
@@ -41,68 +41,36 @@ public class Partida {
     private AvisosPartida avisosPartida;
     private Image passTurn;
     private IaOne iA;
+    private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
+    private Skin skin;
 
     //Temporal para añadir jugador a partida,
-    private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
-    private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
     private Jugador jugador2 = new Jugador("Skynet", 1, assetManager, skin);
 
 
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
+        this.skin=skin;
         assetManager.loadImagesDuelScreen();
         assetManager.manager.finishLoading();
         estadoPartida = estadoPartida.EMPEZADA;
         jugadores.add(jugador);
         jugadores.add(jugador2);
         selectedCard = null;
-
-        //cartasColocadas = new ArrayList<>();
         duelLog = new DuelLog(skin);
-        tablero=new Tablero(this, assetManager);
-        cardInformation=new CardInformation(this);
-        numTurn =0;
+        tablero = new Tablero(this, assetManager);
+        cardInformation = new CardInformation(this);
+        numTurn = 0;
         ownerTurn=jugador.getId();
         jugador.avoidToDrawCard(true);
-        winnerId=-1;
+        winnerId = -1;
         buttonRendirse = new Image(assetManager.manager.get(assetManager.whiteFlagIcon, Texture.class));
         buttonRendirse.setPosition(posXButtonRendirse,posYButtonRendirse);
-        buttonRendirse.addListener(new ActorGestureListener() {
-            @Override
-            public boolean longPress(Actor actor, float x, float y) {
-                winnerId=1;
-                estadoPartida = estadoPartida.FINALIZADA;
-                jugadores.get(0).setLives(0);
-                getDuelLog().addMsgToLog(getJugador(0).getNombre().toUpperCase()+" se ha rendido.");
-                getDuelLog().addMsgToLog(getJugador(0).getNombre().toUpperCase()+" ha perdido el duelo.");
-                getDuelLog().setNewMsgTrue();
-                getDuelLog().getScrollPane().remove();
-                return super.longPress(actor, x, y);
-            }
-        });
+        Partida partida = this;
+        addListenerToButtonRendirse(partida);
         avisosPartida = new AvisosPartida();
         passTurn = new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
         passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
-        Partida partida = this;
-        passTurn.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                getJugador(0).getMano().desSelected(partida);
-                if(jugadores.get(0).isAvoidToDrawCard()) {
-                    avisosPartida.setAvisos(2,getJugador(0).getMano().getCartasMano().size());
-                } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
-                    avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
-                }else {
-                    getAvisosPartida().setAvisos(0,0);
-                    getAvisosPartida().setShowed(false);
-                    pasarTurno();
-                    getDuelLog().addMsgToLog(getJugador(0).getNombre().toUpperCase()+" ha finalizado su turno.");
-                    getDuelLog().setNewMsgTrue();
-                    getDuelLog().getScrollPane().remove();
-                }
-                deleteWidgets();
-                super.clicked(event, x, y);
-            }
-        });
+        addlistnerToPassTurnButton(partida);
         iA = new IaOne();
     }
 
@@ -114,8 +82,6 @@ public class Partida {
         selectedCard=carta;
     }
 
-
-
     public void addJugador(Jugador jugador) { this.jugadores.add(jugador); }
 
     public DuelLog getDuelLog() { return duelLog; }
@@ -124,13 +90,9 @@ public class Partida {
 
     public Jugador getJugador(int jugadorId) { return jugadores.get(jugadorId); }
 
-    public void setDuelLog(DuelLog duelLog) { this.duelLog = duelLog; }
-
     public Tablero getTablero() { return this.tablero; }
 
     public CardInformation getCardInformation() { return cardInformation; }
-
-    public void addTurn() { numTurn +=1; }
 
     public int getNumTurn() { return numTurn; }
 
@@ -168,7 +130,42 @@ public class Partida {
         //getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
         jugadores.get(1).addInvocationOrbs(1);
         getJugador(1).avoidToDrawCard(true);
+        getDuelLog().announcePlayerPassedHisTurn(this);
     }
 
     public IaOne getiA() { return iA; }
+
+    public void addListenerToButtonRendirse(Partida partida) {
+        buttonRendirse.addListener(new ActorGestureListener() {
+            @Override
+            public boolean longPress(Actor actor, float x, float y) {
+                winnerId=1;
+                estadoPartida = estadoPartida.FINALIZADA;
+                jugadores.get(0).setLives(0);
+                getDuelLog().announceGiveUp(partida);
+                return super.longPress(actor, x, y);
+            }
+        });
+    }
+
+    public void addlistnerToPassTurnButton(Partida partida) {
+        passTurn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                getJugador(0).getMano().desSelected(partida);
+                if(jugadores.get(0).isAvoidToDrawCard()) {
+                    avisosPartida.setAvisos(2,getJugador(0).getMano().getCartasMano().size());
+                } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {
+                    avisosPartida.setAvisos(1,getJugador(0).getMano().getCartasMano().size());
+                }else {
+                    getAvisosPartida().setAvisos(0,0);
+                    getAvisosPartida().setShowed(false);
+                    pasarTurno();
+                }
+                deleteWidgets();
+                super.clicked(event, x, y);
+            }
+        });
+    }
+
 }

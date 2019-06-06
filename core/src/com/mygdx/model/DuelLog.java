@@ -115,6 +115,17 @@ public class DuelLog {
 
     public void addMsgToLog(String msg){ duelLog.add(msg); }
 
+    //Mostramos el primer mensaje del log de inicio de partida.
+    public void announceStartMsgLog(Partida partida) {
+        addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" VS "+partida.getJugador(1).getNombre().toUpperCase());
+        if (partida.getOwnerTurn() == 0) {
+            addMsgToLog("Empieza " + partida.getJugador(0).getNombre().toUpperCase());
+        } else {
+            addMsgToLog("Empieza " + partida.getJugador(1).getNombre().toUpperCase());
+        }
+        setNewMsgTrue();
+    }
+
     public void announceCardInvoqued(Partida partida, Carta selectedCard) {
         addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha invocado a "+selectedCard.getNombre().toUpperCase()+" en la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
         setNewMsgTrue();
@@ -148,6 +159,19 @@ public class DuelLog {
 
     public void announceCardMoved(Partida partida, Carta selectedCard) {
         addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha movido a "+selectedCard.getNombre().toUpperCase()+" a la CASILLA "+(int)selectedCard.getLastPosition().x+","+(int)selectedCard.getLastPosition().y);
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
+
+    public void announceGiveUp(Partida partida) {
+        addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" se ha rendido.");
+        addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha perdido el duelo.");
+        setNewMsgTrue();
+        getScrollPane().remove();
+    }
+
+    public void announcePlayerPassedHisTurn(Partida partida) {
+        addMsgToLog(partida.getJugador(0).getNombre().toUpperCase()+" ha finalizado su turno.");
         setNewMsgTrue();
         getScrollPane().remove();
     }

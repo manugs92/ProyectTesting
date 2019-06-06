@@ -2,9 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.configuration.SoundsConfiguration;
@@ -17,10 +16,9 @@ public class MyGdxGame extends Game {
 	public MyGdxGameAssetManager assets;
 	public SoundsConfiguration sounds;
 	public Skin skin ;
-
-
+	public BitmapFont font;
 	public FitViewport fitViewport;
-	OrthographicCamera camera;
+	public OrthographicCamera camera;
 
 	@Override
 	public void create () {
@@ -31,6 +29,7 @@ public class MyGdxGame extends Game {
 		camera.position.set(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 0);
 		fitViewport.apply();
 		skin= new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
+		font = new BitmapFont();
 
 		ScreenManager screenManager = new ScreenManager(this);
 		screenManager.setDefaultScreen();

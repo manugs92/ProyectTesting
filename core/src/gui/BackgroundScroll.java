@@ -26,6 +26,7 @@ public class BackgroundScroll implements Drawable {
     @Override
     public void draw(Batch batch, float x2, float y2, float width2, float height2) {
         batch.draw(background,x,y,srcX,srcY,MyGdxGame.SCREEN_WIDTH, MyGdxGame.SCREEN_HEIGHT);
+
     }
 
     @Override

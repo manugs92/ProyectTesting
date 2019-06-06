@@ -34,6 +34,17 @@ public class IaOne {
 
     public void setState(State state) { this.state = state; }
 
+    public void executeIA(Partida partida) {
+        long timer;
+        if (partida.getOwnerTurn() == 1) {
+            timer = System.nanoTime() / 1000;
+            if (state != IaOne.State.WAIT && state != IaOne.State.INITIAL) {
+                iaIsThinking(timer);
+            }
+            play(partida, timer);
+        }
+    }
+
     public void play(Partida partida, float delta) {
 
         IA = partida.getJugador(1);
