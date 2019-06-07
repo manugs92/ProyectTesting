@@ -44,8 +44,8 @@ public class Jugador {
         assetManager.loadMyAvatars();
         assetManager.loadOtherAvatars();
         assetManager.manager.finishLoading();
-        livesGUI=new Image(new Texture(assetManager.lives));
-        manaOrbGUI = new Image(new Texture(assetManager.manaOrb));
+        livesGUI=new Image(assetManager.manager.get(assetManager.lives,Texture.class));
+        manaOrbGUI = new Image(assetManager.manager.get(assetManager.manaOrb,Texture.class));
 
         if(id==0) {
             avatar = new Image(assetManager.manager.get(assetManager.myAvatar,Texture.class));

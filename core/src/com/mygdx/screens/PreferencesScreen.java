@@ -59,15 +59,10 @@ public class PreferencesScreen extends MyGdxGameScreen {
         stage.addActor(label);
 
 
-        //FIXME cambiar loading
-        screenManager.asset.loadImagesDuelScreen();
-
+        screenManager.asset.loadImagesConfigurationScreen();
         screenManager.asset.manager.finishLoading();
 
         spriteBatch = new SpriteBatch();
-
-
-
 
     }
 
@@ -149,7 +144,7 @@ public class PreferencesScreen extends MyGdxGameScreen {
     }
 
     private void showConfigurationMenu(Skin skin) {
-        textureBgScreen = new Texture(assetManager.backgroundBlue);
+        textureBgScreen = assetManager.manager.get(assetManager.backgroundBlue,Texture.class);
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         stage.addActor(new Image(textureBgScreen));
         //Configuration of widgets
@@ -190,7 +185,7 @@ public class PreferencesScreen extends MyGdxGameScreen {
         slider.setValue(screenManager.sounds.getGLOBAL_SOUND());
         slider.setSize(450,50);
 
-        Texture textureBack = new Texture(screenManager.asset.back_arrow);
+        Texture textureBack = assetManager.manager.get(assetManager.back_arrow,Texture.class);
         backButton = new Image(textureBack);
 
         table.setFillParent(true);
@@ -207,9 +202,6 @@ public class PreferencesScreen extends MyGdxGameScreen {
         table.add(cbactiveSounds);
         table.row().pad(10);
         table.add(backButton).colspan(2).align(Align.right);
-
-        //table.setBackground(screenManager.asset.backgroundScroll);
-
 
         stage.addActor(table);
     }

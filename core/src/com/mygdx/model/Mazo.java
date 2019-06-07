@@ -1,11 +1,8 @@
 package com.mygdx.model;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -48,7 +45,7 @@ public class Mazo {
         mazoDefaultGUI.setPosition(positionGUI.x,positionGUI.y);
         mazoAvoidToDrawGUI.setPosition(positionGUI.x,positionGUI.y);
 
-        DefaultDeck();
+        DefaultDeck(assetManager);
         ShuffleMazo();
     }
 
@@ -68,24 +65,25 @@ public class Mazo {
         this.cartasMazo.add(carta);
     }
 
-    public ArrayList<Carta> DefaultDeck() {
+    public ArrayList<Carta> DefaultDeck(MyGdxGameAssetManager assetManager) {
 
-        MyGdxGameAssetManager assetManager=new MyGdxGameAssetManager();
+        assetManager.loadCardsInfo();
+        assetManager.manager.finishLoading();
 
-        Texture textureCard_Spyro = new Texture("icons\\carta.png");
-        Texture textureCardInfo_Spyro = new Texture( assetManager.spyroCartaInfo);
-        Texture textureSpriteSpyro= new Texture("icons\\spyro.png");
-        Texture textureSpriteSpyroFront= new Texture("icons\\spyro_front.png");
+        Texture textureCard_Spyro = assetManager.manager.get(assetManager.textureCard_Spyro);
+        Texture textureCardInfo_Spyro = assetManager.manager.get(assetManager.textureCardInfo_Spyro);
+        Texture textureSpriteSpyro=  assetManager.manager.get(assetManager.textureSpriteSpyro);
+        Texture textureSpriteSpyroFront= assetManager.manager.get(assetManager.textureSpriteSpyroFront);
 
-        Texture textureCard_LavaGolem = new Texture("icons\\lava_golem_card.png");
-        Texture textureCardInfo_LavaGolem = new Texture( assetManager.lavaGolemCartaInfo);
-        Texture textureSpriteLavaGolem= new Texture("icons\\lava_golem.png");
-        Texture textureSpriteLavaGolemFront= new Texture("icons\\lava_golem_front.png");
+        Texture textureCard_LavaGolem = assetManager.manager.get(assetManager.textureCard_LavaGolem);
+        Texture textureCardInfo_LavaGolem = assetManager.manager.get(assetManager.textureCardInfo_LavaGolem);
+        Texture textureSpriteLavaGolem= assetManager.manager.get(assetManager.textureSpriteLavaGolem);
+        Texture textureSpriteLavaGolemFront= assetManager.manager.get(assetManager.textureSpriteLavaGolemFront);
 
-        Texture textureCard_RockElemental = new Texture("icons\\rock_elemental_card.png");
-        Texture textureCardInfo_RockElemental = new Texture( assetManager.rockElementalGolemCartaInfo);
-        Texture textureSpriteRockElemental= new Texture("icons\\rock_elemental.png");
-        Texture textureSpriteRockElementalFront= new Texture("icons\\rock_elemental_front.png");
+        Texture textureCard_RockElemental = assetManager.manager.get(assetManager.textureCard_RockElemental);
+        Texture textureCardInfo_RockElemental = assetManager.manager.get( assetManager.textureCardInfo_RockElemental);
+        Texture textureSpriteRockElemental= assetManager.manager.get(assetManager.textureSpriteRockElemental);
+        Texture textureSpriteRockElementalFront= assetManager.manager.get(assetManager.textureSpriteRockElementalFront);
 
 
         while (cartasMazo.size()<=MIN_CARDS-1) {
@@ -127,12 +125,6 @@ public class Mazo {
     public Image getMazoDefaultGUI() { return mazoDefaultGUI; }
 
     public Image getMazoAvoidToDrawGUI() {return  mazoAvoidToDrawGUI;}
-
-    public void setPositionGUI(float x, float y) {
-        this.mazoDefaultGUI.setPosition(x,y);
-        this.positionGUI.x = x;
-        this.positionGUI.y =y;
-    }
 
     public Vector2 getPositionGUI() {
         return positionGUI;

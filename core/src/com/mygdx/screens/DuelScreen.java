@@ -151,6 +151,7 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarCartaCemenerio(j.getId());
         });
 
+        drawHandSelection(delta);
         dibujarAvisos();
 
         batch.end();
@@ -160,6 +161,8 @@ public class DuelScreen extends MyGdxGameScreen {
 
         if (partida.getWinnerId() != -1) { screenManager.changeScreenToResume(screenManager.SUMMARY_SCREEN, partida); }
     }
+
+
 
     @Override
     public void dispose() {
@@ -343,6 +346,15 @@ public class DuelScreen extends MyGdxGameScreen {
         } else {
             partida.getAvisosPartida().setShowed(false);
         }
+    }
+
+    private void drawHandSelection(float delta) {
+        if(delta %2 == 0) {
+
+        }else {
+
+        }
+
     }
 
 
