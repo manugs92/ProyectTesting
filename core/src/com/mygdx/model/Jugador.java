@@ -2,10 +2,8 @@ package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
@@ -41,8 +39,8 @@ public class Jugador {
         this.mazo = new Mazo(assetManager,this);
         this.mano=new Mano(this.mazo);
         this.cementerio=new Cementerio(assetManager,this);
-        assetManager.loadMyAvatars();
-        assetManager.loadOtherAvatars();
+        assetManager.loadMyAvatarImage();
+        assetManager.loadOtherAvatarsImages();
         assetManager.manager.finishLoading();
         livesGUI=new Image(assetManager.manager.get(assetManager.lives,Texture.class));
         manaOrbGUI = new Image(assetManager.manager.get(assetManager.manaOrb,Texture.class));

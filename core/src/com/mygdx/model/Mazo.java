@@ -26,11 +26,13 @@ public class Mazo {
     private ArrayList<Carta> cartasMazo = new ArrayList<>();
     private ArrayList<Carta> shuffleMazo = new ArrayList<>();
     private Texture textureMazoDefault,textureMazoAvoidToDraw;
+    private Texture textureSelectionHand, textureSelectionHand2;
     private Image mazoDefaultGUI,mazoAvoidToDrawGUI;
     private Vector2 positionGUI = new Vector2();
+    private Vector2 positionSelectionHand= new Vector2();
 
     public Mazo(MyGdxGameAssetManager assetManager, Jugador jugador) {
-        assetManager.loadBackCard();
+        assetManager.loadDeckImages();
         assetManager.manager.finishLoading();
         textureMazoDefault = assetManager.manager.get(assetManager.imageBackCard, Texture.class);
         mazoDefaultGUI = new Image(textureMazoDefault);
@@ -38,6 +40,10 @@ public class Mazo {
         mazoAvoidToDrawGUI = new Image(textureMazoAvoidToDraw);
         if(jugador.getId()==0) {
             positionGUI.y= POS_Y_MAZO_J1;
+            textureSelectionHand = assetManager.manager.get(assetManager.handSelection,Texture.class);
+            textureSelectionHand2 = assetManager.manager.get(assetManager.handSelection2,Texture.class);
+            positionSelectionHand.x = POS_X_MAZO + 12;
+            positionSelectionHand.y = positionGUI.y + 50;
         }else {
             positionGUI.y= POS_Y_MAZO_J2;
         }
@@ -67,7 +73,7 @@ public class Mazo {
 
     public ArrayList<Carta> DefaultDeck(MyGdxGameAssetManager assetManager) {
 
-        assetManager.loadCardsInfo();
+        assetManager.loadCardsInfoImages();
         assetManager.manager.finishLoading();
 
         Texture textureCard_Spyro = assetManager.manager.get(assetManager.textureCard_Spyro);
@@ -138,4 +144,10 @@ public class Mazo {
     public ArrayList<Carta> getShuffleMazo() {
         return shuffleMazo;
     }
+
+    public Texture getTextureSelectionHand() { return textureSelectionHand; }
+
+    public Texture getTextureSelectionHand2() { return textureSelectionHand2; }
+
+    public Vector2 getPositionSelectionHand() { return positionSelectionHand; }
 }

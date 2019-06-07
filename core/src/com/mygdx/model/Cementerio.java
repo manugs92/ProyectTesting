@@ -24,7 +24,7 @@ public class Cementerio {
     private boolean isShowed;
 
     public Cementerio(MyGdxGameAssetManager assetManager, Jugador jugador) {
-        assetManager.loadImageDeck();
+        assetManager.loadGraveyardImages();
         assetManager.manager.finishLoading();
         textureGraveyard = assetManager.manager.get(assetManager.imageSquare, Texture.class);
         graveyardGUI = new Image(textureGraveyard);

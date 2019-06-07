@@ -8,8 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 
-import java.util.ArrayList;
-
 import static com.mygdx.model.Casilla.MEDIDA_CASILLA;
 
 public class Tablero {
@@ -33,7 +31,7 @@ public class Tablero {
 
 
     public Tablero(Partida partida,MyGdxGameAssetManager assetManager) {
-        assetManager.loadImagesDuelScreen();
+        assetManager.loadDuelScreenImages();
         assetManager.manager.finishLoading();
 
 

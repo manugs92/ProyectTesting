@@ -50,7 +50,7 @@ public class Partida {
 
     public Partida(Jugador jugador, Skin skin, MyGdxGameAssetManager assetManager) {
         this.skin=skin;
-        assetManager.loadImagesDuelScreen();
+        assetManager.loadDuelScreenImages();
         assetManager.manager.finishLoading();
         estadoPartida = estadoPartida.EMPEZADA;
         jugadores.add(jugador);

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
-import gui.BackgroundScroll;
+import com.mygdx.gui.BackgroundScroll;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class DuelLog {
 
 
     public ScrollPane writeLog(MyGdxGameAssetManager assetManager, Batch batch) {
-        assetManager.loadScrollLog();
+        assetManager.loadScrollLogImage();
         assetManager.manager.finishLoading();
         textureBgScroll = assetManager.manager.get(assetManager.backgroundScroll, Texture .class);
         textureBgScroll.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -65,7 +65,7 @@ public class DuelLog {
     }
 
     public ScrollPane writeLogSumaryScreen(MyGdxGameAssetManager assetManager, Batch batch) {
-        assetManager.loadScrollLog();
+        assetManager.loadScrollLogImage();
         assetManager.manager.finishLoading();
         textureBgScroll = assetManager.manager.get(assetManager.backgroundScroll, Texture .class);
         textureBgScroll.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);

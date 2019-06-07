@@ -2,7 +2,6 @@ package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -68,7 +67,7 @@ public class DuelScreen extends MyGdxGameScreen {
 
     @Override
     public void show() {
-        assetManager.loadImagesDuelScreen();
+        assetManager.loadDuelScreenImages();
         assetManager.manager.finishLoading();
 
         batch = new SpriteBatch();
@@ -151,7 +150,7 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarCartaCemenerio(j.getId());
         });
 
-        drawHandSelection(delta);
+        drawHandSelection(partida.getJugador(0),delta);
         dibujarAvisos();
 
         batch.end();
@@ -348,13 +347,16 @@ public class DuelScreen extends MyGdxGameScreen {
         }
     }
 
-    private void drawHandSelection(float delta) {
-        if(delta %2 == 0) {
-
-        }else {
-
+    private void drawHandSelection(Jugador player,float delta) {
+        if(player.isAvoidToDrawCard()) {
+            if((int)(delta*1000) % 2 == 0) {
+                System.out.println("frame1");
+                batch.draw(player.getMazo().getTextureSelectionHand(),player.getMazo().getPositionSelectionHand().x,player.getMazo().getPositionSelectionHand().y);
+            }else {
+                System.out.println("frame-2");
+                batch.draw(player.getMazo().getTextureSelectionHand2(),player.getMazo().getPositionSelectionHand().x,player.getMazo().getPositionSelectionHand().y);
+            }
         }
-
     }
 
 

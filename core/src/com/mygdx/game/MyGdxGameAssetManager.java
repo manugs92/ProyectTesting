@@ -58,35 +58,36 @@ public class MyGdxGameAssetManager {
 
 
 
-    public void loadImagesConfigurationScreen() {
+    public void loadConfigurationScreenImages() {
         manager.load(backgroundBlue,Texture.class);
         manager.load(back_arrow,Texture.class);
     }
 
-    public void loadImagesDuelScreen() {
+    public void loadDuelScreenImages() {
         manager.load(imageSquare, Texture.class);
         manager.load(imageSquare2, Texture.class);
         manager.load(imageSquare3, Texture.class);
         manager.load(passTurnIcon,Texture.class);
         manager.load(whiteFlagIcon,Texture.class);
+    }
+
+    public void loadGraveyardImages() {
+        manager.load(imageSquare, Texture.class); }
+
+    public void loadDeckImages() {
+        manager.load(imageBackCard,Texture.class);
+        manager.load(imageBackCardToDraw,Texture.class);
         manager.load(handSelection,Texture.class);
         manager.load(handSelection2,Texture.class);
     }
 
-    public void loadImageDeck() { manager.load(imageSquare, Texture.class); }
+    public void loadScrollLogImage() { manager.load(backgroundScroll,Texture.class);}
 
-    public void loadBackCard() {
-        manager.load(imageBackCard,Texture.class);
-        manager.load(imageBackCardToDraw,Texture.class);
-    }
-
-    public void loadScrollLog() { manager.load(backgroundScroll,Texture.class);}
-
-    public void loadMyAvatars() {
+    public void loadMyAvatarImage() {
         manager.load(myAvatar,Texture.class);
     }
 
-    public void loadOtherAvatars() {
+    public void loadOtherAvatarsImages() {
         manager.load(rivalAvatar,Texture.class);
         manager.load(myAvatar2,Texture.class);
         manager.load(rivalAvatar2,Texture.class);
@@ -95,7 +96,7 @@ public class MyGdxGameAssetManager {
         manager.load(manaOrb,Texture.class);
     }
 
-    public void loadCardsInfo(){
+    public void loadCardsInfoImages(){
         //Texture Cards
         manager.load(textureCard_RockElemental,Texture.class);
         manager.load(textureCard_Spyro,Texture.class);
