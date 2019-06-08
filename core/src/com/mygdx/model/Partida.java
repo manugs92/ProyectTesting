@@ -125,12 +125,10 @@ public class Partida {
     public void pasarTurno() {
         ownerTurn=1;
         numTurn++;
-        getJugador(0).avoidToDrawCard(true);
-        getJugador(0).getCriaturasInvocadas().forEach(c -> c.setMoved(false));
-        //getCriaturasInvocadasJ1().forEach(c -> c.setMoved(false));
         jugadores.get(1).addInvocationOrbs(1);
-        getJugador(1).avoidToDrawCard(true);
-        getDuelLog().announcePlayerPassedHisTurn(this);
+        jugadores.get(1).getCriaturasInvocadas().forEach(c -> c.setMoved(false));
+        jugadores.get(1).avoidToDrawCard(true);
+        duelLog.announcePlayerPassedHisTurn(this);
     }
 
     public IaOne getiA() { return iA; }

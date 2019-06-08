@@ -1,14 +1,18 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.mygdx.IAs.IaOne;
+import com.mygdx.animations.NeedsToDrawAnimation;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.*;
+
+import java.util.ArrayList;
 
 /*
  * Screen Mostrada en duelo singlePlayer.
@@ -16,6 +20,12 @@ import com.mygdx.model.*;
 public class DuelScreen extends MyGdxGameScreen {
 
     /*
+     *
+     * TODO: Animacion de pasar turno (Flecha que sale señalándolo al haber movido todos los monstruos)
+     * TODO: Animación de todos los monstruos (proceso)
+     * TODO: Animación de flechita encima de carta de mano seleccionada apuntando al tablero.
+     * TODO: Carta seleccionada, subirla un poco más para arriba.
+     * TODO: Cartas que se puedan invocar, añadir resplandor azul.
      *
      *  TODO: Sonido al realizar ataque.
      *
@@ -58,7 +68,9 @@ public class DuelScreen extends MyGdxGameScreen {
     private int xTablero;
     private int yTablero;
     private IaOne iA ;
-    SpriteBatch batch;
+    private SpriteBatch batch;
+    private  NeedsToDrawAnimation needsToDrawAnimation;
+    private float animationTimer;
 
 
     public DuelScreen(ScreenManager screenManagerR) {
@@ -71,6 +83,9 @@ public class DuelScreen extends MyGdxGameScreen {
         assetManager.manager.finishLoading();
 
         batch = new SpriteBatch();
+
+        needsToDrawAnimation = new NeedsToDrawAnimation(batch);
+
         jugador = new Jugador("Manu", 0, assetManager, screenManager.skin);
         partida = new Partida(jugador, screenManager.skin, assetManager);
         tablero = partida.getTablero();
@@ -96,7 +111,7 @@ public class DuelScreen extends MyGdxGameScreen {
 
     @Override
     public void render(float delta) {
-
+        animationTimer += delta*1000;
         //Configuración del render
         Gdx.gl.glClearColor(0f, 0f, 0f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -115,7 +130,7 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getJugadores().forEach(j -> {
             dibujarMano(j.getId());
             dibujarMazo(j.getId());
-            dibujarAvatarJugadores(j.getId());
+            dibujarAvatarJugadores(j.getId(),animationTimer);
         });
 
         //Dibujamos las flechas de siguiente y anterior del cementerio.
@@ -137,10 +152,11 @@ public class DuelScreen extends MyGdxGameScreen {
         }
 
         stage.draw();
+        makeAnimationsOfSquares(partida.getSelectedCard(),partida.getJugador(0),tablero,animationTimer);
         batch.begin();
 
-        partida.getJugador(0).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
-        partida.getJugador(1).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta));
+        partida.getJugador(0).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta,animationTimer, partida.getJugador(0),partida.getSelectedCard()));
+        partida.getJugador(1).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta,animationTimer,partida.getJugador(1),partida.getSelectedCard()));
         //Dibujamos cantidad de cartas en mazo, nombres de jugadores, vidas y mana, y cartas en el cementerio.
         partida.getJugadores().forEach(j -> {
             j.getCriaturasInvocadas().forEach(criatura -> dibujarCriaturasInvocadas(criatura, j.getId()));
@@ -150,24 +166,32 @@ public class DuelScreen extends MyGdxGameScreen {
             dibujarCartaCemenerio(j.getId());
         });
 
-        drawHandSelection(partida.getJugador(0),delta);
         dibujarAvisos();
 
+        //We will draw all the animations here.
+
+        needsToDrawAnimation.render(partida.getJugador(0),delta);
         batch.end();
 
         //La máquina se mueve
         partida.getiA().executeIA(partida);
 
         if (partida.getWinnerId() != -1) { screenManager.changeScreenToResume(screenManager.SUMMARY_SCREEN, partida); }
+        if(animationTimer>1600) {animationTimer=0;}
     }
 
-
+    private void makeAnimationsOfSquares(Carta carta,Jugador jugador,Tablero tablero, float animationTimer) {
+        for(int x=0;x<Tablero.TOTAL_CASILLAS_X;x++) {
+            for(int y=0;y<Tablero.TOTAL_CASILLAS_Y;y++) {
+                tablero.getCasilla(x,y).animationAvoidSquare(animationTimer);
+                tablero.getCasilla(x,y).animationAvoidToAtack(animationTimer);
+                tablero.getCasilla(x,y).animationAvoidToMove(carta,jugador,animationTimer);
+            }
+        }
+    }
 
     @Override
-    public void dispose() {
-        super.dispose();
-    }
-
+    public void dispose() { super.dispose(); }
 
     private void dibujarLog() {
         stage.addActor(partida.getDuelLog().writeLog(assetManager, stage.getBatch()));
@@ -232,14 +256,30 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getCardInformation().setNewCardInfo(false);
     }
 
-    private void dibujarCartasColocadas(Carta carta) {
+    private void dibujarCartasColocadas(Carta carta,float animationTimer,Jugador jugador,Carta selectedCard) {
         Casilla casillaFirstPostitionCard = tablero.getCasilla(carta.getFirstPosition());
         Vector2 positionCardPx = casillaFirstPostitionCard.getCoordinatesPx();
         if (casillaFirstPostitionCard.getState() == Casilla.State.ILUMINADA) {
-            batch.draw(casillaFirstPostitionCard.getTextureCasilla2(), positionCardPx.x, positionCardPx.y);
+            if(animationTimer  < 600) {
+                batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y);
+            }else {
+                batch.draw(casillaFirstPostitionCard.getTextureCasilla2(), positionCardPx.x, positionCardPx.y);
+            }
         } else if (casillaFirstPostitionCard.getState() == Casilla.State.AVOID_TO_ATACK) {
-            batch.draw(casillaFirstPostitionCard.getTextureCasilla3(), positionCardPx.x, positionCardPx.y);
-        } else {
+            if(animationTimer  < 600) {
+                batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y);
+            }else {
+                batch.draw(casillaFirstPostitionCard.getTextureCasilla3(), positionCardPx.x, positionCardPx.y);
+            }
+        } else if(casillaFirstPostitionCard.getState() == Casilla.State.APAGADA && casillaFirstPostitionCard.tieneCriatura()
+                && casillaFirstPostitionCard.getCriatura().getOwnerId()==0 && !casillaFirstPostitionCard.getCriatura().isMoved()
+        && jugador.getId()==0 && !jugador.isAvoidToDrawCard() && selectedCard == null) {
+            if(animationTimer  < 600) {
+                batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y);
+            }else {
+                batch.draw(casillaFirstPostitionCard.getTextureCasilla4(), positionCardPx.x, positionCardPx.y);
+            }
+        }else {
             batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y);
         }
     }
@@ -297,12 +337,20 @@ public class DuelScreen extends MyGdxGameScreen {
         }
     }
 
-    private void dibujarAvatarJugadores(int jugadorId) {
+    private void dibujarAvatarJugadores(int jugadorId,float animationTimer) {
         if (partida.getOwnerTurn() == jugadorId) {
             stage.addActor(partida.getJugador(jugadorId).getAvatar());
             partida.getJugador(jugadorId).getAvatar2().remove();
             if (partida.getJugador(1).isAvoidToDamage()) {
-                stage.addActor(partida.getJugador(1).getAvatar3());
+                if(animationTimer  < 600) {
+                    //La desiluminamos
+                    partida.getJugador(1).getAvatar2().setColor(255, 255, 255, 255);
+                }else {
+                    partida.getJugador(1).getAvatar2().setColor(Color.RED);
+                }
+                //stage.addActor(partida.getJugador(1).getAvatar3());
+            }else {
+                partida.getJugador(1).getAvatar2().setColor(255, 255, 255, 255);
             }
         } else {
             if (!partida.getJugador(1).isAvoidToDamage()) {
@@ -334,7 +382,6 @@ public class DuelScreen extends MyGdxGameScreen {
         font.draw( batch, String.valueOf(partida.getJugador(jugadorId).getInvocationOrbs()), partida.getJugador(jugadorId).getPosInvocationOrbs().x, partida.getJugador(jugadorId).getPosInvocationOrbs().y);
     }
 
-
     private void dibujarAvisos() {
         if (partida.getAvisosPartida().getAvisos() == AvisosPartida.avisos.DESCARTAR_CARTAS && partida.getJugador(0).getMano().getCartasMano().size() > Partida.MAX_CARDS_IN_HAND) {
             font.setColor(255, 255, 255, 255);
@@ -346,19 +393,4 @@ public class DuelScreen extends MyGdxGameScreen {
             partida.getAvisosPartida().setShowed(false);
         }
     }
-
-    private void drawHandSelection(Jugador player,float delta) {
-        if(player.isAvoidToDrawCard()) {
-            if((int)(delta*1000) % 2 == 0) {
-                System.out.println("frame1");
-                batch.draw(player.getMazo().getTextureSelectionHand(),player.getMazo().getPositionSelectionHand().x,player.getMazo().getPositionSelectionHand().y);
-            }else {
-                System.out.println("frame-2");
-                batch.draw(player.getMazo().getTextureSelectionHand2(),player.getMazo().getPositionSelectionHand().x,player.getMazo().getPositionSelectionHand().y);
-            }
-        }
-    }
-
-
-
 }

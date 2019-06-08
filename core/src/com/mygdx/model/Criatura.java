@@ -33,7 +33,7 @@ public class Criatura extends Carta {
     ArrayList<Equipamiento> equipamientos = new ArrayList<Equipamiento>();
     Boolean moved;
 
-    public Criatura(TipoEspecie criatura, TipoElemental elemental,Texture spriteCriatura,Texture spriteCriaturaFront, Texture cardDetailInfo, int ataque,int defensa,int movimiento,int alcance){
+    public Criatura(TipoEspecie criatura, TipoElemental elemental,Texture spriteCriatura,Texture spriteCriaturaFront, Texture cardDetailInfo, int ataque,int defensa,int movimiento,int alcance, int owner){
         this.criatura=criatura;
         this.elemental=elemental;
         this.spriteCriatura=spriteCriatura;
@@ -45,6 +45,7 @@ public class Criatura extends Carta {
         tipo = Tipo.CRIATURA;
         this.cardDetailInfo=new Image(cardDetailInfo);
         this.moved=false;
+        setOwnerId(owner);
     }
 
 

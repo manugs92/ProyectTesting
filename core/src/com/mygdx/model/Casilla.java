@@ -1,6 +1,7 @@
 package com.mygdx.model;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,6 +27,7 @@ public class Casilla {
     private Texture textureCasilla;
     private Texture textureCasilla2;
     private Texture textureCasilla3;
+    private Texture textureCasilla4;
     private Image imageCasilla;
     private State state;
     private boolean cardInvoked;
@@ -55,9 +57,13 @@ public class Casilla {
 
     public Texture getTextureCasilla3() { return textureCasilla3; }
 
-    public void setTextureCasilla3(Texture textureCasilla2) { this.textureCasilla3 = textureCasilla2; }
+    public void setTextureCasilla3(Texture textureCasilla3) { this.textureCasilla3 = textureCasilla3; }
 
-    boolean tieneCriatura() { return getCriatura() != null; }
+    public Texture getTextureCasilla4() { return textureCasilla4; }
+
+    public void setTextureCasilla4(Texture textureCasilla4) { this.textureCasilla4 = textureCasilla4; }
+
+    public boolean tieneCriatura() { return getCriatura() != null; }
 
     public Image getImageCasilla() { return imageCasilla; }
 
@@ -189,7 +195,7 @@ public class Casilla {
                                 casillasDisponibles(tablero, partida);
                                 if(selectedCard.getPosition().y==8) {
                                     partida.getJugador(1).setAvoidToDamage(true);
-                                    partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
+                                    //partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
                                 }
                             }
                             partida.setSelectedCard(selectedCard);
@@ -215,7 +221,7 @@ public class Casilla {
         //Si donde hemos hecho click, estaba en la zona de daño, lo habilitamos.
         if(selectedCard.getPosition().y==8) {
             partida.getJugador(1).setAvoidToDamage(true);
-            partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
+            //partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
         }
     }
 
@@ -504,6 +510,45 @@ public class Casilla {
         });
         //Desactivamos el daño al otro jugador.
         partida.getJugador(1).setAvoidToDamage(false);
-        partida.getJugador(1).setDamageToLose(0);
+        //partida.getJugador(1).setDamageToLose(0);
+    }
+
+    public void animationAvoidSquare(float animationTimer) {
+        if(state == State.ILUMINADA) {
+            if(animationTimer  < 600) {
+                //La desiluminamos
+                getImageCasilla().setColor(255, 255, 255, 255);
+            }else {
+                getImageCasilla().setColor(0, 255, 255, 255);
+            }
+        }
+    }
+
+    public void animationAvoidToAtack(float animationTimer) {
+        if(state == State.AVOID_TO_ATACK) {
+            if(animationTimer  < 600) {
+                //La desiluminamos
+                getImageCasilla().setColor(255, 255, 255, 255);
+            }else {
+                getImageCasilla().setColor(255, 0, 255, 255);
+            }
+        }
+    }
+
+    public void animationAvoidToMove(Carta selectedCard,Jugador jugador,float animationTimer) {
+        if(state == State.APAGADA) {
+            if(tieneCriatura() && getCriatura().getOwnerId()==0
+                    && !getCriatura().isMoved() && getCriatura()!=selectedCard
+                    && selectedCard==null && !jugador.isAvoidToDrawCard()) {
+                if(animationTimer  < 800) {
+                    //La desiluminamos
+                    getImageCasilla().setColor(255, 255, 255, 255);
+                }else {
+                    getImageCasilla().setColor(Color.ROYAL);
+                }
+            }else{
+                getImageCasilla().setColor(255, 255, 255, 255);
+            }
+        }
     }
 }

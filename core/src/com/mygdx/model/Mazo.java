@@ -51,7 +51,7 @@ public class Mazo {
         mazoDefaultGUI.setPosition(positionGUI.x,positionGUI.y);
         mazoAvoidToDrawGUI.setPosition(positionGUI.x,positionGUI.y);
 
-        DefaultDeck(assetManager);
+        DefaultDeck(assetManager,jugador);
         ShuffleMazo();
     }
 
@@ -71,7 +71,7 @@ public class Mazo {
         this.cartasMazo.add(carta);
     }
 
-    public ArrayList<Carta> DefaultDeck(MyGdxGameAssetManager assetManager) {
+    public ArrayList<Carta> DefaultDeck(MyGdxGameAssetManager assetManager,Jugador jugador) {
 
         assetManager.loadCardsInfoImages();
         assetManager.manager.finishLoading();
@@ -96,7 +96,7 @@ public class Mazo {
             Criatura spyro = new Criatura(DRAGON,FUEGO,
                     textureSpriteSpyro,textureSpriteSpyroFront,
                     textureCardInfo_Spyro,
-                    3,2,2,0);
+                    3,2,22,0,jugador.getId());
             instanceCreatureDetail(spyro,"spyro",
                     textureCard_Spyro,2);
 
@@ -104,7 +104,7 @@ public class Mazo {
                     textureSpriteLavaGolem,
                     textureSpriteLavaGolemFront,
                     textureCardInfo_LavaGolem,
-                    3,3,2,0);
+                    3,3,2,0,jugador.getId());
             instanceCreatureDetail(lavaGolem,"GolemManu",
                     textureCard_LavaGolem,3 );
 
@@ -112,7 +112,7 @@ public class Mazo {
                     textureSpriteRockElemental,
                     textureSpriteRockElementalFront,
                     textureCardInfo_RockElemental,
-                    4,6,1,0);
+                    4,6,1,0,jugador.getId());
             instanceCreatureDetail(rockElemental,"RockElemental",
                     textureCard_RockElemental,4 );
         }

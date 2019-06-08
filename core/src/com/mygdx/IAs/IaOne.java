@@ -180,9 +180,10 @@ public class IaOne {
     }
 
     private void finalizeTurn(Partida partida) {
+        partida.getJugador(0).getCriaturasInvocadas().forEach(c -> c.setMoved(false));
+        partida.getJugador(0).addInvocationOrbs(1);
         partida.setOwnerTurn(0);
         partida.getJugador(0).avoidToDrawCard(true);
-        partida.getJugador(0).addInvocationOrbs(1);
     }
 
     private void logInfoMove(Partida partida, Criatura criatura) {

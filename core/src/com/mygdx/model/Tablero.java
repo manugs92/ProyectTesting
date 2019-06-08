@@ -42,6 +42,7 @@ public class Tablero {
                 casillas[x][y].setTextureCasilla(assetManager.manager.get(assetManager.imageSquare, Texture.class));
                 casillas[x][y].setTextureCasilla2(assetManager.manager.get(assetManager.imageSquare2, Texture.class));
                 casillas[x][y].setTextureCasilla3(assetManager.manager.get(assetManager.imageSquare3, Texture.class));
+                casillas[x][y].setTextureCasilla4(assetManager.manager.get(assetManager.imageSquare4,Texture.class));
                 casillas[x][y].setImageCasilla(new Image(casillas[x][y].getTextureCasilla()));
                 casillas[x][y].setState(Casilla.State.APAGADA);
                 casillas[x][y].setCoordinatesMatrix(new Vector2(x,y));
@@ -155,7 +156,7 @@ public class Tablero {
 
     private void listenerToDamageUser(Partida partida) {
         Jugador jugador2 = partida.getJugador(1);
-        partida.getJugador(1).getAvatar3().addListener(new ClickListener() {
+        partida.getJugador(1).getAvatar2().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (jugador2.isAvoidToDamage()) {
