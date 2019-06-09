@@ -33,7 +33,6 @@ public class Mano {
         assetManager.loadDuelScreenImages();
         assetManager.manager.finishLoading();
         ArrayList<Carta> cartasToRemove = new ArrayList<>();
-        //TODO error de los, arreglado
         for(int i=0;i<5;i++) {
             cartasMano.add(mazo.getShuffleMazo().get(i));
             cartasToRemove.add(mazo.getShuffleMazo().get(i));

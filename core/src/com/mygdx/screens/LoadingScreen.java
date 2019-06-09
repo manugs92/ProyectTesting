@@ -14,12 +14,9 @@ public class LoadingScreen extends MyGdxGameScreen {
 
     @Override
      public void show() {
-        // TODO Auto-generated method stub
-        System.out.println("Pantalla de carga.");
     }
 
     @Override
     public void render(float delta) {
-        // TODO Auto-generated method stub
     }
 }
