@@ -42,7 +42,7 @@ public class Cementerio {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
 
-                partida.getJugador(0).getMano().desSelected(partida);
+                partida.getJugador(0).getMano().desSelectCardsInHand(partida);
                 partida.getTablero().setAllSquaresToOff(partida.getTablero());
                 if(!partida.getJugador(jugadorId).getCementerio().isSelected() && cardsInGraveyard.size()>0) {
                     /*Test de criatura en el cementerio*/

@@ -1,8 +1,6 @@
 package com.mygdx.model;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class Criatura extends Carta {
         ROCK;
     }
 
-    int ataque, defensa, movimiento, alcance;
+    int ataque, vida, bufferVida, movimiento, alcance;
     Carta.Tipo tipo = Carta.Tipo.CRIATURA;
     //  Habilidad especial(Habilidad Especial);
     TipoEspecie criatura;
@@ -33,13 +31,14 @@ public class Criatura extends Carta {
     ArrayList<Equipamiento> equipamientos = new ArrayList<Equipamiento>();
     Boolean moved;
 
-    public Criatura(TipoEspecie criatura, TipoElemental elemental,Texture spriteCriatura,Texture spriteCriaturaFront, Texture cardDetailInfo, int ataque,int defensa,int movimiento,int alcance, int owner){
+    public Criatura(TipoEspecie criatura, TipoElemental elemental, Texture spriteCriatura, Texture spriteCriaturaFront, Texture cardDetailInfo, int ataque, int vida, int movimiento, int alcance, int owner){
         this.criatura=criatura;
         this.elemental=elemental;
         this.spriteCriatura=spriteCriatura;
         this.spriteCriaturaFront=spriteCriaturaFront;
         this.ataque=ataque;
-        this.defensa=defensa;
+        this.vida = vida;
+        this.bufferVida = vida;
         this.movimiento=movimiento;
         this.alcance=alcance;
         tipo = Tipo.CRIATURA;
@@ -58,12 +57,12 @@ public class Criatura extends Carta {
         this.ataque = ataque;
     }
 
-    public int getDefensa() {
-        return defensa;
+    public int getVida() {
+        return vida;
     }
 
-    public void setDefensa(int defensa) {
-        this.defensa = defensa;
+    public void setVida(int vida) {
+        this.vida = vida;
     }
 
     public int getMovimiento() {
@@ -132,5 +131,7 @@ public class Criatura extends Carta {
         this.moved = moved;
     }
 
+    public void setBufferVida(int vida) {this.bufferVida=vida;}
 
+    public int getBufferVida() { return bufferVida; }
 }

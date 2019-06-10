@@ -16,12 +16,14 @@ import static com.mygdx.model.Criatura.TipoEspecie.GOLEM;
 
 public class Mazo {
 
-    private final int MAX_CARDS = 40;
-    private final int MIN_CARDS = 20;
+    public static final int MAX_CARDS = 40;
+    public static final int MIN_CARDS = 20;
 
-    private final float POS_X_MAZO = Tablero.POS_X_TABLERO + (Casilla.MEDIDA_CASILLA*7);
-    private final float POS_Y_MAZO_J1 = 87;
-    private final float POS_Y_MAZO_J2 = MyGdxGame.SCREEN_HEIGHT-133;
+    public static final float POS_X_MAZO = Tablero.POS_X_TABLERO + (Casilla.MEDIDA_CASILLA*7);
+    public static final float POS_Y_MAZO_J1 = 87;
+    public static final float POS_Y_MAZO_J2 = MyGdxGame.SCREEN_HEIGHT-133;
+    public static final float POS_X_SELECTION_HAND = POS_X_MAZO + 12;
+    public static final float POS_Y_SELECTION_HAND = POS_Y_MAZO_J1 + 50;
 
     private ArrayList<Carta> cartasMazo = new ArrayList<>();
     private ArrayList<Carta> shuffleMazo = new ArrayList<>();
@@ -29,7 +31,6 @@ public class Mazo {
     private Texture textureSelectionHand, textureSelectionHand2;
     private Image mazoDefaultGUI,mazoAvoidToDrawGUI;
     private Vector2 positionGUI = new Vector2();
-    private Vector2 positionSelectionHand= new Vector2();
 
     public Mazo(MyGdxGameAssetManager assetManager, Jugador jugador) {
         assetManager.loadDeckImages();
@@ -42,8 +43,6 @@ public class Mazo {
             positionGUI.y= POS_Y_MAZO_J1;
             textureSelectionHand = assetManager.manager.get(assetManager.handSelection,Texture.class);
             textureSelectionHand2 = assetManager.manager.get(assetManager.handSelection2,Texture.class);
-            positionSelectionHand.x = POS_X_MAZO + 12;
-            positionSelectionHand.y = positionGUI.y + 50;
         }else {
             positionGUI.y= POS_Y_MAZO_J2;
         }
@@ -149,5 +148,4 @@ public class Mazo {
 
     public Texture getTextureSelectionHand2() { return textureSelectionHand2; }
 
-    public Vector2 getPositionSelectionHand() { return positionSelectionHand; }
 }

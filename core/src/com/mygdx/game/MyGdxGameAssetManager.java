@@ -26,6 +26,8 @@ public class MyGdxGameAssetManager {
     public final String imageBackCardToDraw = "icons/back_card_to_draw.png";
     public final String handSelection = "icons/hand_selection_0.png";
     public final String handSelection2 = "icons/hand_selection_1.png";
+    public final String avoidToInvoqueBg = "icons/bg_avoid_to_invoque.png";
+    public final String arrowUp = "icons/arrow_up.png";
 
     //Images from PlayersHud
     public final String manaOrb= "icons/mana_orb.png";
@@ -71,6 +73,8 @@ public class MyGdxGameAssetManager {
         manager.load(imageSquare4, Texture.class);
         manager.load(passTurnIcon,Texture.class);
         manager.load(whiteFlagIcon,Texture.class);
+        manager.load(avoidToInvoqueBg,Texture.class);
+        manager.load(arrowUp,Texture.class);
     }
 
     public void loadGraveyardImages() {

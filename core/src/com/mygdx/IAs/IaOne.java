@@ -1,6 +1,7 @@
 package com.mygdx.IAs;
 
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.model.*;
 
 import java.util.ArrayList;
@@ -34,18 +35,18 @@ public class IaOne {
 
     public void setState(State state) { this.state = state; }
 
-    public void executeIA(Partida partida) {
+    public void executeIA(Partida partida,MyGdxGameAssetManager assetManager) {
         long timer;
         if (partida.getOwnerTurn() == 1) {
             timer = System.nanoTime() / 1000;
             if (state != IaOne.State.WAIT && state != IaOne.State.INITIAL) {
                 iaIsThinking(timer);
             }
-            play(partida, timer);
+            play(partida, timer,assetManager);
         }
     }
 
-    public void play(Partida partida, float delta) {
+    public void play(Partida partida, float delta, MyGdxGameAssetManager assetManager) {
 
         IA = partida.getJugador(1);
         switch (state) {
@@ -57,7 +58,7 @@ public class IaOne {
                 logInfoTourn(partida,1);
                 //robar carta
                 IA.getMazo().drawCard(IA);
-                IA.getMano().addDefaultImage();
+                IA.getMano().addDefaultImage(assetManager);
                 IA.getMano().updateHand(1);
                 state = State.INVOCATION;
                 break;

@@ -37,7 +37,7 @@ public class Jugador {
         this.nombre=nombre;
         this.id=id;
         this.mazo = new Mazo(assetManager,this);
-        this.mano=new Mano(this.mazo);
+        this.mano=new Mano(this.mazo,assetManager);
         this.cementerio=new Cementerio(assetManager,this);
         assetManager.loadMyAvatarImage();
         assetManager.loadOtherAvatarsImages();
@@ -162,4 +162,14 @@ public class Jugador {
     public int getDamageToLose() { return damageToLose; }
 
     public void setDamageToLose(int damageToLose) { this.damageToLose = damageToLose; }
+
+    public boolean checkIfCanInvoqueCards() {
+        boolean[] canInvoque= {false};
+        mano.getCartasMano().forEach( carta -> {
+            if (carta.getCostInvocation() <= invocationOrbs) {
+                canInvoque[0] = true;
+            }
+        });
+        return  canInvoque[0];
+    }
 }

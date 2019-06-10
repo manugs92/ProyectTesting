@@ -21,17 +21,18 @@ public class Mano {
     private int numberCardsInHand;
     private int cartaJugada;
     private boolean manoCargada;
-
+    private Texture arrowUp;
 
     private ArrayList<Image> cartasManoGUI = new ArrayList<>();
+    private ArrayList<Image> avoidToInvoque = new ArrayList<>();
     private ArrayList<Image> defaultImage = new ArrayList<>();
-    private MyGdxGameAssetManager assetManager =  new MyGdxGameAssetManager();
 
 
-    public Mano(Mazo mazo){
+    public Mano(Mazo mazo, MyGdxGameAssetManager assetManager){
         assetManager.loadDeckImages();
         assetManager.loadDuelScreenImages();
         assetManager.manager.finishLoading();
+        arrowUp = assetManager.manager.get(assetManager.arrowUp);
         ArrayList<Carta> cartasToRemove = new ArrayList<>();
         for(int i=0;i<5;i++) {
             cartasMano.add(mazo.getShuffleMazo().get(i));
@@ -44,7 +45,7 @@ public class Mano {
         numberCardsInHand=5;
     }
 
-    public void drawHand(int i, Partida partida, int jugadorId) {
+    public void drawHand(int i, Partida partida, int jugadorId, MyGdxGameAssetManager assetManager) {
 
         partida.getJugadores().forEach(j -> {
             if(j.getCementerio().isSelected()) {
@@ -57,7 +58,9 @@ public class Mano {
 
         if(jugadorId==0) {
             cartasManoGUI.add(i,new Image(cartasMano.get(i).getImage()));
+            avoidToInvoque.add(i,new Image(assetManager.manager.get(assetManager.avoidToInvoqueBg,Texture.class)));
             cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
+            avoidToInvoque.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
         }else {
             cartasManoGUI.add(i,defaultImage.get(i));
             cartasManoGUI.get(i).setPosition(tablero.POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J2);
@@ -78,8 +81,10 @@ public class Mano {
                         j.getCementerio().setShowed(false);
                     });
 
+
+
                     if((partida.getSelectedCard()==null || !partida.getSelectedCard().equals(cartasMano.get(finali))) && partida.getOwnerTurn()==0 && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
-                        desSelected(partida);
+                        desSelectCardsInHand(partida);
                         partida.getJugador(0).getMano().getCartaManoGUI().get(finali).setColor(0,255,255,255);
                         if(cartasMano.get(finali).getTipo() == Carta.Tipo.CRIATURA && cartasMano.get(finali).getCostInvocation()<=partida.getJugador(0).getInvocationOrbs()) {
                             for(int i=0;i<=casillas.length-1;i++) {
@@ -150,10 +155,9 @@ public class Mano {
         }
     }
 
-    public void desSelected(Partida partida) {
+    public void desSelectCardsInHand(Partida partida) {
         for (int j = 0; j < cartasMano.size(); j++) {
         partida.getJugador(0).getMano().getCartaManoGUI().get(j).setColor(255,255,255,1f);
-
         }
     }
 
@@ -191,7 +195,12 @@ public class Mano {
         ArrayList<Image> cardsToRemove = new ArrayList<>();
 
         if(numberCardsInHand > cartasMano.size()) {
-            for(int i=0;i<numberCardsInHand;i++) { cartasManoGUI.get(i).remove(); }
+            for(int i=0;i<numberCardsInHand;i++) {
+                cartasManoGUI.get(i).remove();
+                if(jugadorId==0) {
+                    avoidToInvoque.get(i).remove();
+                }
+            }
             numberCardsInHand = cartasMano.size();
             cardsToRemove=cartasManoGUI;
             cartasManoGUI.removeAll(cardsToRemove);
@@ -200,20 +209,43 @@ public class Mano {
 
         if(numberCardsInHand < cartasMano.size()) {
             numberCardsInHand = cartasMano.size();
-            for(int i=0;i<cartasMano.size()-1;i++) { cartasManoGUI.get(i).remove(); }
+            for(int i=0;i<cartasMano.size()-1;i++) {
+                cartasManoGUI.get(i).remove();
+                if(jugadorId==0) {
+                    avoidToInvoque.get(i).remove();
+                }
+            }
             cardsToRemove=cartasManoGUI;
             cartasManoGUI.removeAll(cardsToRemove);
             manoCargada=false;
         }
     }
 
+    public void upSelectedCard(Partida partida,int jugadorId) {
+        if(jugadorId == 0) {
+            for(int i=0;i < partida.getJugador(jugadorId).getMano().getCartaManoGUI().size(); i++) {
+                cartasManoGUI.get(i).setPosition(partida.getTablero().POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
+                avoidToInvoque.get(i).setPosition(partida.getTablero().POS_X_TABLERO + (MEDIDA_CASILLA*i), POS_Y_MANO_J1);
+            }
+        }
+        int indexCard = partida.getJugador(0).getMano().getCartasMano().indexOf(partida.getSelectedCard());
+        if(indexCard>=0) {
+            cartasManoGUI.get(indexCard).setPosition(partida.getTablero().POS_X_TABLERO + (MEDIDA_CASILLA*indexCard), POS_Y_MANO_J1+10);
+            avoidToInvoque.get(indexCard).setPosition(partida.getTablero().POS_X_TABLERO + (MEDIDA_CASILLA*indexCard), POS_Y_MANO_J1+10);
+        }
+
+    }
 
     public ArrayList<Image> getDefaultImage() {
         return defaultImage;
     }
 
-    public void addDefaultImage() {
+    public void addDefaultImage(MyGdxGameAssetManager assetManager) {
         defaultImage.add( new Image(assetManager.manager.get(assetManager.imageBackCard, Texture.class)));
 
     }
+
+    public ArrayList<Image> getAvoidToInvoque() { return avoidToInvoque; }
+
+    public Texture getArrowUp() {return  arrowUp;}
 }

@@ -23,10 +23,13 @@ public class Partida {
     public static final int INITIAL_LIVES = 20;
     public static final int INITIAL_INVOCATION_ORBS = 6;
 
-    public final float posXButtonRendirse = MyGdxGame.SCREEN_WIDTH - 208;
-    public final float posYButtonRendirse = MyGdxGame.SCREEN_HEIGHT /2-50;
-    private final float posXButtonPassTurn = 900;
-    private final float posYButtonPassTurn = 200;
+    public static final float POS_X_BUTTON_RENDIRSE = MyGdxGame.SCREEN_WIDTH - 208;
+    public static final float POS_Y_BUTTON_RENDIRSE = MyGdxGame.SCREEN_HEIGHT /2-50;
+    public static final float POS_X_BUTTON_PASS_TURN = 900;
+    public static final float POS_Y_BUTTON_PASS_TURN = 200;
+    public static final float POS_X_SELECTION_HAND_PASS_TURN = POS_X_BUTTON_PASS_TURN +12;
+    public static final float POS_Y_SELECTION_HAND_PASS_TURN = POS_Y_BUTTON_PASS_TURN +50;
+
 
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private Carta selectedCard;
@@ -64,12 +67,12 @@ public class Partida {
         jugador.avoidToDrawCard(true);
         winnerId = -1;
         buttonRendirse = new Image(assetManager.manager.get(assetManager.whiteFlagIcon, Texture.class));
-        buttonRendirse.setPosition(posXButtonRendirse,posYButtonRendirse);
+        buttonRendirse.setPosition(POS_X_BUTTON_RENDIRSE, POS_Y_BUTTON_RENDIRSE);
         Partida partida = this;
         addListenerToButtonRendirse(partida);
         avisosPartida = new AvisosPartida();
         passTurn = new Image(assetManager.manager.get(assetManager.passTurnIcon,Texture.class));
-        passTurn.setPosition(posXButtonPassTurn,posYButtonPassTurn);
+        passTurn.setPosition(POS_X_BUTTON_PASS_TURN, POS_Y_BUTTON_PASS_TURN);
         addlistnerToPassTurnButton(partida);
         iA = new IaOne();
     }
@@ -129,6 +132,7 @@ public class Partida {
         jugadores.get(1).getCriaturasInvocadas().forEach(c -> c.setMoved(false));
         jugadores.get(1).avoidToDrawCard(true);
         duelLog.announcePlayerPassedHisTurn(this);
+        jugadores.forEach(jugador ->  jugador.getCriaturasInvocadas().forEach(criatura -> criatura.setBufferVida(criatura.getVida())));
     }
 
     public IaOne getiA() { return iA; }
@@ -150,7 +154,7 @@ public class Partida {
         passTurn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                getJugador(0).getMano().desSelected(partida);
+                getJugador(0).getMano().desSelectCardsInHand(partida);
                 if(jugadores.get(0).isAvoidToDrawCard()) {
                     avisosPartida.setAvisos(2,getJugador(0).getMano().getCartasMano().size());
                 } else if(jugadores.get(ownerTurn).getMano().getCartasMano().size()>MAX_CARDS_IN_HAND) {

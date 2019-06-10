@@ -169,6 +169,8 @@ public class Tablero {
                         announceUserFainted(partida,jugador2);
                         partida.setWinnerId(0);
                     }
+                    partida.setSelectedCard(null);
+                    partida.getCardInformation().updateCardInformation(partida);
                 }
             }
         });

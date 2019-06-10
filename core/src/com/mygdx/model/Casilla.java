@@ -153,7 +153,7 @@ public class Casilla {
                             tablero.setAllSquaresToOff(tablero);
                             //Deseleccionamos la carta de nuestra mano, indicamos a partida que carta hemos seleccionado
                             //Y actualizamos el visor de la carta.
-                            partida.getJugador(0).getMano().desSelected(partida);
+                            partida.getJugador(0).getMano().desSelectCardsInHand(partida);
                             partida.setSelectedCard(getCriatura());
                             partida.getCardInformation().updateCardInformation(partida);
                         }
@@ -177,7 +177,7 @@ public class Casilla {
                             //Deseleccionaremos t0do, para empezar de "0".
                             tablero.setAllSquaresToOff(tablero);
                             dropSelectedCard(partida);
-                            partida.getJugador(0).getMano().desSelected(partida);
+                            partida.getJugador(0).getMano().desSelectCardsInHand(partida);
                         }
                     }
                     //Si no se cumple ninguna de esas condiciones, es que no tenemos carta, y podremos seleccionar una.
@@ -215,7 +215,7 @@ public class Casilla {
     private void changeToClickedCreature(Partida partida, Carta selectedCard) {
         partida.getTablero().setAllSquaresToOff(partida.getTablero());
         //Deseleccionamos la carta de la mano, e indicamos donde nos podemos mover.
-        partida.getJugador(0).getMano().desSelected(partida);
+        partida.getJugador(0).getMano().desSelectCardsInHand(partida);
         partida.setSelectedCard(selectedCard);
         casillasDisponibles(partida.getTablero(),partida);
         //Si donde hemos hecho click, estaba en la zona de daño, lo habilitamos.
@@ -232,21 +232,27 @@ public class Casilla {
             //Seleccionamos mi carta y la suya para hacerlas pelear.
             Carta herCard = getCriatura();
             //Obtenemos el resultado de nuestro ataque y su ataque.
-            int resultadoAtaque = ((Criatura)herCard).getDefensa() - ((Criatura) myCard).getAtaque();
-            int resultadoDefensa = ((Criatura)myCard).getDefensa() - ((Criatura) herCard).getAtaque();
+            int resultadoAtaque = ((Criatura)herCard).getBufferVida() - ((Criatura) myCard).getAtaque();
+            int resultadoDefensa = ((Criatura)myCard).getBufferVida() - ((Criatura) herCard).getAtaque();
+            ((Criatura) herCard).setBufferVida(resultadoAtaque);
+            ((Criatura)myCard).setBufferVida(resultadoDefensa);
             //Anunciamos que se ataca a un monstruo.
-            partida.getDuelLog().announcePlayerAtackToMonster(partida,myCard,herCard);
+            partida.getDuelLog().announcePlayerAtackToMonster(myCard,herCard);
             //Anunciamos el resultado del ataque.
-            partida.getDuelLog().announceResultOfAttack(partida,myCard,herCard);
+            partida.getDuelLog().announceResultOfAttack(myCard,herCard);
             //Si el resultado del ataque<=0, eliminamos su carta, y actualizamos el log.
             if (resultadoAtaque<=0) {
                 removeHerCard(partida,herCard);
-                partida.getDuelLog().announceCardDead(partida,herCard);
+                partida.getDuelLog().announceCardDead(herCard);
+            }else {
+                ((Criatura)herCard).setBufferVida(resultadoAtaque);
             }
-            //Si el resultado de nuestra defensa es <=0, eliminamos nuestra carta y actualizamos el log.
+            //Si el resultado de nuestra vida es <=0, eliminamos nuestra carta y actualizamos el log.
             if(resultadoDefensa<=0) {
                 removeMyCard(partida,myCard);
-                partida.getDuelLog().announceCardDead(partida,myCard);
+                partida.getDuelLog().announceCardDead(myCard);
+            }else {
+                ((Criatura)myCard).setBufferVida(resultadoAtaque);
             }
             //Indicamos que nuestra carta se ha movido.
             ((Criatura) myCard).setMoved(true);
@@ -282,7 +288,7 @@ public class Casilla {
             }
         }
         removeHerCard(partida,herCard);
-        partida.getDuelLog().announceInvoquedCardDead(partida,selectedCard,herCard);
+        partida.getDuelLog().announceInvoquedCardDead(selectedCard,herCard);
         ((Criatura) selectedCard).setMoved(true);
         dropSelectedCard(partida);
     }
@@ -292,7 +298,7 @@ public class Casilla {
         //Si hacemos click en una casilla mientras tenemos una carta seleccionada.
         if(partida.getSelectedCard()!=null) {
             searchPlacedCardWhileWeHaveSelectedCard(partida);
-            partida.getJugador(0).getMano().desSelected(partida);
+            partida.getJugador(0).getMano().desSelectCardsInHand(partida);
         }
         //Si hacemos click en una casilla que tiene una carta invocada sin una carta seleccionada
         else  {

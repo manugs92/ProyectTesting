@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.model.Jugador;
+import com.mygdx.model.Mazo;
+import com.mygdx.model.Partida;
 
-public class NeedsToDrawAnimation {
+public class HandDownIndicationAnimation {
 
     // Constant rows and columns of the sprite sheet
     private static final int FRAME_COLS = 2, FRAME_ROWS = 1;
@@ -16,11 +18,12 @@ public class NeedsToDrawAnimation {
     Animation<TextureRegion> handSelection;
     Texture handSelectionSheet;
     SpriteBatch spriteBatch;
+    boolean mustPassTurn = true;
 
     // A variable for tracking elapsed time for the animation
     float stateTime;
 
-    public NeedsToDrawAnimation(SpriteBatch spriteBatch) {
+    public HandDownIndicationAnimation(SpriteBatch spriteBatch) {
         this.spriteBatch=spriteBatch;
 
         // Load the sprite sheet as a Texture
@@ -51,13 +54,27 @@ public class NeedsToDrawAnimation {
         stateTime = 0f;
     }
 
-    public void render(Jugador player,float delta) {
+    public void render(Jugador player,float delta, int ownerTurn) {
         stateTime += delta; // Accumulate elapsed animation time
         TextureRegion currentFrame = handSelection.getKeyFrame(stateTime, true);
         if(player.isAvoidToDrawCard()) {
-            spriteBatch.draw(currentFrame, player.getMazo().getPositionSelectionHand().x, player.getMazo().getPositionSelectionHand().y);
+            spriteBatch.draw(currentFrame, Mazo.POS_X_SELECTION_HAND, Mazo.POS_Y_SELECTION_HAND);
         }
-
+        final boolean[] areAllMoved = {true};
+        player.getCriaturasInvocadas().forEach( criatura -> {
+            if(!criatura.isMoved()) {
+                areAllMoved[0] = false;
+            }
+        });
+        if(!areAllMoved[0]) {
+            mustPassTurn = false;
+        }else {
+            mustPassTurn = true;
+        }
+        if(mustPassTurn && !player.isAvoidToDrawCard() && player.getCriaturasInvocadas().size()>0
+                && ownerTurn==0 && !player.checkIfCanInvoqueCards()) {
+            spriteBatch.draw(currentFrame, Partida.POS_X_SELECTION_HAND_PASS_TURN,Partida.POS_Y_SELECTION_HAND_PASS_TURN);
+        }
     }
 
 }
