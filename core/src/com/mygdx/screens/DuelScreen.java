@@ -36,7 +36,11 @@ public class DuelScreen extends MyGdxGameScreen {
      *
      * TODO: Animación de todos los monstruos (proceso).
      *
+     * TODO: Sonido al moverse.
      * TODO: Sonido al realizar ataque.
+     * TODO: Sonido al colocar carta.
+     * TODO: Sonido al invocar la carta.
+     * TODO: Animación al invocarla carta.
      *
      * TODO: Mostrar en el log cuando el rival te ataque, cuando tú pierdes vidas.
      * TODO: Mostrar en el log info cuando se roba, y cuando se descarta una carta al cementerio.
@@ -44,7 +48,6 @@ public class DuelScreen extends MyGdxGameScreen {
      * TODO: Mostrar en el log, la vida restante del jugador tras recibir daño.
      *
      * TODO: Que el rival te ataque, y tú pierdes vidas.
-     *
      * TODO: IA que te pueda atacar si estás a su alcance.
      * TODO: IA que te pueda atacar a ti si está en tus casillas de invocación.
      *
@@ -324,7 +327,8 @@ public class DuelScreen extends MyGdxGameScreen {
             }
         } else if(casillaFirstPostitionCard.getState() == Casilla.State.APAGADA && casillaFirstPostitionCard.tieneCriatura()
                 && casillaFirstPostitionCard.getCriatura().getOwnerId()==0 && !casillaFirstPostitionCard.getCriatura().isMoved()
-        && jugador.getId()==0 && !jugador.isAvoidToDrawCard() && selectedCard == null) {
+                && jugador.getId()==0 && !jugador.isAvoidToDrawCard() && selectedCard == null && !partida.getAvisosPartida().isShowed()
+                && partida.getOwnerTurn()==0) {
             if(animationTimer  < 600) {
                 batch.draw(carta.getImage(), positionCardPx.x, positionCardPx.y);
             }else {

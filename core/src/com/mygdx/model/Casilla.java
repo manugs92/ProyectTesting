@@ -332,7 +332,6 @@ public class Casilla {
                             && j.getInvoquedCards().get(i).getFirstPosition().y == getCoordinatesMatrix().y) {
                         //Comprobamos si es la misma carta, y de ser así la deseleccionamos,
                         if(partida.getSelectedCard().equals(j.getInvoquedCards().get(i))) {
-                            System.out.println(partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).getState());
                             if(partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).getState()==State.APAGADA){
                                 partida.getTablero().setAllSquaresToOff(partida.getTablero());
                                 partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
@@ -541,11 +540,10 @@ public class Casilla {
     }
 
     public void animationAvoidToMove(AvisosPartida avisosPartida,int ownerTurn,Carta selectedCard,Jugador jugador,float animationTimer) {
-        if(state == State.APAGADA) {
+        if(state == State.APAGADA && ownerTurn==0 && !avisosPartida.isShowed() && !jugador.isAvoidToDrawCard()) {
             if(tieneCriatura() && getCriatura().getOwnerId()==0
                     && !getCriatura().isMoved() && getCriatura()!=selectedCard
-                    && selectedCard==null && !jugador.isAvoidToDrawCard()
-                    && ownerTurn==0 && !avisosPartida.isShowed() ) {
+                    && selectedCard==null) {
                 if(animationTimer  < 800) {
                     //La desiluminamos
                     getImageCasilla().setColor(255, 255, 255, 255);

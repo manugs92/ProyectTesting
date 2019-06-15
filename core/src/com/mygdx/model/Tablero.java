@@ -150,6 +150,7 @@ public class Tablero {
         for (int x = 0; x < tablero.getCasillas().length; x++) {
             for (int y = 0; y < tablero.getCasillas()[x].length; y++) {
                 tablero.getCasilla(x, y).setState(Casilla.State.APAGADA);
+                tablero.getCasilla(x,y).getImageCasilla().setColor(255,255,255,255);
             }
         }
     }
