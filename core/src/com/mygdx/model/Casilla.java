@@ -516,7 +516,6 @@ public class Casilla {
         });
         //Desactivamos el daño al otro jugador.
         partida.getJugador(1).setAvoidToDamage(false);
-        //partida.getJugador(1).setDamageToLose(0);
     }
 
     public void animationAvoidSquare(float animationTimer) {
@@ -541,11 +540,12 @@ public class Casilla {
         }
     }
 
-    public void animationAvoidToMove(Carta selectedCard,Jugador jugador,float animationTimer) {
+    public void animationAvoidToMove(AvisosPartida avisosPartida,int ownerTurn,Carta selectedCard,Jugador jugador,float animationTimer) {
         if(state == State.APAGADA) {
             if(tieneCriatura() && getCriatura().getOwnerId()==0
                     && !getCriatura().isMoved() && getCriatura()!=selectedCard
-                    && selectedCard==null && !jugador.isAvoidToDrawCard()) {
+                    && selectedCard==null && !jugador.isAvoidToDrawCard()
+                    && ownerTurn==0 && !avisosPartida.isShowed() ) {
                 if(animationTimer  < 800) {
                     //La desiluminamos
                     getImageCasilla().setColor(255, 255, 255, 255);

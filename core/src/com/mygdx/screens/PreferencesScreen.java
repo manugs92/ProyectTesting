@@ -40,8 +40,10 @@ public class PreferencesScreen extends MyGdxGameScreen {
 
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-
         assetManager=screenManagerR.asset;
+        assetManager.loadConfigurationScreenImages();
+        assetManager.manager.finishLoading();
+
         showConfigurationMenu(screenManagerR.skin);
         addListenersToButtons();
         this.soundsConfiguration=screenManagerR.sounds;
@@ -56,9 +58,6 @@ public class PreferencesScreen extends MyGdxGameScreen {
         label.setBounds(20,stage.getHeight()-100,stage.getWidth(),100);
         stage.addActor(label);
 
-
-        screenManager.asset.loadConfigurationScreenImages();
-        screenManager.asset.manager.finishLoading();
 
         spriteBatch = new SpriteBatch();
 

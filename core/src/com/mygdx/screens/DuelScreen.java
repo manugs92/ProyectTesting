@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.mygdx.IAs.IaOne;
 import com.mygdx.animations.HandDownIndicationAnimation;
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
 import com.mygdx.model.*;
@@ -24,38 +25,38 @@ import static com.mygdx.model.Mano.POS_Y_MANO_J1;
 public class DuelScreen extends MyGdxGameScreen {
 
     /*
-     *
      * To make the JarFile: gradlew desktop:dist
+     *
+     * TODO: Boton de mostrar u ocultar log. (Crear su state y así poder cambiar la imagen en base a su estado)
+     * TODO: En configuraciones, mostrar si queremos visualizar el log o no.
+     *
+     * TODO: Menú hamburguesa para mostrar la configuración. (Dicha configuración se mostrará a la derecha y cuando se abra, ocupará el mismo tamaño que el duelLog pero a la izquierda.
+     * TODO: Mostrar los mismos campos que se visualizan desde la pestaña de configuración.
+     * TODO: Volumen de música, Musica activa, sonidos activos, animaciones de criaturas activas, animaciones de ayuda activas.
      *
      * TODO: Animación de todos los monstruos (proceso).
      *
-     *  TODO: Sonido al realizar ataque.
+     * TODO: Sonido al realizar ataque.
      *
-     *  TODO: Mostrar en el log cuando el rival te ataque, cuando tú pierdes vidas.
-     *  TODO: Mostrar en el log info cuando se roba, y cuando se descarta una carta al cementerio.
-     *  TODO: Mostrar en el log, la vida restante del bicho.
-     *  TODO: Mostrar en el log, la vida restante del jugador tras recibir daño.
+     * TODO: Mostrar en el log cuando el rival te ataque, cuando tú pierdes vidas.
+     * TODO: Mostrar en el log info cuando se roba, y cuando se descarta una carta al cementerio.
+     * TODO: Mostrar en el log, la vida restante del bicho.
+     * TODO: Mostrar en el log, la vida restante del jugador tras recibir daño.
      *
-     *  TODO: Que el rival te ataque, y tú pierdes vidas.
+     * TODO: Que el rival te ataque, y tú pierdes vidas.
      *
-     *  TODO: IA que te pueda atacar si estás a su alcance.
-     *  TODO: IA que te pueda atacar a ti si está en tus casillas de invocación.
+     * TODO: IA que te pueda atacar si estás a su alcance.
+     * TODO: IA que te pueda atacar a ti si está en tus casillas de invocación.
      *
-     *
-     *  TODO: Poner música de juego en (main menú,configuración), en duelo, y en resumeScreen.
-     *  TODO: Poner sonidos al invocar, al robar, al atacar..
-     *
-     *  TODO: HUD donde sale el turno, volumen (mas y menos)
-     *
-     *  TODO: Ventana de configuración posibilidad de editar valores del juego. (Volumen del juego, y desactivar música/sonidos).
-     *
-     *  TODO: Optimizar código de Casilla.
+     * TODO: Poner música de juego en (main menú,configuración), en duelo, y en resumeScreen.
+     * TODO: Poner sonidos al invocar, al robar, al atacar..
      * */
 
     private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
 
     //Variables usadas por la GUI
     private Table tablatableroGUI = new Table();
+    Table hudTable = new Table();
 
     //Fixme hacerlo global
 
@@ -107,6 +108,9 @@ public class DuelScreen extends MyGdxGameScreen {
         dibujarBotones();
         //Mostramos el log.
         partida.getDuelLog().announceStartMsgLog(partida);
+
+
+
     }
 
     @Override
@@ -176,6 +180,7 @@ public class DuelScreen extends MyGdxGameScreen {
         //La máquina se mueve
         partida.getiA().executeIA(partida,assetManager);
 
+
         if (partida.getWinnerId() != -1) { screenManager.changeScreenToResume(screenManager.SUMMARY_SCREEN, partida); }
         if(animationTimer>1600) {animationTimer=0;}
     }
@@ -185,7 +190,7 @@ public class DuelScreen extends MyGdxGameScreen {
             for(int y=0;y<Tablero.TOTAL_CASILLAS_Y;y++) {
                 tablero.getCasilla(x,y).animationAvoidSquare(animationTimer);
                 tablero.getCasilla(x,y).animationAvoidToAtack(animationTimer);
-                tablero.getCasilla(x,y).animationAvoidToMove(carta,jugador,animationTimer);
+                tablero.getCasilla(x,y).animationAvoidToMove(partida.getAvisosPartida(),partida.getOwnerTurn(),carta,jugador,animationTimer);
             }
         }
     }
@@ -250,14 +255,18 @@ public class DuelScreen extends MyGdxGameScreen {
     }
 
     public void drawAnimationCardsAbleToInvoque(int jugadorId) {
-        if(jugadorId==0) {
-            for (int i = 0; i < partida.getJugador(0).getMano().getCartaManoGUI().size(); i++) {
+        if(jugadorId==0 && !partida.getAvisosPartida().isShowed() && !partida.getJugador(0).isAvoidToDrawCard()) {
+            partida.getJugador(0).getMano().getAvoidToInvoque().forEach(carta -> {
                 if (animationTimer < 600) {
-                    partida.getJugador(0).getMano().getAvoidToInvoque().get(i).setVisible(true);
+                    carta.setVisible(true);
                 } else {
-                    partida.getJugador(0).getMano().getAvoidToInvoque().get(i).setVisible(false);
+                    carta.setVisible(false);
                 }
-            }
+            });
+        }else if(jugadorId==0 && partida.getAvisosPartida().isShowed()
+                || partida.getOwnerTurn()==1
+                || partida.getOwnerTurn()==0 && partida.getJugador(0).isAvoidToDrawCard()) {
+            partida.getJugador(0).getMano().getAvoidToInvoque().forEach(carta -> carta.setVisible(false));
         }
     }
 
@@ -390,7 +399,6 @@ public class DuelScreen extends MyGdxGameScreen {
                 }else {
                     partida.getJugador(1).getAvatar2().setColor(Color.RED);
                 }
-                //stage.addActor(partida.getJugador(1).getAvatar3());
             }else {
                 partida.getJugador(1).getAvatar2().setColor(255, 255, 255, 255);
             }
@@ -435,4 +443,5 @@ public class DuelScreen extends MyGdxGameScreen {
             partida.getAvisosPartida().setShowed(false);
         }
     }
+
 }
