@@ -221,7 +221,6 @@ public class Casilla {
         //Si donde hemos hecho click, estaba en la zona de daño, lo habilitamos.
         if(selectedCard.getPosition().y==8) {
             partida.getJugador(1).setAvoidToDamage(true);
-            //partida.getJugador(1).setDamageToLose(((Criatura) selectedCard).getAtaque());
         }
     }
 
@@ -315,7 +314,12 @@ public class Casilla {
                         && j.getInvoquedCards().get(i).getFirstPosition().y == getCoordinatesMatrix().y) {
                     partida.setSelectedCard(j.getInvoquedCards().get(i));
                     partida.getCardInformation().updateCardInformation(partida);
-                    partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+                    if(j.getId()==0) {
+                        partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+                    }else {
+                        partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.AVOID_TO_ATACK);
+                    }
+
                     i = j.getInvoquedCards().size();
                 }
             }
@@ -334,7 +338,12 @@ public class Casilla {
                         if(partida.getSelectedCard().equals(j.getInvoquedCards().get(i))) {
                             if(partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).getState()==State.APAGADA){
                                 partida.getTablero().setAllSquaresToOff(partida.getTablero());
-                                partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+                                if(j.getId()==0) {
+                                    partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+                                }else {
+                                    partida.getTablero().getCasilla(partida.getSelectedCard().getPosition().x,partida.getSelectedCard().getPosition().y).setState(State.AVOID_TO_ATACK);
+                                }
+
                             }else {
                                 dropSelectedCard(partida);
                             }
@@ -344,7 +353,12 @@ public class Casilla {
                             partida.getTablero().setAllSquaresToOff(partida.getTablero());
                             partida.setSelectedCard(j.getInvoquedCards().get(i));
                             partida.getCardInformation().updateCardInformation(partida);
-                            partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+                            if(j.getId()==0) {
+                                partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.ILUMINADA);
+                            }else {
+                                partida.getTablero().getCasilla( partida.getSelectedCard().getPosition().x, partida.getSelectedCard().getPosition().y).setState(State.AVOID_TO_ATACK);
+                            }
+
                         }
                         founded[0] = true;
                     }
@@ -540,19 +554,18 @@ public class Casilla {
     }
 
     public void animationAvoidToMove(AvisosPartida avisosPartida,int ownerTurn,Carta selectedCard,Jugador jugador,float animationTimer) {
-        if(state == State.APAGADA && ownerTurn==0 && !avisosPartida.isShowed() && !jugador.isAvoidToDrawCard()) {
-            if(tieneCriatura() && getCriatura().getOwnerId()==0
-                    && !getCriatura().isMoved() && getCriatura()!=selectedCard
-                    && selectedCard==null) {
-                if(animationTimer  < 800) {
-                    //La desiluminamos
-                    getImageCasilla().setColor(255, 255, 255, 255);
-                }else {
-                    getImageCasilla().setColor(Color.ROYAL);
-                }
-            }else{
+        if(state == State.APAGADA && ownerTurn==0 && !avisosPartida.isShowed() && !jugador.isAvoidToDrawCard()
+                &&!getCriatura().isMoved() && getCriatura()!=selectedCard  && !jugador.getCriaturasInvocadas().contains(selectedCard)
+                || selectedCard==null &&!getCriatura().isMoved() && !avisosPartida.isShowed() && !jugador.isAvoidToDrawCard()) {
+            if (animationTimer < 800) {
+                //La desiluminamos
                 getImageCasilla().setColor(255, 255, 255, 255);
+            } else {
+                getImageCasilla().setColor(Color.ROYAL);
             }
         }
+        else{
+                getImageCasilla().setColor(255, 255, 255, 255);
+            }
     }
 }

@@ -7,48 +7,40 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mygdx.game.MyGdxGameScreen;
+import com.mygdx.managers.MyGdxGameScreenManager;
 
 /*
  * Screen inicial para cuando abrimos el juego.
  * */
 public class MainScreen extends MyGdxGameScreen {
 
-    private SpriteBatch batch;
-
-    public MainScreen(ScreenManager screenManagerR) {
-        super(screenManagerR);
+    public MainScreen(MyGdxGameScreenManager myGdxGameScreenManagerR) {
+        super(myGdxGameScreenManagerR);
     }
 
     @Override
     public void show() {
-        stage.setViewport(screenManager.fitViewport);
+        stage.setViewport(myGdxGameScreenManager.fitViewport);
 
         /*GUI de la vista*/
-        Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
-        TextButton newGame = new TextButton("Empezar partida", skin);
-        TextButton preferences = new TextButton("Preferencias", skin);
-        TextButton exit = new TextButton("Salir", skin);
-
+        TextButton newGame = new TextButton("Empezar partida", myGdxGameScreenManager.skin);
+        TextButton preferences = new TextButton("Preferencias", myGdxGameScreenManager.skin);
+        TextButton exit = new TextButton("Salir", myGdxGameScreenManager.skin);
 
         newGame.getLabel().setFontScale(2,2);
         preferences.getLabel().setFontScale(2,2);
         exit.getLabel().setFontScale(2,2);
 
-
-        //Variables usadas para dibujar.
-        batch = new SpriteBatch();
-
         //Listeners de los botones.
         newGame.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) { screenManager.changeScreen(screenManager.DUEL_SCREEN); }
+            public void changed(ChangeEvent event, Actor actor) { myGdxGameScreenManager.changeScreen(myGdxGameScreenManager.DUEL_SCREEN); }
         });
 
         preferences.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) { screenManager.changeScreen(screenManager.PREFERENCES_SCREEN); }
+            public void changed(ChangeEvent event, Actor actor) { myGdxGameScreenManager.changeScreen(myGdxGameScreenManager.PREFERENCES_SCREEN); }
         });
-
 
         exit.addListener(new ChangeListener() {
             @Override
@@ -59,7 +51,6 @@ public class MainScreen extends MyGdxGameScreen {
         table.setFillParent(true);
         table.setDebug(false);
 
-
         //Añadimos el contenido a la tabla.
         table.add(newGame).fillX().uniformX().size(500,100);
         table.row().pad(20, 0, 20, 0);
@@ -67,11 +58,9 @@ public class MainScreen extends MyGdxGameScreen {
         table.row().pad(20, 0, 20, 0);
         table.add(exit).fillX().uniformX().size(500,100);
 
-
         //Asignamos la imagen al stage.
         stage.addActor(table);
     }
-
 
     @Override
     public void render(float delta) {
@@ -83,14 +72,6 @@ public class MainScreen extends MyGdxGameScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        /*
-         * Seteamos el tamaño de la ventana, y seteamos los elementos en función de su tamaño.
-         * */
-        stage.getViewport().update(width, height, true);
     }
 
     @Override

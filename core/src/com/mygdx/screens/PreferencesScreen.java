@@ -3,18 +3,14 @@ package com.mygdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.configuration.SoundsConfiguration;
-import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
+import com.mygdx.managers.MyGdxGameScreenManager;
 
 
 /*
@@ -22,45 +18,24 @@ import com.mygdx.game.MyGdxGameScreen;
 * */
 public class PreferencesScreen extends MyGdxGameScreen {
 
-
-    private Stage stage;
-
     private Slider slider;
     private Image backButton;
     private CheckBox cbActiveMusic;
     private CheckBox cbactiveSounds;
     private TextField textFieldPlayerName;
-    SpriteBatch spriteBatch;
-    MyGdxGameAssetManager assetManager ;
-    SoundsConfiguration soundsConfiguration;
 
-
-    public PreferencesScreen(ScreenManager screenManagerR) {
-        super(screenManagerR);
-
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        assetManager=screenManagerR.asset;
-        assetManager.loadConfigurationScreenImages();
-        assetManager.manager.finishLoading();
-
-        showConfigurationMenu(screenManagerR.skin);
+    public PreferencesScreen(MyGdxGameScreenManager myGdxGameScreenManagerR) {
+        super(myGdxGameScreenManagerR);
+        showConfigurationMenu(skin);
         addListenersToButtons();
-        this.soundsConfiguration=screenManagerR.sounds;
     }
 
     @Override
      public void show() {
-
-        stage.setViewport(screenManager.fitViewport);
         // TODO Auto-generated method stub
-        Label label = new Label("Configuración",screenManager.skin);
+        Label label = new Label("Configuración", myGdxGameScreenManager.skin);
         label.setBounds(20,stage.getHeight()-100,stage.getWidth(),100);
         stage.addActor(label);
-
-
-        spriteBatch = new SpriteBatch();
-
     }
 
     @Override
@@ -72,37 +47,15 @@ public class PreferencesScreen extends MyGdxGameScreen {
     }
 
     @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        stage.getViewport().update(width, height, true);
-
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+       super.dispose();
     }
 
     private void addListenersToButtons() {
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                soundsConfiguration.setGLOBAL_SOUND(slider.getValue());
+                myGdxGameConfigurationManager.soundsConfiguration.setGLOBAL_SOUND(slider.getValue());
             }
         });
 
@@ -110,12 +63,12 @@ public class PreferencesScreen extends MyGdxGameScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(!cbActiveMusic.isChecked()) {
-                    soundsConfiguration.mute(false);
-                    soundsConfiguration.setVolume( 0.5f);
+                    myGdxGameConfigurationManager.soundsConfiguration.mute(false);
+                    myGdxGameConfigurationManager.soundsConfiguration.setVolume( 0.5f);
                     slider.setValue(0.5f);
                 }else {
-                    soundsConfiguration.mute(true);
-                    soundsConfiguration.setVolume(0);
+                    myGdxGameConfigurationManager.soundsConfiguration.mute(true);
+                    myGdxGameConfigurationManager. soundsConfiguration.setVolume(0);
                     slider.setValue(0);
                 }
 
@@ -125,7 +78,7 @@ public class PreferencesScreen extends MyGdxGameScreen {
         cbactiveSounds.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                soundsConfiguration.mute(true);
+                myGdxGameConfigurationManager.soundsConfiguration.mute(true);
             }
         });
 
@@ -133,36 +86,38 @@ public class PreferencesScreen extends MyGdxGameScreen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
-                screenManager.changeScreen(ScreenManager.MAIN_SCREEN);
+                myGdxGameScreenManager.changeScreen(MyGdxGameScreenManager.MAIN_SCREEN);
             }
         });
 
 
     }
 
+    //Se tiene que cargar todos los datos del jugador, si existe en la BD.(Si no, se pedirá crear una cuenta).
     private void showConfigurationMenu(Skin skin) {
+        assetManager.loadConfigurationScreenImages();
+        assetManager.manager.finishLoading();
         textureBgScreen = assetManager.manager.get(assetManager.backgroundBlue,Texture.class);
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         stage.addActor(new Image(textureBgScreen));
         //Configuration of widgets
 
         Table table = new Table();
-        //BackgroundTable backgroundTable = new BackgroundTable("black.png");
 
         Label playerName = new Label("Nombre de jugador: ",skin);
         playerName.getStyle().fontColor.set(255,255,255,255);
 
         Label volumeValue = new Label("Volumen musica: ",skin);
 
-//        textFieldPlayerName = new TextField("",skin);
-//        if(.getPlayerName()!=null) {
-//            textFieldPlayerName.setText(.getPlayerName());
-//        }
+        textFieldPlayerName = new TextField("",skin);
+        if(null==null) {
+            textFieldPlayerName.setText("PLAYER");
+       }
 
         Label activeMusic = new Label("Musica activa: ",skin);
 
         cbActiveMusic = new CheckBox("",skin);
-        if(screenManager.sounds.getGLOBAL_SOUND()==0) {
+        if(myGdxGameScreenManager.myGdxGameConfigurationManager.soundsConfiguration.getGLOBAL_SOUND()==0) {
             cbActiveMusic.setChecked(true);
         }else {
             cbActiveMusic.setChecked(false);
@@ -171,7 +126,7 @@ public class PreferencesScreen extends MyGdxGameScreen {
         Label activeSounds = new Label("Sonidos activos: ",skin);
 
         cbactiveSounds = new CheckBox("",skin);
-        if(screenManager.sounds.getGLOBAL_SOUND()==0) {
+        if( myGdxGameConfigurationManager.soundsConfiguration.getGLOBAL_SOUND()==0) {
             cbactiveSounds.setChecked(true);
         }else {
             cbactiveSounds.setChecked(false);
@@ -179,7 +134,7 @@ public class PreferencesScreen extends MyGdxGameScreen {
 
 
         slider = new Slider(0,1,0.05f,false,skin);
-        slider.setValue(screenManager.sounds.getGLOBAL_SOUND());
+        slider.setValue(myGdxGameConfigurationManager.soundsConfiguration.getGLOBAL_SOUND());
         slider.setSize(450,50);
 
         Texture textureBack = assetManager.manager.get(assetManager.back_arrow,Texture.class);

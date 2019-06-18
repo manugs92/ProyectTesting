@@ -1,14 +1,14 @@
 package com.mygdx.model;
 
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
 import com.mygdx.gui.BackgroundScroll;
 
 import java.util.ArrayList;
@@ -20,11 +20,48 @@ public class DuelLog {
     private Texture textureBgScroll;
     private Skin skin;
     private ScrollPane scrollPane;
+    private boolean showed;
+    private Image hideIcon;
+    private Image showIcon;
 
-    public DuelLog(Skin skin) {
+    public DuelLog(Skin skin, MyGdxGameAssetManager assetManager) {
         this.skin=skin;
         newMsg=true;
         duelLog.add("Duelo empezado");
+
+        //TODO: Load this preference from player's preferences
+        showed=true;
+
+        assetManager.loadHideOrShowLog();
+        assetManager.manager.finishLoading();
+        hideIcon = new Image(assetManager.manager.get(assetManager.hide,Texture.class));
+        hideIcon.setPosition(420,MyGdxGame.SCREEN_HEIGHT-40);
+        showIcon = new Image(assetManager.manager.get(assetManager.show,Texture.class));
+        showIcon.setPosition(420,MyGdxGame.SCREEN_HEIGHT-40);
+        hideIcon.setVisible(true);
+        showIcon.setVisible(false);
+        hideIcon.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                showed = false;
+                showIcon.setVisible(true);
+                hideIcon.setVisible(false);
+                newMsg=true;
+                getScrollPane().remove();
+            }
+        });
+        showIcon.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                showed = true;
+                showIcon.setVisible(false);
+                hideIcon.setVisible(true);
+                newMsg=true;
+                getScrollPane().remove();
+            }
+        });
     }
 
 
@@ -44,7 +81,7 @@ public class DuelLog {
         scrollPane.setPosition(0,MyGdxGame.SCREEN_HEIGHT-(MyGdxGame.SCREEN_HEIGHT/2));
         scrollPane.setWidth(400);
         scrollPane.setHeight(MyGdxGame.SCREEN_HEIGHT/2);
-        scrollPane.setScrollbarsVisible(true);
+        scrollPane.setScrollbarsVisible(false);
         scrollPane.setForceScroll(false,true);
         scrollPane.setFadeScrollBars(true);
         scrollPane.layout ();
@@ -59,6 +96,12 @@ public class DuelLog {
 
         scrollPane.layout ();
         scrollPane.setScrollPercentY (100);
+
+        if(!showed) {
+            scrollTable.setVisible(false);
+        }else {
+            scrollTable.setVisible(true);
+        }
 
         newMsg=false;
         return scrollPane;
@@ -93,6 +136,7 @@ public class DuelLog {
         }
 
         newMsg=false;
+
         return scrollPane;
     }
 
@@ -114,6 +158,14 @@ public class DuelLog {
     }
 
     public void addMsgToLog(String msg){ duelLog.add(msg); }
+
+    public boolean isShowed() { return showed; }
+
+    public void setShowed(boolean showed) {this.showed=showed;}
+
+    public Image getHideIcon() {return  hideIcon;}
+
+    public Image getShowIcon() { return showIcon; }
 
     //Mostramos el primer mensaje del log de inicio de partida.
     public void announceStartMsgLog(Partida partida) {

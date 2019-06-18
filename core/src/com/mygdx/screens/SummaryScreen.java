@@ -1,7 +1,6 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,8 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
+import com.mygdx.managers.MyGdxGameScreenManager;
 import com.mygdx.model.Partida;
 
 
@@ -28,14 +28,12 @@ public class SummaryScreen extends MyGdxGameScreen {
     private final String LOOSER_TEXT = "PERDEDOR";
 
     private SpriteBatch batch;
-    private MyGdxGameAssetManager assetManager=new MyGdxGameAssetManager();
     private Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
     private Partida partida;
-    private BitmapFont font = new BitmapFont();
     private Image myAvatar,rivalAvatar;
 
-    public SummaryScreen(ScreenManager screenManager, Partida partida) {
-        super(screenManager);
+    public SummaryScreen(MyGdxGameScreenManager myGdxGameScreenManager, Partida partida) {
+        super(myGdxGameScreenManager);
         this.partida=partida;
         stage.getActors().get(0).remove(); //Removemos el background del juego para poner otro nuevo.
         textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg-resumeScreen.png"));
@@ -45,11 +43,7 @@ public class SummaryScreen extends MyGdxGameScreen {
 
     @Override
     public void show() {
-
         batch = new SpriteBatch();
-
-        //detectar clicks
-        Gdx.input.setInputProcessor(stage);
 
         font.setColor(255,255,255,255);
 
@@ -58,21 +52,19 @@ public class SummaryScreen extends MyGdxGameScreen {
             rivalAvatar = partida.getJugador(1).getAvatar2();
             myAvatar.setPosition(POSITION_X_MYAVATAR,POSITION_Y_MYAVATAR);
             rivalAvatar.setPosition(POSITION_X_RIVALAVATAR,POSITION_Y_RIVALAVATAR);
-
         }else {
             myAvatar = partida.getJugador(0).getAvatar2();
             rivalAvatar = partida.getJugador(1).getAvatar();
             myAvatar.setPosition(POSITION_X_MYAVATAR,POSITION_Y_MYAVATAR);
             rivalAvatar.setPosition(POSITION_X_RIVALAVATAR,POSITION_Y_RIVALAVATAR);
         }
-
         TextButton backButton = new TextButton("Continuar",skin);
         backButton.setPosition(MyGdxGame.SCREEN_WIDTH-200,50);
         backButton.setColor(Color.BLUE);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float cx, float cy) {
-                screenManager.changeScreen(ScreenManager.MAIN_SCREEN);
+                myGdxGameScreenManager.changeScreen(MyGdxGameScreenManager.MAIN_SCREEN);
             }
         });
 
@@ -82,7 +74,6 @@ public class SummaryScreen extends MyGdxGameScreen {
         stage.addActor(partida.getDuelLog().writeLogSumaryScreen(assetManager,batch));
 
     }
-
 
     @Override
     public void render(float delta) {
@@ -122,8 +113,9 @@ public class SummaryScreen extends MyGdxGameScreen {
         }
 
         batch.end();
-
-
     }
+
+    @Override
+    public void dispose() { super.dispose(); }
 
 }

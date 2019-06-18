@@ -3,21 +3,17 @@ package com.mygdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.mygdx.IAs.IaOne;
 import com.mygdx.animations.HandDownIndicationAnimation;
-import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
 import com.mygdx.game.MyGdxGameScreen;
+import com.mygdx.managers.MyGdxGameScreenManager;
 import com.mygdx.model.*;
 
 import java.util.ArrayList;
-
-import static com.mygdx.model.Casilla.MEDIDA_CASILLA;
-import static com.mygdx.model.Mano.POS_Y_MANO_J1;
 
 /*
  * Screen Mostrada en duelo singlePlayer.
@@ -27,8 +23,10 @@ public class DuelScreen extends MyGdxGameScreen {
     /*
      * To make the JarFile: gradlew desktop:dist
      *
-     * TODO: Boton de mostrar u ocultar log. (Crear su state y así poder cambiar la imagen en base a su estado)
      * TODO: En configuraciones, mostrar si queremos visualizar el log o no.
+     * TODO: Carta que se visualiza desde el log, cargarla aun sin deseleccionar nuestra carta.
+     * TODO: Atacar haciendo click derecho.
+     * TODO: Deseleccionar carta con tecla escape.
      *
      * TODO: Menú hamburguesa para mostrar la configuración. (Dicha configuración se mostrará a la derecha y cuando se abra, ocupará el mismo tamaño que el duelLog pero a la izquierda.
      * TODO: Mostrar los mismos campos que se visualizan desde la pestaña de configuración.
@@ -55,14 +53,10 @@ public class DuelScreen extends MyGdxGameScreen {
      * TODO: Poner sonidos al invocar, al robar, al atacar..
      * */
 
-    private MyGdxGameAssetManager assetManager = new MyGdxGameAssetManager();
-
     //Variables usadas por la GUI
     private Table tablatableroGUI = new Table();
-    Table hudTable = new Table();
 
     //Fixme hacerlo global
-
     //Variables temporales (hasta que el jugador se cree desde algun lado)
     private Jugador jugador;
 
@@ -77,8 +71,8 @@ public class DuelScreen extends MyGdxGameScreen {
     private float animationTimer;
 
 
-    public DuelScreen(ScreenManager screenManagerR) {
-        super(screenManagerR);
+    public DuelScreen(MyGdxGameScreenManager myGdxGameScreenManagerR) {
+        super(myGdxGameScreenManagerR);
     }
 
     @Override
@@ -90,8 +84,8 @@ public class DuelScreen extends MyGdxGameScreen {
 
         handDownIndicationAnimation = new HandDownIndicationAnimation(batch);
 
-        jugador = new Jugador("Manu", 0, assetManager, screenManager.skin);
-        partida = new Partida(jugador, screenManager.skin, assetManager);
+        jugador = new Jugador("Manu", 0, assetManager, skin);
+        partida = new Partida(jugador, skin, assetManager);
         tablero = partida.getTablero();
         xTablero = tablero.getCasillas().length;
         yTablero = tablero.getTablero().getCasillas()[0].length;
@@ -111,9 +105,6 @@ public class DuelScreen extends MyGdxGameScreen {
         dibujarBotones();
         //Mostramos el log.
         partida.getDuelLog().announceStartMsgLog(partida);
-
-
-
     }
 
     @Override
@@ -158,7 +149,10 @@ public class DuelScreen extends MyGdxGameScreen {
         }
 
         stage.draw();
-        makeAnimationsOfSquares(partida.getSelectedCard(),partida.getJugador(0),tablero,animationTimer);
+        if(partida.getOwnerTurn()==0) {
+            makeAnimationsOfSquares(partida.getSelectedCard(),partida.getJugador(0),tablero,animationTimer);
+        }
+
         batch.begin();
 
         partida.getJugador(0).getInvoquedCards().forEach(carta -> dibujarCartasColocadas(carta,animationTimer, partida.getJugador(0),partida.getSelectedCard()));
@@ -184,16 +178,16 @@ public class DuelScreen extends MyGdxGameScreen {
         partida.getiA().executeIA(partida,assetManager);
 
 
-        if (partida.getWinnerId() != -1) { screenManager.changeScreenToResume(screenManager.SUMMARY_SCREEN, partida); }
+        if (partida.getWinnerId() != -1) { myGdxGameScreenManager.changeScreenToResume(myGdxGameScreenManager.SUMMARY_SCREEN, partida); }
         if(animationTimer>1600) {animationTimer=0;}
     }
 
     private void makeAnimationsOfSquares(Carta carta,Jugador jugador,Tablero tablero, float animationTimer) {
+        jugador.getCriaturasInvocadas().forEach( criatura -> tablero.getCasilla(criatura.getLastPosition().x,criatura.getLastPosition().y).animationAvoidToMove(partida.getAvisosPartida(),partida.getOwnerTurn(),carta,jugador,animationTimer));
         for(int x=0;x<Tablero.TOTAL_CASILLAS_X;x++) {
             for(int y=0;y<Tablero.TOTAL_CASILLAS_Y;y++) {
                 tablero.getCasilla(x,y).animationAvoidSquare(animationTimer);
                 tablero.getCasilla(x,y).animationAvoidToAtack(animationTimer);
-                tablero.getCasilla(x,y).animationAvoidToMove(partida.getAvisosPartida(),partida.getOwnerTurn(),carta,jugador,animationTimer);
             }
         }
     }
@@ -202,8 +196,10 @@ public class DuelScreen extends MyGdxGameScreen {
     public void dispose() { super.dispose(); }
 
     private void dibujarLog() {
-        stage.addActor(partida.getDuelLog().writeLog(assetManager, batch));
-        partida.getDuelLog().setNewMsgFalse();
+            stage.addActor(partida.getDuelLog().getHideIcon());
+            stage.addActor(partida.getDuelLog().getShowIcon());
+            stage.addActor(partida.getDuelLog().writeLog(assetManager, batch));
+            partida.getDuelLog().setNewMsgFalse();
     }
 
     //Método que se encarga de añadir las casillas del tablero al stage.
@@ -219,7 +215,6 @@ public class DuelScreen extends MyGdxGameScreen {
 
     private void dibujarMano(int jugadorId) {
         //Dibujar manos
-
         if (!partida.getJugador(jugadorId).getMano().isManoCargada()) {
             for (int i = 0; i < partida.getJugador(jugadorId).getMano().getCartasMano().size(); i++) {
                 partida.getJugador(jugadorId).getMano().drawHand(i, partida, jugadorId,assetManager);
@@ -237,8 +232,6 @@ public class DuelScreen extends MyGdxGameScreen {
         if(jugadorId==0) {
             partida.getJugador(0).getMano().upSelectedCard(partida,0);
         }
-
-
     }
 
 

@@ -7,17 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MyGdxGameScreen;
+import com.mygdx.managers.MyGdxGameScreenManager;
 
 public class StartGame extends MyGdxGameScreen {
 
-    private Stage stage;
 
-    public StartGame(ScreenManager screenManagerR) {
-        super(screenManagerR);
-
-        this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-    }
+    public StartGame(MyGdxGameScreenManager myGdxGameScreenManagerR) { super(myGdxGameScreenManagerR); }
 
     @Override
     public void show() {
@@ -33,4 +28,8 @@ public class StartGame extends MyGdxGameScreen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
+
+    @Override
+    public void dispose() { super.dispose(); }
+
 }

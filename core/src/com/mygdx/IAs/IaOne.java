@@ -1,7 +1,7 @@
 package com.mygdx.IAs;
 
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
 import com.mygdx.model.*;
 
 import java.util.ArrayList;

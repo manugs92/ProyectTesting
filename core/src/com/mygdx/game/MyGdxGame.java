@@ -6,15 +6,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.configuration.SoundsConfiguration;
-import com.mygdx.screens.ScreenManager;
+import com.mygdx.managers.MyGdxGameConfigurationManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameScreenManager;
 
 public class MyGdxGame extends Game {
 
 	public final static int SCREEN_WIDTH = 1280;
 	public final static int SCREEN_HEIGHT = 700;
-	public MyGdxGameAssetManager assets;
-	public SoundsConfiguration sounds;
+	public com.mygdx.managers.MyGdxGameAssetManager assets;
+	public MyGdxGameConfigurationManager myGdxGameConfigurationManager;
 	public Skin skin ;
 	public BitmapFont font;
 	public FitViewport fitViewport;
@@ -23,7 +24,7 @@ public class MyGdxGame extends Game {
 	@Override
 	public void create () {
 		assets=new MyGdxGameAssetManager();
-		sounds= new SoundsConfiguration();
+		myGdxGameConfigurationManager = new MyGdxGameConfigurationManager();
 		camera = new OrthographicCamera();
 		fitViewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
 		camera.position.set(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 0);
@@ -31,7 +32,7 @@ public class MyGdxGame extends Game {
 		skin= new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
 		font = new BitmapFont();
 
-		ScreenManager screenManager = new ScreenManager(this);
-		screenManager.setDefaultScreen();
+		MyGdxGameScreenManager myGdxGameScreenManager = new MyGdxGameScreenManager(this);
+		myGdxGameScreenManager.setDefaultScreen();
 	}
 }

@@ -1,15 +1,13 @@
-package com.mygdx.screens;
+package com.mygdx.managers;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.configuration.SoundsConfiguration;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.MyGdxGameAssetManager;
 import com.mygdx.model.Partida;
+import com.mygdx.screens.*;
 
-public class ScreenManager {
+public class MyGdxGameScreenManager {
 
     public MyGdxGame parent;
 
@@ -19,8 +17,9 @@ public class ScreenManager {
     private StartGame startGame;
     private DuelScreen duelScreen;
     private SummaryScreen summaryScreen;
+
     public MyGdxGameAssetManager asset;
-    public SoundsConfiguration sounds;
+    public MyGdxGameConfigurationManager myGdxGameConfigurationManager;
     public Skin skin;
     public FitViewport fitViewport;
     public BitmapFont font;
@@ -34,10 +33,10 @@ public class ScreenManager {
     public final static int SUMMARY_SCREEN = 5;
 
 
-    public ScreenManager(MyGdxGame myGdxGame) {
+    public MyGdxGameScreenManager(MyGdxGame myGdxGame) {
         this.parent=myGdxGame;
         this.asset=myGdxGame.assets;
-        this.sounds=myGdxGame.sounds;
+        this.myGdxGameConfigurationManager =myGdxGame.myGdxGameConfigurationManager;
         this.skin=myGdxGame.skin;
         this.fitViewport=myGdxGame.fitViewport;
        this.font=myGdxGame.font;

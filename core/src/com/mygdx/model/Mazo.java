@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
 
 
 import java.util.*;

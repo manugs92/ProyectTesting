@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.managers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +10,10 @@ public class MyGdxGameAssetManager {
 
     //Images from general purposes
     public final String backgroundScroll = "backgrounds/bg_scroll.png";
+
+    //Image from hide/show log
+    public final String hide = "icons/hide.png";
+    public final String show = "icons/show.png";
 
     //Images from ConfigurationScreen
     public final String back_arrow= "icons/arrow_back.png";
@@ -37,7 +41,6 @@ public class MyGdxGameAssetManager {
     public final String myAvatar2 = "icons/mugshot2_1.png";
     public final String rivalAvatar2 = "icons/mugshot_1.png";
     public final String rivalAvatar3 = "icons/mugshot_2.png";
-
 
    //Images from cards info
     public final String textureCardInfo_LavaGolem = "icons/lava_golem_carta_info.png";
@@ -88,6 +91,11 @@ public class MyGdxGameAssetManager {
     }
 
     public void loadScrollLogImage() { manager.load(backgroundScroll,Texture.class);}
+
+    public void loadHideOrShowLog() {
+        manager.load(hide,Texture.class);
+        manager.load(show,Texture.class);
+    }
 
     public void loadMyAvatarImage() {
         manager.load(myAvatar,Texture.class);

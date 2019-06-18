@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.IAs.IaOne;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,7 @@ public class Partida {
         jugadores.add(jugador);
         jugadores.add(jugador2);
         selectedCard = null;
-        duelLog = new DuelLog(skin);
+        duelLog = new DuelLog(skin,assetManager);
         tablero = new Tablero(this, assetManager);
         cardInformation = new CardInformation(this);
         numTurn = 0;

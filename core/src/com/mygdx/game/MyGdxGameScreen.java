@@ -5,32 +5,35 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.configuration.SoundsConfiguration;
-import com.mygdx.screens.ScreenManager;
+import com.mygdx.managers.MyGdxGameConfigurationManager;
+import com.mygdx.managers.MyGdxGameAssetManager;
+import com.mygdx.managers.MyGdxGameScreenManager;
 
 public class MyGdxGameScreen implements Screen {
-    public ScreenManager screenManager;
+    public MyGdxGameScreenManager myGdxGameScreenManager;
     public OrthographicCamera cam;
     public FitViewport fitViewport;
     public Stage stage;
     public Texture textureBgScreen;
     public MyGdxGameAssetManager assetManager;
-    public SoundsConfiguration sounds;
+    public MyGdxGameConfigurationManager myGdxGameConfigurationManager;
     public BitmapFont font;
+    public Skin skin;
 
-    public MyGdxGameScreen(ScreenManager screenManager){
-        this.screenManager = screenManager;
-        this.assetManager=screenManager.asset;
-        this.sounds=screenManager.sounds;
-        this.font=screenManager.font;
-        this.cam = screenManager.parent.camera;
-        this.fitViewport = screenManager.parent.fitViewport;
+    public MyGdxGameScreen(MyGdxGameScreenManager myGdxGameScreenManager){
+        this.myGdxGameScreenManager = myGdxGameScreenManager;
+        this.assetManager= myGdxGameScreenManager.asset;
+        this.myGdxGameConfigurationManager = myGdxGameScreenManager.myGdxGameConfigurationManager;
+        this.font= myGdxGameScreenManager.font;
+        this.cam = myGdxGameScreenManager.parent.camera;
+        this.fitViewport = myGdxGameScreenManager.parent.fitViewport;
         this.stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
+        this.skin=myGdxGameScreenManager.skin;
 
         textureBgScreen = new Texture(Gdx.files.internal("backgrounds\\bg.png"));
         textureBgScreen.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
